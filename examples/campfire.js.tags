@@ -1,0 +1,13 @@
+!_TAG_FILE_FORMAT	2	/extended format/
+!_TAG_FILE_SORTED	0	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Patrick Walton	/pwalton@mozilla.com/
+!_TAG_PROGRAM_NAME	jsctags	//
+!_TAG_PROGRAM_URL	http://github.com/pcwalton/jsctags	/GitHub repository/
+!_TAG_PROGRAM_VERSION	0.1	//
+Campfire	examples/campfire.js	/^    function Campfire(api_key, host) {$/;"	f	lineno:4	type:void function(any, any)
+constructor	examples/campfire.js	/^    function Campfire(api_key, host) {$/;"	f	lineno:4	namespace:Campfire.prototype	type:void function(any, any)
+handlers	examples/campfire.js	/^    Campfire.prototype.handlers = function(callbacks) {$/;"	f	lineno:14	namespace:Campfire.prototype	type:Object function(any)
+prototype	examples/campfire.js	/^    Campfire.prototype.handlers = function(callbacks) {$/;"	v	lineno:14	namespace:Campfire	type:Campfire
+rooms	examples/campfire.js	/^    Campfire.prototype.rooms = function(callbacks) {$/;"	f	lineno:33	namespace:Campfire.prototype	type:any function(any)
+roomInfo	examples/campfire.js	/^    Campfire.prototype.roomInfo = function(id, callbacks) {$/;"	f	lineno:36	namespace:Campfire.prototype	type:any function(any, any)
+recent	examples/campfire.js	/^    Campfire.prototype.recent = function(id, since, callbacks) {$/;"	f	lineno:39	namespace:Campfire.prototype	type:any function(any, any, any)

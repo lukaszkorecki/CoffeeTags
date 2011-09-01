@@ -1,17 +1,19 @@
 require "CoffeeTags/version"
+require 'CoffeeTags/parser'
 
 module Coffeetags
   class << self
-    def run
+    def run files
 
-      fail "no files" if ARGV.empty?
-      ARGV.each do |file|
-        puts emit parse File.read file
+      fail "no files" if files.empty?
+      files.map do |file|
+        emit parse File.read file
       end
 
     end
 
     def parse content
+      Parser.new(content).execute
     end
 
 

@@ -1,6 +1,6 @@
 # this example is not complete, but shows how to
 # implement an API client using Request class
-window.Campfire = class Campfire
+class Campfire
 
   # @api_key - Campfire API keys
   # @host - your campifre host, for example if you're using trololo.campfirenow.com, then host is 'trololo

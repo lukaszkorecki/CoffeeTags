@@ -1,7 +1,9 @@
 module Coffeetags
   class Formatter
-    def initialize tree
-      @tree = tree || []
+    def initialize  file, tree =[]
+      @file = file
+      @tree = tree
+
       @header = [
         "!_TAG_FILE_FORMAT	2	/extended format/",
         "!_TAG_FILE_SORTED	0	/0=unsorted, 1=sorted, 2=foldcase/",
@@ -13,6 +15,31 @@ module Coffeetags
 
       # for now
       @type_str = 'type:void function(any)'
+
+      # array:
+      # name
+      # file path
+      # line number
+      # scope
+
+      @template = "%s\t%s\t//;\"\tf\tlineno:%s\tnamespace:%s\t#{@type_str}"
+
+    end
+
+    def format
+      @lines = [].tap do |line|
+        @tree.each do |klass, content|
+          content.each do |entry|
+            line << sprintf(
+              @template,
+              entry[:name],
+              @file,
+              entry[:line],
+              "#{entry[:parent]}.#{entry[:name]}"
+            )
+          end
+        end
+      end
     end
   end
 end

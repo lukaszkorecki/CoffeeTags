@@ -41,3 +41,5 @@ class Campfire
     url += "?since_message_id=#{since}" if since
     new Request(@url, @headers, @auth).get url, this.handlers(callbacks)
 
+class Test
+  bump : ->

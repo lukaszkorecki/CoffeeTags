@@ -1,8 +1,10 @@
 require './lib/CoffeeTags'
+require 'yaml'
 
-res = Coffeetags.run(ARGV).first
+sc = File.read './examples/campfire.coffee'
 
+parser = Coffeetags::Parser.new sc
 
-example = File.read 'examples/campfire.js.tags'
+parser.execute!
 
-puts res == example
+y parser.tree

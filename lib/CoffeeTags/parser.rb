@@ -1,7 +1,9 @@
 module Coffeetags
   class Parser
+    attr_reader :tree, :methods, :classes
     def initialize source
-      @source = source
+      # clean up the source from comments
+      @source = source.split("\n").reject {|l| l =~ /^#/ }.join("\n")
 
       # all bits and pieces are hashes
       # {
@@ -17,31 +19,36 @@ module Coffeetags
       @tree = {}
 
       # regexes
-      @class_regex = /(class) \w*/
-      @function_regex = /^[ \t]*([A-Za-z]+)[ \t]*=.*->.*$/
+      @class_regex = /class\s*(\w*)/
+      @function_regex = /^[ \t]*([A-Za-z]+)[ \t]*[=:].*->.*$/
     end
 
 
-    def execute
-      line = 0
+    def execute!
+      line_n = 0
       scope = ''
       @source.each_line do |line|
-        line += 1
+        line_n += 1
         if  klass = line.match(@class_regex)
-          @classes << {
+          c = {
             :name => klass[1],
-            :line => line
+            :line => line_n
           }
           scope = klass[1]
 
-          @tree[scope] = []
+          @tree[scope] = [] if @tree[scope].nil?
+
+          @classes << c
         end
 
         if meth = line.match(@function_regex)
-          @methods << {
-            :name => meth[1], :line => line, :parent => scope
+          m = {
+            :name => meth[1],
+            :line => line_n,
+            :parent => scope
           }
-          @tree[scope] << meth[1] if scope != ''
+          @methods << m
+          @tree[scope] << m if scope != ''
         end
       end
     end

@@ -1,5 +1,6 @@
 require "CoffeeTags/version"
 require 'CoffeeTags/parser'
+require 'CoffeeTags/formatter'
 
 module Coffeetags
   class << self

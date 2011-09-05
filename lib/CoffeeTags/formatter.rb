@@ -26,7 +26,7 @@ module Coffeetags
 
     end
 
-    def format
+    def parse_tree
       @lines = [].tap do |line|
         @tree.each do |klass, content|
           content.each do |entry|
@@ -40,6 +40,21 @@ module Coffeetags
           end
         end
       end
+    end
+
+    def to_file
+      str = ""
+      @header.each do |header|
+        str << header
+        str << "\n"
+      end
+
+      @lines.each do |line|
+        str << line
+        str << "\n"
+      end
+
+      str
     end
   end
 end

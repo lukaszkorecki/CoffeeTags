@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = Coffeetags::VERSION
   s.authors     = ["Łukasz Korecki"]
   s.email       = ["lukasz@coffeesounds.com"]
-  s.homepage    = ""
+  s.homepage    = "http://github.com/lukaszkorecki/CoffeeTags"
   s.summary     = %q{Simple tags generator for CoffeeScript}
   s.description = %q{CoffeeTags generates tag file for use with TagBar.vim}
 

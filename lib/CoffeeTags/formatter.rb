@@ -14,21 +14,27 @@ module Coffeetags
       ]
 
       # for now
-      @type_str = 'type:void function(any)'
+      @types = {
+        'f' => 'type:function',
+        'c' => 'type:class'
+      }
+
 
     end
 
     def line_to_string entry
       namespace = "#{entry[:parent]}.#{entry[:name]}"
       namespace = entry[:name] if entry[:parent].nil? or entry[:parent].empty?
+      namespace = "namespace:#{namespace}"
+      namespace = '' if entry[:kind] == 'c'
       [
         entry[:name],
         @file,
         '//;"',
         entry[:kind],
         "lineno:#{entry[:line]}",
-        "namespace:#{namespace}",
-        @type_str
+        namespace,
+        @types[entry[:kind]]
       ].join("\t")
     end
 

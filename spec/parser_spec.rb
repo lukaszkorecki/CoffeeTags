@@ -27,6 +27,7 @@ describe 'CoffeeTags::Parser' do
 
     it "extracts the functions and methods for CampfireClass" do
       @instance.tree['Campfire'].map { |m| m[:name]}.should == [
+        'Campfire',
         'constructor',
         'handlers',
         'onSuccess',
@@ -39,7 +40,7 @@ describe 'CoffeeTags::Parser' do
 
     it 'extracts the line numbers for each method' do
       @instance.tree['Campfire'].map { |m| m[:line]}.should == [
-        7, 13, 15, 23, 28, 33, 39
+        3, 7, 13, 15, 23, 28, 33, 39
       ]
 
     end
@@ -47,16 +48,18 @@ describe 'CoffeeTags::Parser' do
     it "generates the tree for file" do
       @instance.tree.should == {
         'Campfire' => [
-          {:parent => 'Campfire', :name => 'constructor', :line => 7},
-          {:parent => 'Campfire', :name => 'handlers', :line => 13 },
-          { :parent => 'Campfire', :name => 'onSuccess', :line => 15},
-          { :parent => 'Campfire', :name => 'onFailure', :line => 23},
-          {:parent => 'Campfire', :name => 'rooms', :line => 28},
-          {:parent => 'Campfire', :name => 'roomInfo', :line => 33},
-          {:parent => 'Campfire', :name => 'recent', :line => 39},
+          {:parent => '', :name => 'Campfire', :line => 3, :kind => 'c'},
+          {:parent => 'Campfire', :name => 'constructor', :line => 7, :kind => 'f'},
+          {:parent => 'Campfire', :name => 'handlers', :line => 13 , :kind => 'f'},
+          { :parent => 'Campfire', :name => 'onSuccess', :line => 15, :kind => 'f'},
+          { :parent => 'Campfire', :name => 'onFailure', :line => 23, :kind => 'f'},
+          {:parent => 'Campfire', :name => 'rooms', :line => 28, :kind => 'f'},
+          {:parent => 'Campfire', :name => 'roomInfo', :line => 33, :kind => 'f'},
+          {:parent => 'Campfire', :name => 'recent', :line => 39, :kind => 'f'},
         ],
         'Test' => [
-          { :parent => 'Test', :name => 'bump' , :line => 45}
+          {:parent => '', :name => 'Test', :line => 44, :kind => 'c'},
+          { :parent => 'Test', :name => 'bump' , :line => 45, :kind => 'f'}
         ]
       }
     end

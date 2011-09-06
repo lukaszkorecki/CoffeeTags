@@ -16,27 +16,27 @@ module Coffeetags
       # for now
       @type_str = 'type:void function(any)'
 
-      # array:
-      # name
-      # file path
-      # line number
-      # scope
+    end
 
-      @template = "%s\t%s\t//;\"\tf\tlineno:%s\tnamespace:%s\t#{@type_str}"
-
+    def line_to_string entry
+      namespace = "#{entry[:parent]}.#{entry[:name]}"
+      namespace = entry[:name] if entry[:parent].nil? or entry[:parent].empty?
+      [
+        entry[:name],
+        @file,
+        '//;"',
+        entry[:kind],
+        "lineno:#{entry[:line]}",
+        "namespace:#{namespace}",
+        @type_str
+      ].join("\t")
     end
 
     def parse_tree
       @lines = [].tap do |line|
         @tree.each do |klass, content|
           content.each do |entry|
-            line << sprintf(
-              @template,
-              entry[:name],
-              @file,
-              entry[:line],
-              "#{entry[:parent]}.#{entry[:name]}"
-            )
+            line << line_to_string(entry)
           end
         end
       end

@@ -1,26 +1,30 @@
 require './lib/CoffeeTags'
+
 describe 'CoffeeTags::Formatter' do
-  include Coffeetags
   before :each do
     @tree = YAML::load_file './spec/fixtures/tree.yaml'
   end
 
   it "works!" do
-    lambda { Formatter.new 'lol.coffee' }.should_not raise_exception
+    lambda { Coffeetags::Formatter.new 'lol.coffee' }.should_not raise_exception
   end
 
-  it "generates a ctags-formatted line for each tree entry" do
+  before :each do
+    @instance = Coffeetags::Formatter.new 'test.coffee', @tree
+  end
 
-    instance = Formatter.new 'test.coffee', @tree
+  it "generates a line for class definition" do
+    exp = 'Campfire	test.coffee	//;"	c	lineno:3	namespace:Campfire	type:void function(any)'
+    @instance.parse_tree.first.should == exp
+  end
 
+  it "generates a line for method definition" do
     exp = 'constructor	test.coffee	//;"	f	lineno:7	namespace:Campfire.constructor	type:void function(any)'
-    instance.parse_tree.first.should == exp
-
+    @instance.parse_tree[1].should == exp
   end
 
   it "generates line for second class" do
-    instance = Formatter.new 'test.coffee', @tree
     exp = 'bump	test.coffee	//;"	f	lineno:45	namespace:Test.bump	type:void function(any)'
-    instance.parse_tree.last.should == exp
+    @instance.parse_tree.last.should == exp
   end
 end

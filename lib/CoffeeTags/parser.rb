@@ -5,15 +5,6 @@ module Coffeetags
     def initialize source
 
       @source = source
-      # all bits and pieces are hashes
-      # {
-      # name, parent, line, args list
-      # }
-      @classes = []
-
-      # methods can be bound to a class, object or
-      # window (that means they're funcitons)
-      @methods = []
 
       # tree maps the ... tree :-)
       @tree = {}
@@ -31,13 +22,15 @@ module Coffeetags
         unless line =~ /^#/
           if  klass = line.match(@class_regex)
             c = {
+              :parent => '',
               :name => klass[1],
-              :line => line_n
+              :line => line_n,
+              :kind => 'c'
             }
             scope = klass[1]
 
             @tree[scope] = [] unless scope.nil? or scope.empty?
-            @classes << c
+            @tree[scope] << c
           end
 
           if meth = line.match(@function_regex)
@@ -45,8 +38,8 @@ module Coffeetags
               :parent => scope,
               :name => meth[1],
               :line => line_n,
+              :kind => 'f'
             }
-            @methods << m
             @tree[scope] << m if scope != ''
           end
         end

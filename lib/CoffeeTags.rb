@@ -1,24 +1,60 @@
+# encoding: utf-8
 require "CoffeeTags/version"
-require 'CoffeeTags/parser'
-require 'CoffeeTags/formatter'
+require "CoffeeTags/parser"
+require "CoffeeTags/formatter"
 
 module Coffeetags
-  class << self
-    def run files
+  AUTHOR = "Łukasz Korecki /lukasz@coffeesounds.com/"
+  NAME = "CoffeeTags"
+  URL = "https://github.com/lukaszkorecki/CoffeeTags"
+  TAGBAR_COFFEE_CONF = <<-CONF
+let g:tagbar_type_coffee = {
+  \ 'kinds' : [
+  \   'n:namespace',
+  \   'c:class',
+  \   'o:object',
+  \   'm:methods',
+  \   'f:functions',
+  \   'i:instance variables',
+  \   'v:var:1',
+  \ ],
+  \ 'sro' : ".",
+  \ 'ctagsbin' : 'coffeetags',
+  \ 'ctagsargs' : '',
+\ }
+  CONF
 
-      fail "no files" if files.empty?
-      files.map do |file|
-        emit parse File.read file
+  class Utils
+
+    def self.option_parser args
+      puts "no args!" and return if args.empty?
+      case args.first
+      when /version/
+        STDOUT << Coffeetags::VERSION
+      when 'help'
+        STDOUT << 'coffeetags [version|vim_tagbar_install] or path to a coffeescript file'
+      when /vim_tagbar_install/
+        puts "Add this type definition to your vimrc"
+        puts Coffeetags::TAGBAR_COFFEE_CONF
+      else
+        self.run args
       end
 
     end
 
-    def parse content
-      Parser.new(content).execute
-    end
+    def self.run files
+      files.each do |file|
+        sc = File.read file
 
+        parser = Coffeetags::Parser.new sc
+        parser.execute!
 
-    def emit source
+        formatter = Coffeetags::Formatter.new file, parser.tree
+
+        formatter.parse_tree
+
+        STDOUT << formatter.to_file
+      end
     end
   end
 end

@@ -1,14 +1,4 @@
 #!/usr/bin/env ruby
 require 'CoffeeTags'
 
-file = ARGV[0]
-sc = File.read file
-
-parser = Coffeetags::Parser.new sc
-parser.execute!
-
-formatter = Coffeetags::Formatter.new file, parser.tree
-
-formatter.parse_tree
-
-STDOUT << formatter.to_file
+Coffeetags::Utils.option_parser ARGV

@@ -16,17 +16,18 @@ module Coffeetags
       # for now
       @types = {
         'f' => 'type:function',
-        'c' => 'type:class'
+        'c' => 'type:class',
+        'v' => 'type:v'
       }
 
 
     end
 
     def line_to_string entry
-      namespace = "#{entry[:parent]}.#{entry[:name]}"
-      namespace = entry[:name] if entry[:parent].nil? or entry[:parent].empty?
-      namespace = "namespace:#{namespace}"
-      namespace = '' if entry[:kind] == 'c'
+
+      namespace = (entry[:parent].nil? or entry[:parent].empty?) ? entry[:name]: entry[:parent]
+      namespace = "class:#{namespace}"
+
       [
         entry[:name],
         @file,

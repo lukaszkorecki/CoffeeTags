@@ -14,17 +14,17 @@ describe 'CoffeeTags::Formatter' do
   end
 
   it "generates a line for class definition" do
-    exp = 'Campfire	test.coffee	//;"	c	lineno:3	class:Campfire	type:class'
+    exp = 'Campfire	test.coffee	//;"	c	lineno:3	namespace:Campfire	type:class'
     @instance.parse_tree.first.should == exp
   end
 
   it "generates a line for method definition" do
-    exp = 'constructor	test.coffee	//;"	f	lineno:7	class:Campfire	type:function'
+    exp = 'constructor	test.coffee	//;"	f	lineno:7	namespace:Campfire	type:function'
     @instance.parse_tree[1].should == exp
   end
 
   it "generates line for second class" do
-    exp = 'bump	test.coffee	//;"	f	lineno:45	class:Test	type:function'
+    exp = 'bump	test.coffee	//;"	f	lineno:45	namespace:Test	type:function'
     @instance.parse_tree.last.should == exp
   end
 end

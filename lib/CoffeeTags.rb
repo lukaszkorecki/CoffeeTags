@@ -10,18 +10,18 @@ module Coffeetags
   TAGBAR_COFFEE_CONF = <<-CONF
 let g:tagbar_type_coffee = {
   \ 'kinds' : [
-  \   'n:namespace',
   \   'c:class',
-  \   'o:object',
-  \   'm:methods',
   \   'f:functions',
-  \   'i:instance variables',
-  \   'v:var:1',
+  \   'v:variables'
   \ ],
+  \ 'kind2scope' : {
+  \  'c' : 'namespace',
+  \   'v' : 'namespace'
+  \},
   \ 'sro' : ".",
   \ 'ctagsbin' : 'coffeetags',
   \ 'ctagsargs' : '',
-\ }
+  \}
   CONF
 
   class Utils

@@ -5,10 +5,12 @@ gem 'rake'
 gemspec
 
 group :development do
-  gem 'rb-fsevent'
   gem 'guard'
-  gem 'growl_notify'
+  gem 'growl'
   gem 'guard-rspec'
+
+  # osx
+  gem 'rb-fsevent'
 end
 
 group :test do

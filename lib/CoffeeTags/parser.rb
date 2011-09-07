@@ -17,6 +17,12 @@ module Coffeetags
       @var_regex = /([a-zA-Z0-9_]*)[ \t]*[=]/
     end
 
+    def current_scope scope
+      s = (scope.nil? or scope.empty?) ?   '__top__' : scope
+      puts s
+      s
+    end
+
     def execute!
       line_n = 0
       scope = ''
@@ -32,8 +38,8 @@ module Coffeetags
             }
             scope = klass[1]
 
-            @tree[scope] = [] unless scope.nil? or scope.empty?
-            @tree[scope] << c
+            @tree[current_scope scope] ||= []
+            @tree[current_scope scope] << c
           end
 
 
@@ -45,7 +51,8 @@ module Coffeetags
               :kind => 'f'
             }
             @functions << meth[1]
-            @tree[scope] << m if scope != ''
+            @tree[current_scope scope] ||= []
+            @tree[current_scope scope] << m
           end
 
           if var = line.match(@var_regex)
@@ -62,7 +69,8 @@ module Coffeetags
             }
 
 
-            @tree[scope] << v unless scope.empty? or var[1].nil? or var[1].empty?
+            @tree[current_scope scope] ||= []
+            @tree[current_scope scope] << v unless var[1].nil? or var[1].empty?
 
           end
         end

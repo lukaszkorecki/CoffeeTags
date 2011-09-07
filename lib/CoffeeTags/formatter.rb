@@ -17,7 +17,7 @@ module Coffeetags
       @types = {
         'f' => 'type:function',
         'c' => 'type:class',
-        'v' => 'type:v'
+        'v' => 'type:var'
       }
 
 

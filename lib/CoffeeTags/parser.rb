@@ -9,9 +9,12 @@ module Coffeetags
       # tree maps the ... tree :-)
       @tree = {}
 
+      @functions = []
+
       # regexes
       @class_regex = /class\s*(\w*)/
       @function_regex = /^[ \t]*([A-Za-z]+)[ \t]*[=:].*->.*$/
+      @var_regex = /([a-zA-Z0-9_]*)[ \t]*[=]/
     end
 
     def execute!
@@ -33,6 +36,7 @@ module Coffeetags
             @tree[scope] << c
           end
 
+
           if meth = line.match(@function_regex)
             m = {
               :parent => scope,
@@ -40,7 +44,26 @@ module Coffeetags
               :line => line_n,
               :kind => 'f'
             }
+            @functions << meth[1]
             @tree[scope] << m if scope != ''
+          end
+
+          if var = line.match(@var_regex)
+            parent = unless @functions.empty?
+                       "#{scope}.#{@functions.last}"
+                     else
+                       scope
+                     end
+            v = {
+              :parent => parent,
+              :name => var[1],
+              :line => line_n,
+              :kind => 'v'
+            }
+
+
+            @tree[scope] << v unless scope.empty? or var[1].nil? or var[1].empty?
+
           end
         end
       end

@@ -27,4 +27,9 @@ describe 'CoffeeTags::Formatter' do
     exp = 'bump	test.coffee	//;"	f	lineno:45	namespace:Test	type:function'
     @instance.parse_tree.last.should == exp
   end
+
+  it "generates a line for first variable" do
+    exp = 'url	test.coffee	//;"	v	lineno:8	namespace:Campfire.constructor	type:var'
+    @instance.parse_tree[2].should == exp
+  end
 end

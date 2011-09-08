@@ -3,6 +3,16 @@ require "CoffeeTags/version"
 require "CoffeeTags/parser"
 require "CoffeeTags/formatter"
 
+class Object
+  def blank?
+    if self.respond_to? :"empty?"
+      self.nil? or self.empty?
+    else
+      self.nil?
+    end
+  end
+end
+
 module Coffeetags
   AUTHOR = "Łukasz Korecki /lukasz@coffeesounds.com/"
   NAME = "CoffeeTags"

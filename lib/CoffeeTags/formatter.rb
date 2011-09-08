@@ -25,7 +25,7 @@ module Coffeetags
 
     def line_to_string entry
 
-      namespace = (entry[:parent].nil? or entry[:parent].empty?) ? entry[:name]: entry[:parent]
+      namespace = (entry[:parent].blank?) ? entry[:name]: entry[:parent]
       namespace = "namespace:#{namespace}"
 
       [

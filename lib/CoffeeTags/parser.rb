@@ -11,20 +11,32 @@ module Coffeetags
 
       @functions = []
 
+      @scope = []
       # regexes
       @class_regex = /class\s*(\w*)/
       @function_regex = /^[ \t]*([A-Za-z]+)[ \t]*[=:].*->.*$/
       @var_regex = /([a-zA-Z0-9_]*)[ \t]*[=]/
     end
 
-    def current_scope scope
-      s = (scope.nil? or scope.empty?) ?   '__top__' : scope
-      puts s
-      s
+
+    def add_to_tree scope, item
+      sc = scope.blank? ?   '__top__' : scope
+      @tree[sc] ||= []
+      @tree[sc] << item
+    end
+
+    def line_level line
+      line.match(/^[ \t]*/)[0].gsub("\t", " ").split('').length
+    end
+
+
+    def get_item line_number, line
+
     end
 
     def execute!
       line_n = 0
+      level = 0
       scope = ''
       @source.each_line do |line|
         line_n += 1
@@ -38,10 +50,10 @@ module Coffeetags
             }
             scope = klass[1]
 
-            @tree[current_scope scope] ||= []
-            @tree[current_scope scope] << c
-          end
+            @scope << { :name => klass[1], :level => (line_level line)}
 
+            add_to_tree scope, c
+          end
 
           if meth = line.match(@function_regex)
             m = {
@@ -51,12 +63,12 @@ module Coffeetags
               :kind => 'f'
             }
             @functions << meth[1]
-            @tree[current_scope scope] ||= []
-            @tree[current_scope scope] << m
-          end
 
+            add_to_tree scope, m
+          end
+=begin
           if var = line.match(@var_regex)
-            parent = unless @functions.empty?
+            parent = unless @functions.empty? or scope.blank?
                        "#{scope}.#{@functions.last}"
                      else
                        scope
@@ -68,11 +80,9 @@ module Coffeetags
               :kind => 'v'
             }
 
-
-            @tree[current_scope scope] ||= []
-            @tree[current_scope scope] << v unless var[1].nil? or var[1].empty?
-
+            add_to_tree scope, v unless var[1].blank?
           end
+=end
         end
       end
     end

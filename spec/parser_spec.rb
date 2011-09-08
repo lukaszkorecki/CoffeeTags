@@ -10,6 +10,25 @@ describe 'CoffeeTags::Parser' do
     lambda { Coffeetags::Parser.new "\n" }.should_not raise_exception
   end
 
+
+  context 'detect item level' do
+    before :each do
+      @parser = Coffeetags::Parser.new ''
+    end
+
+    it 'gets level from a string with no indent' do
+      @parser.line_level("zooo").should == 0
+    end
+
+    it "gets level from spaces" do
+      @parser.line_level("    def lol").should == 4
+    end
+
+    it "gets level from tabs" do
+      @parser.line_level("\t\t\tdef lol").should == 3
+    end
+  end
+
   context 'Camfpire Class' do
 
     it "loads the source and parses it" do
@@ -59,6 +78,7 @@ describe 'CoffeeTags::Parser' do
       end
 
       it "extracts a variable" do
+        pending "variables removed"
         v = @instance.tree['Campfire'].select { |e| e[:kind] == 'v'}.first
         v.should == {:parent => 'Campfire.constructor', :name => 'url', :line => 8, :kind => 'v'}
       end
@@ -68,18 +88,18 @@ describe 'CoffeeTags::Parser' do
           'Campfire' => [
             {:parent => '', :name => 'Campfire', :line => 3, :kind => 'c'},
             {:parent => 'Campfire', :name => 'constructor', :line => 7, :kind => 'f'},
-            {:parent => 'Campfire.constructor', :name => 'url', :line => 8, :kind => 'v'},
-            {:parent => 'Campfire.constructor', :name => 'auth', :line => 9, :kind => 'v'},
-            {:parent => 'Campfire.constructor', :name => 'headers', :line => 10, :kind => 'v'},
+            # {:parent => 'Campfire.constructor', :name => 'url', :line => 8, :kind => 'v'},
+            # {:parent => 'Campfire.constructor', :name => 'auth', :line => 9, :kind => 'v'},
+            # {:parent => 'Campfire.constructor', :name => 'headers', :line => 10, :kind => 'v'},
             {:parent => 'Campfire', :name => 'handlers', :line => 13 , :kind => 'f'},
-            {:parent => 'Campfire.handlers', :name => 'resp', :line => 14, :kind => 'v'},
+            # {:parent => 'Campfire.handlers', :name => 'resp', :line => 14, :kind => 'v'},
             {:parent => 'Campfire', :name => 'onSuccess', :line => 15, :kind => 'f'},
-            {:parent => 'Campfire.onSuccess', :name => 'obj', :line => 17, :kind => 'v'},
+            # {:parent => 'Campfire.handlers.resp.onSuccess', :name => 'obj', :line => 17, :kind => 'v'},
             {:parent => 'Campfire', :name => 'onFailure', :line => 23, :kind => 'f'},
             {:parent => 'Campfire', :name => 'rooms', :line => 28, :kind => 'f'},
             {:parent => 'Campfire', :name => 'roomInfo', :line => 33, :kind => 'f'},
             {:parent => 'Campfire', :name => 'recent', :line => 39, :kind => 'f'},
-            {:parent => 'Campfire.recent', :name => 'url', :line => 40, :kind => 'v'},
+            # {:parent => 'Campfire.recent', :name => 'url', :line => 40, :kind => 'v'},
           ],
           'Test' => [
             {:parent => '', :name => 'Test', :line => 44, :kind => 'c'},
@@ -100,9 +120,9 @@ describe 'CoffeeTags::Parser' do
       @instance.tree.should == {
         '__top__' => [
           {:parent => '', :name => 'bump', :line => 1, :kind => 'f'},
-          {:parent => '', :name => 'Wat', :line => 4, :kind => 'v'},
-          {:parent => 'Wat', :name => 'ho', :line => 5, :kind => 'f'},
-          {:parent => 'Wat.ho', :name => 'x', :line => 6, :kind => 'v'}
+#          {:parent => '', :name => 'Wat', :line => 4, :kind => 'v'},
+          {:parent => '', :name => 'ho', :line => 5, :kind => 'f'},
+#          {:parent => 'Wat.ho', :name => 'x', :line => 6, :kind => 'v'}
         ]
       }
     end

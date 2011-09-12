@@ -10,12 +10,12 @@ Campfire:
   :line: 13
   :kind: f
   :source: '  handlers: (callbacks) ->'
-- :parent: Campfire
+- :parent: Campfire.handlers.resp
   :name: onSuccess
   :line: 15
   :kind: f
   :source: '      onSuccess : (response) ->'
-- :parent: Campfire
+- :parent: Campfire.handlers.resp
   :name: onFailure
   :line: 23
   :kind: f

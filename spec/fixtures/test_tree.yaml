@@ -5,7 +5,7 @@
     :line: 1
     :kind: f
     :source: 'bump = (wat) ->'
-  - :parent: ''
+  - :parent: 'Wat'
     :name: ho
     :line: 5
     :kind: f

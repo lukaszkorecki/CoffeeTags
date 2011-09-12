@@ -4,32 +4,40 @@ Campfire:
   :name: constructor
   :line: 7
   :kind: f
+  :source: "  constructor: (api_key, host) ->"
 - :parent: Campfire
   :name: handlers
   :line: 13
   :kind: f
+  :source: '  handlers: (callbacks) ->'
 - :parent: Campfire
   :name: onSuccess
   :line: 15
   :kind: f
+  :source: '      onSuccess : (response) ->'
 - :parent: Campfire
   :name: onFailure
   :line: 23
   :kind: f
+  :source: '      onFailure: (response) ->'
 - :parent: Campfire
   :name: rooms
   :line: 28
   :kind: f
+  :source: '  rooms: (callbacks) ->'
 - :parent: Campfire
   :name: roomInfo
   :line: 33
   :kind: f
+  :source: '  roomInfo: (id, callbacks) ->'
 - :parent: Campfire
   :name: recent
   :line: 39
   :kind: f
+  :source: '  recent: (id, since, callbacks) ->'
 Test:
 - :parent: Test
   :name: bump
   :line: 45
   :kind: f
+  :source: '  bump : ->'

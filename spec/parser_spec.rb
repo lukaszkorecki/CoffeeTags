@@ -69,25 +69,16 @@ describe 'CoffeeTags::Parser' do
 
       it "extracts method" do
         f = @instance.tree['Campfire'].select { |e| e[:kind] == 'f'}.first
-        f.should == {:parent => 'Campfire', :name => 'constructor', :line => 7, :kind => 'f'}
+        f.should == {
+          :parent => 'Campfire',
+          :name => 'constructor',
+          :line => 7,
+          :kind => 'f',
+          :source => '  constructor: (api_key, host) ->'
+        }
       end
 
       it "generates the tree for file" do
-        @instance.tree.should == {
-          'Campfire' => [
-            {:parent => 'Campfire', :name => 'constructor', :line => 7, :kind => 'f'},
-            {:parent => 'Campfire', :name => 'handlers', :line => 13 , :kind => 'f'},
-            {:parent => 'Campfire', :name => 'onSuccess', :line => 15, :kind => 'f'},
-            {:parent => 'Campfire', :name => 'onFailure', :line => 23, :kind => 'f'},
-            {:parent => 'Campfire', :name => 'rooms', :line => 28, :kind => 'f'},
-            {:parent => 'Campfire', :name => 'roomInfo', :line => 33, :kind => 'f'},
-            {:parent => 'Campfire', :name => 'recent', :line => 39, :kind => 'f'},
-          ],
-          'Test' => [
-            { :parent => 'Test', :name => 'bump' , :line => 45, :kind => 'f'}
-          ]
-        }
-
         @instance.tree.should == YAML::load_file('./spec/fixtures/tree.yaml')
       end
     end
@@ -102,10 +93,20 @@ describe 'CoffeeTags::Parser' do
     it "generates the tree for test file" do
       @instance.tree.should == {
         '__top__' => [
-          {:parent => '', :name => 'bump', :line => 1, :kind => 'f'},
-#          {:parent => '', :name => 'Wat', :line => 4, :kind => 'v'},
-          {:parent => '', :name => 'ho', :line => 5, :kind => 'f'},
-#          {:parent => 'Wat.ho', :name => 'x', :line => 6, :kind => 'v'}
+          {
+            :parent => '',
+            :name => 'bump',
+            :line => 1,
+            :kind => 'f',
+            :source => 'bump = (wat) ->'
+          },
+          {
+            :parent => '',
+            :name => 'ho',
+            :line => 5,
+            :kind => 'f',
+            :source => '  ho : (x) ->'
+          },
         ]
       }
     end

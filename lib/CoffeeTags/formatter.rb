@@ -23,6 +23,10 @@ module Coffeetags
 
     end
 
+    def regex_line line
+      "/^#{line}$/;\""
+    end
+
     def line_to_string entry
 
       namespace = (entry[:parent].blank?) ? entry[:name]: entry[:parent]
@@ -31,7 +35,7 @@ module Coffeetags
       [
         entry[:name],
         @file,
-        (entry[:source] or '//;"'),
+        regex_line(entry[:source]),
         entry[:kind],
         "lineno:#{entry[:line]}",
         namespace,

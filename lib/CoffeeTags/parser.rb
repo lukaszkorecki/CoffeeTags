@@ -29,11 +29,6 @@ module Coffeetags
       line.match(/^[ \t]*/)[0].gsub("\t", " ").split('').length
     end
 
-
-    def get_item line_number, line
-
-    end
-
     def execute!
       line_n = 0
       level = 0
@@ -59,7 +54,8 @@ module Coffeetags
                   :parent => scope,
                   :name => meth[1],
                   :line => line_n,
-                  :kind => 'f'
+                  :kind => 'f',
+                  :source => line.gsub("\n",'')
                 }
                 @functions << meth[1]
 

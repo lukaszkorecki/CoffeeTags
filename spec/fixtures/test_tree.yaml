@@ -1,0 +1,12 @@
+---
+'__top__':
+  - :parent: ''
+    :name: bump
+    :line: 1
+    :kind: f
+    :source: 'bump = (wat) ->'
+  - :parent: ''
+    :name: ho
+    :line: 5
+    :kind: f
+    :source: '  ho : (x) ->'

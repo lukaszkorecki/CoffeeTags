@@ -3,6 +3,7 @@ describe 'CoffeeTags::Parser' do
   before :all do
     @campfire_class = File.read File.expand_path('./spec/fixtures/campfire.coffee')
     @test_file = File.read File.expand_path('./spec/fixtures/test.coffee')
+    @test_tree = YAML::load_file File.expand_path('./spec/fixtures/test_tree.yaml')
 
   end
 
@@ -91,24 +92,7 @@ describe 'CoffeeTags::Parser' do
     end
 
     it "generates the tree for test file" do
-      @instance.tree.should == {
-        '__top__' => [
-          {
-            :parent => '',
-            :name => 'bump',
-            :line => 1,
-            :kind => 'f',
-            :source => 'bump = (wat) ->'
-          },
-          {
-            :parent => '',
-            :name => 'ho',
-            :line => 5,
-            :kind => 'f',
-            :source => '  ho : (x) ->'
-          },
-        ]
-      }
+      @instance.tree.should == @test_tree
     end
 
   end

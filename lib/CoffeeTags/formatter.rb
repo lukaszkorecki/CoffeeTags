@@ -30,7 +30,9 @@ module Coffeetags
     def line_to_string entry
 
       namespace = (entry[:parent].blank?) ? entry[:name]: entry[:parent]
-      namespace = "namespace:#{namespace}"
+
+      namespace =  namespace == entry[:name] ? '' : "namespace:#{namespace}"
+
 
       [
         entry[:name],

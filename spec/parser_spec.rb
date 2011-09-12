@@ -67,45 +67,28 @@ describe 'CoffeeTags::Parser' do
 
       end
 
-      it 'extracts class' do
-        c = @instance.tree['Campfire'].select { |e| e[:kind] == 'c'}.first
-        c.should == {:parent => '', :name => 'Campfire', :line => 3, :kind => 'c'}
-      end
-
       it "extracts method" do
         f = @instance.tree['Campfire'].select { |e| e[:kind] == 'f'}.first
         f.should == {:parent => 'Campfire', :name => 'constructor', :line => 7, :kind => 'f'}
       end
 
-      it "extracts a variable" do
-        pending "variables removed"
-        v = @instance.tree['Campfire'].select { |e| e[:kind] == 'v'}.first
-        v.should == {:parent => 'Campfire.constructor', :name => 'url', :line => 8, :kind => 'v'}
-      end
-
       it "generates the tree for file" do
         @instance.tree.should == {
           'Campfire' => [
-            {:parent => '', :name => 'Campfire', :line => 3, :kind => 'c'},
             {:parent => 'Campfire', :name => 'constructor', :line => 7, :kind => 'f'},
-            # {:parent => 'Campfire.constructor', :name => 'url', :line => 8, :kind => 'v'},
-            # {:parent => 'Campfire.constructor', :name => 'auth', :line => 9, :kind => 'v'},
-            # {:parent => 'Campfire.constructor', :name => 'headers', :line => 10, :kind => 'v'},
             {:parent => 'Campfire', :name => 'handlers', :line => 13 , :kind => 'f'},
-            # {:parent => 'Campfire.handlers', :name => 'resp', :line => 14, :kind => 'v'},
             {:parent => 'Campfire', :name => 'onSuccess', :line => 15, :kind => 'f'},
-            # {:parent => 'Campfire.handlers.resp.onSuccess', :name => 'obj', :line => 17, :kind => 'v'},
             {:parent => 'Campfire', :name => 'onFailure', :line => 23, :kind => 'f'},
             {:parent => 'Campfire', :name => 'rooms', :line => 28, :kind => 'f'},
             {:parent => 'Campfire', :name => 'roomInfo', :line => 33, :kind => 'f'},
             {:parent => 'Campfire', :name => 'recent', :line => 39, :kind => 'f'},
-            # {:parent => 'Campfire.recent', :name => 'url', :line => 40, :kind => 'v'},
           ],
           'Test' => [
-            {:parent => '', :name => 'Test', :line => 44, :kind => 'c'},
             { :parent => 'Test', :name => 'bump' , :line => 45, :kind => 'f'}
           ]
         }
+
+        @instance.tree.should == YAML::load_file('./spec/fixtures/tree.yaml')
       end
     end
   end

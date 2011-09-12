@@ -41,48 +41,32 @@ module Coffeetags
       @source.each_line do |line|
         line_n += 1
         unless line =~ /^#/
-          if  klass = line.match(@class_regex)
-            c = {
-              :parent => '',
-              :name => klass[1],
-              :line => line_n,
-              :kind => 'c'
-            }
-            scope = klass[1]
+          o = if  klass = line.match(@class_regex)
+                c = {
+                  :parent => '',
+                  :name => klass[1],
+                  :line => line_n,
+                  :kind => 'c'
+                }
+                scope = klass[1]
 
-            @scope << { :name => klass[1], :level => (line_level line)}
+                @scope << { :name => klass[1], :level => (line_level line)}
+                c
+              end
 
-            add_to_tree scope, c
-          end
+          o = if meth = line.match(@function_regex)
+                m = {
+                  :parent => scope,
+                  :name => meth[1],
+                  :line => line_n,
+                  :kind => 'f'
+                }
+                @functions << meth[1]
 
-          if meth = line.match(@function_regex)
-            m = {
-              :parent => scope,
-              :name => meth[1],
-              :line => line_n,
-              :kind => 'f'
-            }
-            @functions << meth[1]
+                m
+              end
 
-            add_to_tree scope, m
-          end
-=begin
-          if var = line.match(@var_regex)
-            parent = unless @functions.empty? or scope.blank?
-                       "#{scope}.#{@functions.last}"
-                     else
-                       scope
-                     end
-            v = {
-              :parent => parent,
-              :name => var[1],
-              :line => line_n,
-              :kind => 'v'
-            }
-
-            add_to_tree scope, v unless var[1].blank?
-          end
-=end
+          add_to_tree scope, o unless o.nil?
         end
       end
     end

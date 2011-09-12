@@ -31,7 +31,7 @@ module Coffeetags
       [
         entry[:name],
         @file,
-        '//;"',
+        (entry[:source] or '//;"'),
         entry[:kind],
         "lineno:#{entry[:line]}",
         namespace,

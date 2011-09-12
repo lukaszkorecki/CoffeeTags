@@ -13,14 +13,9 @@ describe 'CoffeeTags::Formatter' do
     @instance = Coffeetags::Formatter.new 'test.coffee', @tree
   end
 
-  it "generates a line for class definition" do
-    exp = 'Campfire	test.coffee	//;"	c	lineno:3	namespace:Campfire	type:class'
-    @instance.parse_tree.first.should == exp
-  end
-
   it "generates a line for method definition" do
     exp = 'constructor	test.coffee	//;"	f	lineno:7	namespace:Campfire	type:function'
-    @instance.parse_tree[1].should == exp
+    @instance.parse_tree.first.should == exp
   end
 
   it "generates line for second class" do
@@ -28,8 +23,4 @@ describe 'CoffeeTags::Formatter' do
     @instance.parse_tree.last.should == exp
   end
 
-  it "generates a line for first variable" do
-    exp = 'url	test.coffee	//;"	v	lineno:8	namespace:Campfire.constructor	type:var'
-    @instance.parse_tree[2].should == exp
-  end
 end

@@ -1,41 +1,17 @@
---- 
-Campfire: 
-- :parent: ""
-  :name: Campfire
-  :line: 3
-  :kind: c
+---
+Campfire:
 - :parent: Campfire
   :name: constructor
   :line: 7
   :kind: f
-- :parent: Campfire.constructor
-  :name: url
-  :line: 8
-  :kind: v
-- :parent: Campfire.constructor
-  :name: auth
-  :line: 9
-  :kind: v
-- :parent: Campfire.constructor
-  :name: headers
-  :line: 10
-  :kind: v
 - :parent: Campfire
   :name: handlers
   :line: 13
   :kind: f
-- :parent: Campfire.handlers
-  :name: resp
-  :line: 14
-  :kind: v
 - :parent: Campfire
   :name: onSuccess
   :line: 15
   :kind: f
-- :parent: Campfire.onSuccess
-  :name: obj
-  :line: 17
-  :kind: v
 - :parent: Campfire
   :name: onFailure
   :line: 23
@@ -52,15 +28,7 @@ Campfire:
   :name: recent
   :line: 39
   :kind: f
-- :parent: Campfire.recent
-  :name: url
-  :line: 40
-  :kind: v
-Test: 
-- :parent: ""
-  :name: Test
-  :line: 44
-  :kind: c
+Test:
 - :parent: Test
   :name: bump
   :line: 45

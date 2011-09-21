@@ -16,7 +16,7 @@ describe 'CoffeeTags::Formatter' do
   it "generates a line for method definition" do
     exp = 'constructor	test.coffee	/^  constructor: (api_key, host) ->$/;"	f	lineno:7	namespace:Campfire	type:function'
     puts exp
-    @instance.parse_tree.first.should == exp
+    @instance.parse_tree[1].should == exp
   end
 
   it "generates line for second class" do

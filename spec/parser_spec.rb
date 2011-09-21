@@ -4,6 +4,7 @@ describe 'CoffeeTags::Parser' do
     @campfire_class = File.read File.expand_path('./spec/fixtures/campfire.coffee')
     @test_file = File.read File.expand_path('./spec/fixtures/test.coffee')
     @test_tree = YAML::load_file File.expand_path('./spec/fixtures/test_tree.yaml')
+    @cf_tree = YAML::load_file File.expand_path('./spec/fixtures/tree.yaml')
 
   end
 
@@ -30,70 +31,44 @@ describe 'CoffeeTags::Parser' do
     end
   end
 
-  context 'Camfpire Class' do
 
-    it "loads the source and parses it" do
-      inst = Coffeetags::Parser.new @campfire_class
-      inst.execute!
-
-      inst.tree.length.should == 2
+  context "Creating scope path" do
+    before(:each) do
+      @parser = Coffeetags::Parser.new ''
+    end
+    it 'gets the scope path for first function' do
+      @parser.scope_path(@cf_tree[1], @cf_tree ).should == 'Campfire'
     end
 
-    context 'parsing' do
-      before :each do
-        @instance = Coffeetags::Parser.new @campfire_class
-        @instance.execute!
-      end
+    it 'gets the scope path for second function' do
+      @parser.scope_path(@cf_tree[2], @cf_tree ).should == 'Campfire'
+    end
+    it 'gets the scope path for nested function' do
+      @parser.scope_path(@cf_tree[3], @cf_tree ).should == 'Campfire.handlers'
+    end
 
-      it "extracts the classes" do
-        @instance.tree.keys.should == ['Campfire', 'Test']
-      end
-
-      it "extracts the functions and methods for CampfireClass" do
-        @instance.tree['Campfire'].select{|m| m[:kind] == 'f' }.map { |m| m[:name]}.should == [
-          'constructor',
-          'handlers',
-          'onSuccess',
-          'onFailure',
-          'rooms',
-          'roomInfo',
-          'recent',
-        ]
-      end
-
-      it 'extracts the line numbers for each method' do
-        @instance.tree['Campfire'].select{|m| m[:kind] == 'f' }.map { |m| m[:line]}.should == [
-          7, 13, 15, 23, 28, 33, 39
-        ]
-
-      end
-
-      it "extracts method" do
-        f = @instance.tree['Campfire'].select { |e| e[:kind] == 'f'}.first
-        f.should == {
-          :parent => 'Campfire',
-          :name => 'constructor',
-          :line => 7,
-          :kind => 'f',
-          :source => '  constructor: (api_key, host) ->'
-        }
-      end
-
-      it "generates the tree for file" do
-        @instance.tree.should == YAML::load_file('./spec/fixtures/tree.yaml')
-      end
+    it "gets the scope for one more nested function" do
+      @parser.scope_path(@cf_tree[4], @cf_tree).should == 'Campfire.handlers'
+    end
+    it "gets the scope for not nested function which comes after a nested function" do
+      @parser.scope_path(@cf_tree[5], @cf_tree).should == 'Campfire'
     end
   end
 
-  context 'Test file' do
-    before :each do
-      @instance = Coffeetags::Parser.new @test_file
-      @instance.execute!
-    end
+  context 'Parsing' do
+    context 'Scoping' do
+      before(:each) do
+        @coffee_parser = Coffeetags::Parser.new @campfire_class
+        @test_parser = Coffeetags::Parser.new @test_file
+      end
 
-    it "generates the tree for test file" do
-      @instance.tree.should == @test_tree
-    end
+      it "generates the scope list" do
+        pending
+        @coffee_parser.execute!
+        @coffee_parser.tree.should == @cf_tree
 
+      end
+
+    end
   end
 end

@@ -46,12 +46,8 @@ module Coffeetags
     end
 
     def parse_tree
-      @lines = [].tap do |line|
-        @tree.each do |klass, content|
-          content.each do |entry|
-            line << line_to_string(entry)
-          end
-        end
+      @lines = @tree.map do | content|
+        line_to_string content
       end
     end
 

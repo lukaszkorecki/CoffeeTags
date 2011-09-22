@@ -18,14 +18,16 @@ TagList for Vim).
 
 * get the `coffeetags` tool
 
-    gem install CoffeeTags
+    `gem install CoffeeTags`
 
 
 * add TagBar config to your .vimrc
 
-    coffeetags vim_config >> ~/.vimrc
+    `coffeetags vim_config >> ~/.vimrc`
 
-* open your coffeescript file and open TagBar. Done!
+* open your coffeescript file and open TagBar.
+
+Done!
 
 # TODO
 

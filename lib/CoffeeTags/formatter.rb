@@ -13,14 +13,11 @@ module Coffeetags
         "!_TAG_PROGRAM_VERSION	#{Coffeetags::VERSION}	//"
       ]
 
-      # for now
       @types = {
         'f' => 'type:function',
         'c' => 'type:class',
         'v' => 'type:var'
       }
-
-
     end
 
     def regex_line line
@@ -28,11 +25,8 @@ module Coffeetags
     end
 
     def line_to_string entry
-
       namespace = (entry[:parent].blank?) ? entry[:name]: entry[:parent]
-
-      namespace =  namespace == entry[:name] ? '' : "namespace:#{namespace}"
-
+      namespace =  namespace == entry[:name] ? '' : "object:#{namespace}"
 
       [
         entry[:name],
@@ -47,8 +41,8 @@ module Coffeetags
 
     def parse_tree
       @lines = @tree.map do | content|
-        line_to_string content
-      end
+        line_to_string content if content[:kind] == 'f'
+      end.reject{|l| l.nil? }
     end
 
     def to_file

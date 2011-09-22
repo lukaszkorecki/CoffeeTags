@@ -1,32 +1,17 @@
 require 'yaml'
 module Coffeetags
   class Parser
-    attr_reader :tree, :scope
+    attr_reader :tree
     def initialize source
-
       @source = source
 
       # tree maps the ... tree :-)
       @tree = []
 
-      @functions = []
-
-      @scope = []
-      @tokens = []
       # regexes
-      @class_regex = /class\s*(\w*)/
-      @function_regex = /^[ \t]*([A-Za-z]+)[ \t]*[=:].*->.*$/
-      @var_regex = /([a-zA-Z0-9_]*)[ \t]*[=]/
-
-
+      @class_regex = /^[ \t]*class\s*(\w*)/
+      @var_regex = /([a-zA-Z0-9_]*)[ \t]*[=:][ \t]*$/
       @token_regex = /[ \t]*([a-zA-Z0-9_]*)[ \t]*[:=]/
-    end
-
-
-    def add_to_tree scope, item
-      sc = scope.blank? ?   '__top__' : scope
-      @tree[sc] ||= []
-      @tree[sc] << item
     end
 
     def line_level line
@@ -41,6 +26,7 @@ module Coffeetags
 
       current_level = element[:level]
       tree[0..idx].reverse.each do |_el|
+        # uhmmmmmm
         if _el[:level] != current_level and _el[:level] < current_level
           bf << _el[:name]
           current_level = _el[:level]
@@ -58,6 +44,18 @@ module Coffeetags
       @source.each_line do |line|
         line_n += 1
         level = line_level line
+
+        if (_class = line.match @class_regex)
+          @tree << {
+            :name => _class[1], :level => level
+          }
+        end
+
+        if(var = line.match @var_regex)
+          @tree << {
+            :name => var[1], :level => level
+          }
+        end
 
         token = line.match @token_regex
         if not token.nil? and line =~ /-\>/

@@ -1,9 +1,5 @@
 ---
-- :parent: ''
-  :name: Campfire
-  :line: 3
-  :kind: c
-  :source: "class Campfire"
+- :name: Campfire
   :level: 0
 - :parent: Campfire
   :name: constructor
@@ -17,13 +13,15 @@
   :kind: f
   :source: '  handlers: (callbacks) ->'
   :level: 2
-- :parent: Campfire.handlers
+- :name: resp
+  :level: 4
+- :parent: Campfire.handlers.resp
   :name: onSuccess
   :line: 15
   :kind: f
   :source: '      onSuccess : (response) ->'
   :level: 6
-- :parent: Campfire.handlers
+- :parent: Campfire.handlers.resp
   :name: onFailure
   :line: 23
   :kind: f
@@ -47,6 +45,8 @@
   :kind: f
   :source: '  recent: (id, since, callbacks) ->'
   :level: 2
+- :name: Test
+  :level: 0
 - :parent: Test
   :name: bump
   :line: 45

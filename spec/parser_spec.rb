@@ -37,21 +37,24 @@ describe 'CoffeeTags::Parser' do
       @parser = Coffeetags::Parser.new ''
     end
     it 'gets the scope path for first function' do
-      @parser.scope_path(@cf_tree[1], @cf_tree ).should == 'Campfire'
+      @parser.scope_path(@cf_tree[1], @cf_tree[0...1] ).should == 'Campfire'
     end
 
     it 'gets the scope path for second function' do
-      @parser.scope_path(@cf_tree[2], @cf_tree ).should == 'Campfire'
-    end
-    it 'gets the scope path for nested function' do
-      @parser.scope_path(@cf_tree[3], @cf_tree ).should == 'Campfire.handlers'
+      @parser.scope_path(@cf_tree[2], @cf_tree[0..1] ).should == 'Campfire'
     end
 
-    it "gets the scope for one more nested function" do
-      @parser.scope_path(@cf_tree[4], @cf_tree).should == 'Campfire.handlers'
+    it "gets the scope for nested function" do
+      @parser.scope_path(@cf_tree[4], @cf_tree[0..3]).should == 'Campfire.handlers.resp'
     end
-    it "gets the scope for not nested function which comes after a nested function" do
-      @parser.scope_path(@cf_tree[5], @cf_tree).should == 'Campfire'
+
+    it "gets the scope of a function which comes after nested function" do
+
+      @parser.scope_path(@cf_tree[6], @cf_tree[0..5]).should == 'Campfire'
+    end
+
+    it 'gets scope for last method defined in diff class' do
+      @parser.scope_path(@cf_tree.last, @cf_tree).should == 'Test'
     end
   end
 
@@ -63,12 +66,9 @@ describe 'CoffeeTags::Parser' do
       end
 
       it "generates the scope list" do
-        pending
         @coffee_parser.execute!
         @coffee_parser.tree.should == @cf_tree
-
       end
-
     end
   end
 end

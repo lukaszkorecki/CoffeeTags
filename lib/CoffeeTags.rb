@@ -25,8 +25,8 @@ let g:tagbar_type_coffee = {
   \   'v:variables'
   \ ],
   \ 'kind2scope' : {
-  \  'c' : 'namespace',
-  \   'v' : 'namespace'
+  \  'c' : 'object',
+  \   'v' : 'object'
   \},
   \ 'sro' : ".",
   \ 'ctagsbin' : 'coffeetags',

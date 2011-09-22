@@ -13,16 +13,16 @@
   :name: ho
   :line: 5
   :level: 2
-- :name: @lolWat
+- :name: '@lolWat'
   :level: 4
 - :source: "      bump : ->"
-  :parent: Wat.ho.@lolWat
+  :parent: 'Wat.ho.@lolWat'
   :kind: f
   :name: bump
   :line: 9
   :level: 6
 - :source: "      bump_up : ->"
-  :parent: Wat.ho.@lolWat
+  :parent: 'Wat.ho.@lolWat'
   :kind: f
   :name: bump_up
   :line: 11
@@ -30,6 +30,6 @@
 - :source: "    @BOOO__up = -> z()"
   :parent: Wat.ho
   :kind: f
-  :name: @BOOO__up
+  :name: '@BOOO__up'
   :line: 13
   :level: 4

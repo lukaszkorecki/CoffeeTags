@@ -10,8 +10,8 @@ module Coffeetags
 
       # regexes
       @class_regex = /^[ \t]*class\s*(\w*)/
-      @var_regex = /([a-zA-Z0-9_]*)[ \t]*[=:][ \t]*$/
-      @token_regex = /[ \t]*([a-zA-Z0-9_]*)[ \t]*[:=]/
+      @var_regex = /([@a-zA-Z0-9_]*)[ \t]*[=:][ \t]*$/
+      @token_regex = /[ \t]*([@a-zA-Z0-9_]*)[ \t]*[:=]/
     end
 
     def line_level line

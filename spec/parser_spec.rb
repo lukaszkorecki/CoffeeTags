@@ -71,4 +71,16 @@ describe 'CoffeeTags::Parser' do
       end
     end
   end
+
+  context 'Test.coffee parsing' do
+    before(:each) do
+      @parser_test = Coffeetags::Parser.new @test_file
+      @parser_test.execute!
+    end
+
+    it "generates the tree for test.coffee" do
+      @parser_test.tree.should == @test_tree
+    end
+
+  end
 end

@@ -20,13 +20,12 @@ module Coffeetags
   TAGBAR_COFFEE_CONF = <<-CONF
  let g:tagbar_type_coffee = {
   \\ 'kinds' : [
-  \\   'c:class',
   \\   'f:functions',
-  \\   'v:variables'
+  \\   'o:object'
   \\ ],
   \\ 'kind2scope' : {
-  \\  'c' : 'object',
-  \\   'v' : 'object'
+  \\  'f' : 'object',
+  \\   'o' : 'object'
   \\},
   \\ 'sro' : ".",
   \\ 'ctagsbin' : 'coffeetags',

@@ -18,20 +18,20 @@ module Coffeetags
   NAME = "CoffeeTags"
   URL = "https://github.com/lukaszkorecki/CoffeeTags"
   TAGBAR_COFFEE_CONF = <<-CONF
-let g:tagbar_type_coffee = {
-  \ 'kinds' : [
-  \   'c:class',
-  \   'f:functions',
-  \   'v:variables'
-  \ ],
-  \ 'kind2scope' : {
-  \  'c' : 'object',
-  \   'v' : 'object'
-  \},
-  \ 'sro' : ".",
-  \ 'ctagsbin' : 'coffeetags',
-  \ 'ctagsargs' : '',
-  \}
+ let g:tagbar_type_coffee = {
+  \\ 'kinds' : [
+  \\   'c:class',
+  \\   'f:functions',
+  \\   'v:variables'
+  \\ ],
+  \\ 'kind2scope' : {
+  \\  'c' : 'object',
+  \\   'v' : 'object'
+  \\},
+  \\ 'sro' : ".",
+  \\ 'ctagsbin' : 'coffeetags',
+  \\ 'ctagsargs' : '',
+  \\}
   CONF
 
   class Utils
@@ -42,9 +42,13 @@ let g:tagbar_type_coffee = {
       when /version/
         STDOUT << Coffeetags::VERSION
       when 'help'
-        STDOUT << 'coffeetags [version|vim_tagbar_install] or path to a coffeescript file'
-      when /vim_tagbar_install/
-        puts "Add this type definition to your vimrc"
+        STDOUT << 'coffeetags [version|vim_conf] or path to a coffeescript file'
+      when /vim_conf/
+        puts <<-HELP
+" Add this type definition to your vimrc
+" or do
+" coffeetags vim_conf >> <PATH TO YOUR VIMRC>
+        HELP
         puts Coffeetags::TAGBAR_COFFEE_CONF
       else
         self.run args

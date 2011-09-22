@@ -3,7 +3,8 @@
 class Campfire
 
   # @api_key - Campfire API keys
-  # @host - your campifre host, for example if you're using trololo.campfirenow.com, then host is 'trololo
+  # @host - your campifre host, ie if you're using trololo.campfirenow.com,
+  # then host is 'trololo
   constructor: (api_key, host) ->
     @url = "https://#{host}.campfirenow.com/"
     @auth = { 'username' : api_key, 'password' : 'X'}

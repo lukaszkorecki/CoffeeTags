@@ -1,55 +1,55 @@
 ---
 - :name: Campfire
   :level: 0
-- :parent: Campfire
+- :source: "  constructor: (api_key, host) ->"
+  :parent: Campfire
+  :kind: f
   :name: constructor
-  :line: 7
-  :kind: f
-  :source: "  constructor: (api_key, host) ->"
+  :line: 8
   :level: 2
-- :parent: Campfire
-  :name: handlers
-  :line: 13
+- :source: "  handlers: (callbacks) ->"
+  :parent: Campfire
   :kind: f
-  :source: '  handlers: (callbacks) ->'
+  :name: handlers
+  :line: 14
   :level: 2
 - :name: resp
   :level: 4
-- :parent: Campfire.handlers.resp
+- :source: "      onSuccess : (response) ->"
+  :parent: Campfire.handlers.resp
+  :kind: f
   :name: onSuccess
-  :line: 15
-  :kind: f
-  :source: '      onSuccess : (response) ->'
+  :line: 16
   :level: 6
-- :parent: Campfire.handlers.resp
+- :source: "      onFailure: (response) ->"
+  :parent: Campfire.handlers.resp
+  :kind: f
   :name: onFailure
-  :line: 23
-  :kind: f
-  :source: '      onFailure: (response) ->'
+  :line: 24
   :level: 6
-- :parent: Campfire
+- :source: "  rooms: (callbacks) ->"
+  :parent: Campfire
+  :kind: f
   :name: rooms
-  :line: 28
-  :kind: f
-  :source: '  rooms: (callbacks) ->'
+  :line: 29
   :level: 2
-- :parent: Campfire
+- :source: "  roomInfo: (id, callbacks) ->"
+  :parent: Campfire
+  :kind: f
   :name: roomInfo
-  :line: 33
-  :kind: f
-  :source: '  roomInfo: (id, callbacks) ->'
+  :line: 34
   :level: 2
-- :parent: Campfire
-  :name: recent
-  :line: 39
+- :source: "  recent: (id, since, callbacks) ->"
+  :parent: Campfire
   :kind: f
-  :source: '  recent: (id, since, callbacks) ->'
+  :name: recent
+  :line: 40
   :level: 2
 - :name: Test
   :level: 0
-- :parent: Test
-  :name: bump
-  :line: 45
+- :source: "  bump : ->"
+  :parent: Test
   :kind: f
-  :source: '  bump : ->'
+  :name: bump
+  :line: 46
   :level: 2

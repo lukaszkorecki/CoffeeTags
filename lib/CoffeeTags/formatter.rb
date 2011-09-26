@@ -45,12 +45,15 @@ module Coffeetags
       end.reject{|l| l.nil? }
     end
 
-    def to_file
+    def header
       str = ""
       @header.each do |header|
         str << header
         str << "\n"
       end
+    end
+
+    def tags
 
       @lines.each do |line|
         str << line
@@ -58,6 +61,10 @@ module Coffeetags
       end
 
       str
+    end
+
+    def to_file
+      header + "\n" + tags
     end
   end
 end

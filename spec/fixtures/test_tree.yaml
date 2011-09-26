@@ -1,6 +1,6 @@
 ---
 - :source: bump = (wat) ->
-  :parent: ""
+  :parent: "~window"
   :kind: f
   :name: bump
   :line: 1

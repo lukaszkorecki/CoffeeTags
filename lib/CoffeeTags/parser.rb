@@ -5,6 +5,7 @@ module Coffeetags
     def initialize source
       @source = source
 
+      @fake_parent = '~window'
       # tree maps the ... tree :-)
       @tree = []
 
@@ -39,7 +40,6 @@ module Coffeetags
     def execute!
       line_n = 0
       level = 0
-      sc = '__top__'
       # indentify scopes
       @source.each_line do |line|
         line_n += 1
@@ -68,6 +68,7 @@ module Coffeetags
               :line => line_n
           }
           o[:parent] =  scope_path o
+          o[:parent] = @fake_parent if o[:parent].blank?
           @tree << o
         end
         @tree.uniq!

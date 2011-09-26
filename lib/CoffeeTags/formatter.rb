@@ -16,6 +16,7 @@ module Coffeetags
       @types = {
         'f' => 'type:function',
         'c' => 'type:class',
+        'o' => 'type:object',
         'v' => 'type:var'
       }
     end
@@ -41,30 +42,20 @@ module Coffeetags
 
     def parse_tree
       @lines = @tree.map do | content|
-        line_to_string content if content[:kind] == 'f'
+        line_to_string content  unless content[:line].nil? or content[:name].blank?
       end.reject{|l| l.nil? }
     end
 
     def header
-      str = ""
-      @header.each do |header|
-        str << header
-        str << "\n"
-      end
+      @header.map { |h| "#{h}\n"}
     end
 
     def tags
-
-      @lines.each do |line|
-        str << line
-        str << "\n"
-      end
-
-      str
+      @lines.map { |l| "#{l}\n"}
     end
 
     def to_file
-      header + "\n" + tags
+      header +  tags
     end
   end
 end

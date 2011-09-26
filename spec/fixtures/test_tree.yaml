@@ -1,12 +1,22 @@
 ---
 - :source: bump = (wat) ->
-  :parent: "~window"
+  :parent: "window"
   :kind: f
   :name: bump
   :line: 1
   :level: 0
+- :source: "  v = 'test'"
+  :parent: 'bump'
+  :kind: o
+  :name: v
+  :line: 2
+  :level: 2
 - :name: Wat
+  :source: 'Wat ='
+  :parent: window
+  :kind: o
   :level: 0
+  :line: 4
 - :source: "  ho : (x) ->"
   :parent: Wat
   :kind: f

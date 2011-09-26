@@ -5,14 +5,15 @@ module Coffeetags
     def initialize source
       @source = source
 
-      @fake_parent = '~window'
+      @fake_parent = 'window'
+
       # tree maps the ... tree :-)
       @tree = []
 
       # regexes
       @class_regex = /^[ \t]*class\s*(\w*)/
-      @var_regex = /([@a-zA-Z0-9_]*)[ \t]*[=:][ \t]*$/
-      @token_regex = /[ \t]*([@a-zA-Z0-9_]*)[ \t]*[:=]/
+      @var_regex = /([@a-zA-Z0-9_]*)[ \t]*[=:]{1}[ \t]*$/
+      @token_regex = /[ \t]*([@a-zA-Z0-9_]*)[ \t]*[:=]{1}.*$/
     end
 
     def line_level line
@@ -38,6 +39,7 @@ module Coffeetags
     end
 
     def execute!
+      @source.map { |line| line.gsub('[', '\[').gsub(']', '\]') }
       line_n = 0
       level = 0
       # indentify scopes
@@ -58,17 +60,18 @@ module Coffeetags
         end
 
         token = line.match @token_regex
-        if not token.nil? and line =~ /-\>/
+        if not token.nil?
           o = {
               :name => token[1],
               :level => level,
               :parent => '',
               :source => line.chomp,
-              :kind => 'f',
               :line => line_n
           }
+
+          o[:kind] =  line =~ /-\>/ ? 'f' : 'o'
           o[:parent] =  scope_path o
-          o[:parent] = @fake_parent if o[:parent].blank?
+          o[:parent] = @fake_parent if o[:parent].empty?
           @tree << o
         end
         @tree.uniq!

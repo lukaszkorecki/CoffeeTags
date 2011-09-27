@@ -12,8 +12,9 @@ module Coffeetags
 
       # regexes
       @class_regex = /^[ \t]*class\s*(\w*)/
+      @proto_meths = /^[ \t]*([A-Za-z]*)::([@a-zA-Z0-9_]*)/
       @var_regex = /([@a-zA-Z0-9_]*)[ \t]*[=:]{1}[ \t]*$/
-      @token_regex = /[ \t]*([@a-zA-Z0-9_]*)[ \t]*[:=]{1}.*$/
+      @token_regex = /([@a-zA-Z0-9_]*)[ \t]*[:=]{1}/
     end
 
     def line_level line
@@ -48,15 +49,15 @@ module Coffeetags
         level = line_level line
 
         if (_class = line.match @class_regex)
-          @tree << {
-            :name => _class[1], :level => level
-          }
+          @tree << { :name => _class[1], :level => level }
+        end
+
+        if(_proto  = line.match @proto_meths)
+          @tree << { :name => _proto[1], :level => level }
         end
 
         if(var = line.match @var_regex)
-          @tree << {
-            :name => var[1], :level => level
-          }
+          @tree << { :name => var[1], :level => level }
         end
 
         token = line.match @token_regex
@@ -69,10 +70,10 @@ module Coffeetags
               :line => line_n
           }
 
-          o[:kind] =  line =~ /-\>/ ? 'f' : 'o'
+          o[:kind] =  line =~ /[:=]{1}.*-\>/ ? 'f' : 'o'
           o[:parent] =  scope_path o
           o[:parent] = @fake_parent if o[:parent].empty?
-          @tree << o
+          @tree << o if line !~ /::|==/ # remove edge cases for now
         end
         @tree.uniq!
       end

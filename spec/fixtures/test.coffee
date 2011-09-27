@@ -10,4 +10,10 @@ Wat =
         console.log 'bump'
       bump_up : ->
         console.log 'bump up'
-    @BOOO__up = -> z()
+    @filter = ->
+      filter.getElements('input[type="checkbox"]').addEvent('change', (e) ->
+        Wat.trackEvent('Track', "Filter::#{e.target.name}",  e.target.value)
+      )
+
+Array::loop = (x) ->
+  woop = 1

@@ -23,8 +23,16 @@
   :name: ho
   :line: 5
   :level: 2
+- :source: "    x = 'o'"
+  :level: 4
+  :kind: o
+  :line: 6
+  :name: x
 - :name: '@lolWat'
   :level: 4
+  :line: 8
+  :source: '    @lolWat ='
+  :kind: o
 - :source: "      bump : ->"
   :parent: 'Wat.ho.@lolWat'
   :kind: f
@@ -43,3 +51,8 @@
   :name: '@BOOO__up'
   :line: 13
   :level: 4
+- :source: 'Array::loop = (x) ->'
+  :line: 18
+  :kind: f
+  :parent: Array
+  :level: 0

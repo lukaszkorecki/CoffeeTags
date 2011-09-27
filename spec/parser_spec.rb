@@ -3,8 +3,9 @@ describe 'CoffeeTags::Parser' do
   before :all do
     @campfire_class = File.read File.expand_path('./spec/fixtures/campfire.coffee')
     @test_file = File.read File.expand_path('./spec/fixtures/test.coffee')
-    @test_tree = YAML::load_file File.expand_path('./spec/fixtures/test_tree.yaml')
+
     @cf_tree = YAML::load_file File.expand_path('./spec/fixtures/tree.yaml')
+    @test_tree = YAML::load_file File.expand_path('./spec/fixtures/test_tree.yaml')
 
   end
 
@@ -41,16 +42,16 @@ describe 'CoffeeTags::Parser' do
     end
 
     it 'gets the scope path for second function' do
-      @parser.scope_path(@cf_tree[2], @cf_tree[0..1] ).should == 'Campfire'
+      @parser.scope_path(@cf_tree[3], @cf_tree[0..2] ).should == 'Campfire'
     end
 
     it "gets the scope for nested function" do
-      @parser.scope_path(@cf_tree[4], @cf_tree[0..3]).should == 'Campfire.handlers.resp'
+      @parser.scope_path(@cf_tree[5], @cf_tree[0..4]).should == 'Campfire.handlers.resp'
     end
 
     it "gets the scope of a function which comes after nested function" do
 
-      @parser.scope_path(@cf_tree[6], @cf_tree[0..5]).should == 'Campfire'
+      @parser.scope_path(@cf_tree[7], @cf_tree[0..6]).should == 'Campfire'
     end
 
     it 'gets scope for last method defined in diff class' do
@@ -63,11 +64,37 @@ describe 'CoffeeTags::Parser' do
       before(:each) do
         @coffee_parser = Coffeetags::Parser.new @campfire_class
         @test_parser = Coffeetags::Parser.new @test_file
+        @coffee_parser.execute!
       end
 
-      it "generates the scope list" do
-        @coffee_parser.execute!
-        @coffee_parser.tree.should == @cf_tree
+      it "parses the class" do
+        c =@coffee_parser.tree.select { |i| i[:name] == 'Campfire'}.first
+        c.should == @cf_tree.select {|i| i[:name] == 'Campfire'}.first
+      end
+
+      it "parses the 2nd class" do
+        c =@coffee_parser.tree.select { |i| i[:name] == 'Test'}.first
+        c.should == @cf_tree.select {|i| i[:name] == 'Test'}.first
+      end
+
+      it "parses the instance variable" do
+        c =@coffee_parser.tree.select { |i| i[:name] == '@url'}.first
+        c.should == @cf_tree.select {|i| i[:name] == '@url'}.first
+      end
+
+      it "parses the object literal with functions" do
+        c =@coffee_parser.tree.select { |i| i[:name] == 'resp'}.first
+        c.should == @cf_tree.select {|i| i[:name] == 'resp'}.first
+      end
+
+      it "parses a nested function" do
+        c =@coffee_parser.tree.select { |i| i[:name] == 'onSuccess'}.first
+        c.should == @cf_tree.select {|i| i[:name] == 'onSuccess'}.first
+      end
+
+      it "parses a method var" do
+        c =@coffee_parser.tree.select { |i| i[:name] == 'url'}.first
+        c.should == @cf_tree.select {|i| i[:name] == 'url'}.first
       end
     end
   end
@@ -78,9 +105,16 @@ describe 'CoffeeTags::Parser' do
       @parser_test.execute!
     end
 
-    it "generates the tree for test.coffee" do
-      @parser_test.tree.should == @test_tree
+    it "doesnt extract a variable from a tricky line" do
+      @parser_test.tree.select { |i| i[:name] == 'Filter'}.first.should == nil
     end
 
+    it "extracts a method defined in a prototype" do
+      pending 'methods defined on prototype need implementing'
+      pro = @parser_test.tree.select { |i| i[:name] == 'loop'}.first
+      exp = @test_tree.select { |i| i[:name] == 'loop'}.first
+      pro.should_not be nil
+      pro.should == exp
+    end
   end
 end

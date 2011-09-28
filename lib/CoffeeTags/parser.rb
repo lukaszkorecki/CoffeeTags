@@ -2,7 +2,8 @@ require 'yaml'
 module Coffeetags
   class Parser
     attr_reader :tree
-    def initialize source
+    def initialize source, include_vars = true
+      @include_vars = include_vars
       @source = source
 
       @fake_parent = 'window'
@@ -79,7 +80,10 @@ module Coffeetags
           o[:parent] =  scope_path o
           o[:parent] = @fake_parent if o[:parent].empty?
           # remove edge cases for now
-          @tree << o unless line =~ /::|==/  or o[:parent] =~ /\.$/
+          unless line =~ /::|==/  or o[:parent] =~ /\.$/
+            @tree << o  if o[:kind] == 'f'
+            @tree << o if o[:kind] == 'o' and @include_vars
+          end
         end
         @tree.uniq!
       end

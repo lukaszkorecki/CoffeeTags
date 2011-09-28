@@ -36,12 +36,17 @@ module Coffeetags
   class Utils
 
     def self.option_parser args
-      puts "no args!" and return if args.empty?
+      @@include_vars = false
+      puts @include_vars
+      args << 'help' if args.empty?
+      y args
       case args.first
-      when /version/
-        STDOUT << Coffeetags::VERSION
+      when /version|^v/
+        STDOUT <<  "CoffeeTags #{Coffeetags::VERSION}"
+        exit 0
       when 'help'
-        STDOUT << 'coffeetags [version|vim_conf] or path to a coffeescript file'
+        STDOUT << "coffeetags #{Coffeetags::VERSION} - [version|vim_conf] or path to a coffeescript file"
+        exit 0
       when /vim_conf/
         puts <<-HELP
 " Add this type definition to your vimrc
@@ -49,17 +54,23 @@ module Coffeetags
 " coffeetags vim_conf >> <PATH TO YOUR VIMRC>
         HELP
         puts Coffeetags::TAGBAR_COFFEE_CONF
-      else
-        self.run args
+        exit 0
+      when /--include-vars/
+        @@include_vars = true
       end
+
+      puts @include_vars
+      self.run args
 
     end
 
     def self.run files
-      files.each do |file|
+      puts @include_vars
+      files.reject { |f| f =~ /^--/}.each do |file|
         sc = File.read file
 
-        parser = Coffeetags::Parser.new sc
+        puts @@include_vars
+        parser = Coffeetags::Parser.new sc, @@include_vars
         parser.execute!
 
         formatter = Coffeetags::Formatter.new file, parser.tree

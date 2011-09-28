@@ -2,7 +2,7 @@ require 'yaml'
 module Coffeetags
   class Parser
     attr_reader :tree
-    def initialize source, include_vars = true
+    def initialize source, include_vars = false
       @include_vars = include_vars
       @source = source
 
@@ -34,6 +34,7 @@ module Coffeetags
         # uhmmmmmm
         if _el[:level] != current_level and _el[:level] < current_level and _el[:line] !~  @block
           bf << _el[:name] unless _el[:kind] == 'b'
+          # bf << _el[:name] if _el[:kind] == 'o' and @include_vars
           current_level = _el[:level]
         end
       end
@@ -81,7 +82,7 @@ module Coffeetags
           o[:parent] = @fake_parent if o[:parent].empty?
           # remove edge cases for now
           unless line =~ /::|==/  or o[:parent] =~ /\.$/
-            @tree << o  if o[:kind] == 'f'
+            @tree << o if o[:kind] == 'f'
             @tree << o if o[:kind] == 'o' and @include_vars
           end
         end

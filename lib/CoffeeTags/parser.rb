@@ -11,7 +11,7 @@ module Coffeetags
       @tree = []
 
       # regexes
-      @block = /^[ \t]*(for|if|unless)/
+      @block = /^[ \t]*(if|unless)/
       @class_regex = /^[ \t]*class\s*(\w*)/
       @proto_meths = /^[ \t]*([A-Za-z]*)::([@a-zA-Z0-9_]*)/
       @var_regex = /([@a-zA-Z0-9_]*)[ \t]*[=:]{1}[ \t]*$/
@@ -49,10 +49,6 @@ module Coffeetags
         line_n += 1
         level = line_level line
 
-        if(_block = line.match @block)
-          STDERR << _block[1]
-          @tree << { :name => _block[1], :level => level , :kind => 'b'}
-        end
         if (_class = line.match @class_regex)
           @tree << { :name => _class[1], :level => level }
         end
@@ -63,6 +59,10 @@ module Coffeetags
 
         if(var = line.match @var_regex)
           @tree << { :name => var[1], :level => level }
+        end
+
+        if(_block = line.match @block)
+          @tree << { :name => _block[1], :level => level , :kind => 'b'}
         end
 
         token = line.match @token_regex

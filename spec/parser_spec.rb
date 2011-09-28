@@ -113,6 +113,8 @@ describe 'CoffeeTags::Parser' do
       pro = @parser_test.tree.select { |i| i[:name] == 'fu'}.first
       pro[:parent].should == 'loop'
 
+      pro = @parser_test.tree.select { |i| i[:name] == 'nice'}.first
+      pro[:parent].should == 'loop'
     end
 
     it 'correctly recognizes an object in for block' do

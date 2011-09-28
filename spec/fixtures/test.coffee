@@ -20,5 +20,10 @@ loop = (x) ->
   if z
     fu = 1
 
+    if wat
+      nice = 'ok'
+
+
   for z in lol
     ugh = 2 * z
+

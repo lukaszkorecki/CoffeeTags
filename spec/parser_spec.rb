@@ -109,8 +109,14 @@ describe 'CoffeeTags::Parser' do
       @parser_test.tree.select { |i| i[:name] == 'Filter'}.first.should == nil
     end
 
+    it 'correctly recognizes an object in if block' do
+      pro = @parser_test.tree.select { |i| i[:name] == 'fu'}.first
+      pro[:parent].should == 'loop'
+
+    end
+
     it "extracts a method defined in a prototype" do
-      pending 'methods defined on prototype need implementing'
+      pending 'methods defined on prototype needs implementing'
       pro = @parser_test.tree.select { |i| i[:name] == 'loop'}.first
       exp = @test_tree.select { |i| i[:name] == 'loop'}.first
       pro.should_not be nil

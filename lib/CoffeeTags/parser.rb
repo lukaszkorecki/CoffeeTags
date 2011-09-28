@@ -11,6 +11,7 @@ module Coffeetags
       @tree = []
 
       # regexes
+      @block = /^[ \t]*(for|if)/
       @class_regex = /^[ \t]*class\s*(\w*)/
       @proto_meths = /^[ \t]*([A-Za-z]*)::([@a-zA-Z0-9_]*)/
       @var_regex = /([@a-zA-Z0-9_]*)[ \t]*[=:]{1}[ \t]*$/
@@ -30,8 +31,8 @@ module Coffeetags
       current_level = element[:level]
       tree[0..idx].reverse.each do |_el|
         # uhmmmmmm
-        if _el[:level] != current_level and _el[:level] < current_level
-          bf << _el[:name]
+        if _el[:level] != current_level and _el[:level] < current_level and _el[:line] !~  @block
+          bf << _el[:name] unless _el[:kind] == 'b'
           current_level = _el[:level]
         end
       end
@@ -48,6 +49,10 @@ module Coffeetags
         line_n += 1
         level = line_level line
 
+        if(_block = line.match @block)
+          STDERR << _block[1]
+          @tree << { :name => _block[1], :level => level , :kind => 'b'}
+        end
         if (_class = line.match @class_regex)
           @tree << { :name => _class[1], :level => level }
         end
@@ -73,7 +78,8 @@ module Coffeetags
           o[:kind] =  line =~ /[:=]{1}.*-\>/ ? 'f' : 'o'
           o[:parent] =  scope_path o
           o[:parent] = @fake_parent if o[:parent].empty?
-          @tree << o if line !~ /::|==/ # remove edge cases for now
+          # remove edge cases for now
+          @tree << o unless line =~ /::|==/  or o[:parent] =~ /\.$/
         end
         @tree.uniq!
       end

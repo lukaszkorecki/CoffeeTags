@@ -15,5 +15,7 @@ Wat =
         Wat.trackEvent('Track', "Filter::#{e.target.name}",  e.target.value)
       )
 
-Array::loop = (x) ->
+loop = (x) ->
   woop = 1
+  if z
+    fu = 1

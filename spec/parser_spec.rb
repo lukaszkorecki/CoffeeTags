@@ -115,6 +115,12 @@ describe 'CoffeeTags::Parser' do
 
     end
 
+    it 'correctly recognizes an object in for block' do
+      pro = @parser_test.tree.select { |i| i[:name] == 'ugh'}.first
+      pro[:parent].should == 'loop'
+
+    end
+
     it "extracts a method defined in a prototype" do
       pending 'methods defined on prototype needs implementing'
       pro = @parser_test.tree.select { |i| i[:name] == 'loop'}.first

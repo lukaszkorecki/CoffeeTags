@@ -19,3 +19,6 @@ loop = (x) ->
   woop = 1
   if z
     fu = 1
+
+  for z in lol
+    ugh = 2 * z

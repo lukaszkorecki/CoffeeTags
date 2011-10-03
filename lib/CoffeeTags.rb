@@ -17,7 +17,39 @@ module Coffeetags
   AUTHOR = "Łukasz Korecki /lukasz@coffeesounds.com/"
   NAME = "CoffeeTags"
   URL = "https://github.com/lukaszkorecki/CoffeeTags"
-  TAGBAR_COFFEE_CONF = <<-CONF
+
+  STRINGS = {
+    'version' => "#{NAME} #{Coffeetags::VERSION} by #{AUTHOR} ( #{URL} )",
+    'help' => <<-HELP
+--version - coffeetags version
+--vim-conf - print out tagbar config for vim
+--include-vars - include objects/variables in generated tags
+combine --vim-conf and --include-vars to create a config which adds '--include-vars' option
+HELP
+  }
+  class Utils
+
+    def self.option_parser args
+      @@include_vars = ! args.delete('--include-vars').nil?
+
+      to_print = [].tap do |_to_print|
+        _to_print << args.delete( '--help')
+        _to_print << args.delete( '--version')
+      end.reject { |i| i.nil? }.map { |i| i.sub '--', ''}.map { |s| STRINGS[s] }
+      ( to_print << tagbar_conf ) unless  args.delete('--vim-conf').nil?
+
+      to_print.each {  |str| puts str  }
+
+      self.run args unless args.empty?
+    end
+
+    def self.tagbar_conf
+      <<-CONF
+" Add this type definition to your vimrc
+" or do
+" coffeetags --vim-conf >> <PATH TO YOUR VIMRC>
+" if you want your tags to include vars/objects do:
+" coffeetags --vim-conf --include-vars
  let g:tagbar_type_coffee = {
   \\ 'kinds' : [
   \\   'f:functions',
@@ -29,39 +61,9 @@ module Coffeetags
   \\},
   \\ 'sro' : ".",
   \\ 'ctagsbin' : 'coffeetags',
-  \\ 'ctagsargs' : '',
+  \\ 'ctagsargs' : '#{@@include_vars ?   "--include-vars" : "" } ',
   \\}
   CONF
-
-  class Utils
-
-    def self.option_parser args
-      @@include_vars = false
-      puts @include_vars
-      args << 'help' if args.empty?
-      y args
-      case args.first
-      when /version|^v/
-        STDOUT <<  "CoffeeTags #{Coffeetags::VERSION}"
-        exit 0
-      when 'help'
-        STDOUT << "coffeetags #{Coffeetags::VERSION} - [version|vim_conf] or path to a coffeescript file"
-        exit 0
-      when /vim_conf/
-        puts <<-HELP
-" Add this type definition to your vimrc
-" or do
-" coffeetags vim_conf >> <PATH TO YOUR VIMRC>
-        HELP
-        puts Coffeetags::TAGBAR_COFFEE_CONF
-        exit 0
-      when /--include-vars/
-        @@include_vars = true
-      end
-
-      puts @include_vars
-      self.run args
-
     end
 
     def self.run files

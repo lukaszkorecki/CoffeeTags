@@ -62,8 +62,8 @@ describe 'CoffeeTags::Parser' do
   context 'Parsing' do
     context 'Scoping' do
       before(:each) do
-        @coffee_parser = Coffeetags::Parser.new @campfire_class
-        @test_parser = Coffeetags::Parser.new @test_file
+        @coffee_parser = Coffeetags::Parser.new @campfire_class, true
+        @test_parser = Coffeetags::Parser.new @test_file, true
         @coffee_parser.execute!
       end
 
@@ -101,7 +101,7 @@ describe 'CoffeeTags::Parser' do
 
   context 'Test.coffee parsing' do
     before(:each) do
-      @parser_test = Coffeetags::Parser.new @test_file
+      @parser_test = Coffeetags::Parser.new @test_file, true
       @parser_test.execute!
     end
 

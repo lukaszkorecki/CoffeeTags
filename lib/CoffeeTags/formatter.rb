@@ -1,17 +1,11 @@
 module Coffeetags
   class Formatter
+    @@header = []
+
     def initialize  file, tree =[]
       @file = file
       @tree = tree
 
-      @header = [
-        "!_TAG_FILE_FORMAT	2	/extended format/",
-        "!_TAG_FILE_SORTED	0	/0=unsorted, 1=sorted, 2=foldcase/",
-        "!_TAG_PROGRAM_AUTHOR	#{Coffeetags::AUTHOR}",
-        "!_TAG_PROGRAM_NAME	#{Coffeetags::NAME}	//",
-        "!_TAG_PROGRAM_URL	#{Coffeetags::URL}	/GitHub repository/",
-        "!_TAG_PROGRAM_VERSION	#{Coffeetags::VERSION}	//"
-      ]
 
       @types = {
         'f' => 'type:function',
@@ -46,16 +40,25 @@ module Coffeetags
       end.reject{|l| l.nil? }
     end
 
-    def header
-      @header.map { |h| "#{h}\n"}
-    end
 
     def tags
       @lines.map { |l| "#{l}\n"}
     end
 
     def to_file
-      header +  tags
+      self.header +  tags
+    end
+
+    def self.header
+
+      header = [
+      "!_TAG_FILE_FORMAT	2	/extended format/",
+      "!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/",
+      "!_TAG_PROGRAM_AUTHOR	#{Coffeetags::AUTHOR}",
+      "!_TAG_PROGRAM_NAME	#{Coffeetags::NAME}	//",
+      "!_TAG_PROGRAM_URL	#{Coffeetags::URL}	/GitHub repository/",
+      "!_TAG_PROGRAM_VERSION	#{Coffeetags::VERSION}	//"
+    ].map { |h| "#{h}\n"}
     end
   end
 end

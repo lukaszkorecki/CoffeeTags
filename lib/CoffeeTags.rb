@@ -67,11 +67,9 @@ HELP
     end
 
     def self.run files
-      puts @include_vars
+      STDOUT << Coffeetags::Formatter.header
       files.reject { |f| f =~ /^--/}.each do |file|
         sc = File.read file
-
-        puts @@include_vars
         parser = Coffeetags::Parser.new sc, @@include_vars
         parser.execute!
 
@@ -79,7 +77,7 @@ HELP
 
         formatter.parse_tree
 
-        STDOUT << formatter.to_file
+        STDOUT << formatter.tags
       end
     end
   end

@@ -17,7 +17,7 @@ Wat =
 
 loop = (x) ->
   woop = 1
-  if z
+  if z.isSomethingRidic
     fu = 1
 
     if wat

@@ -77,11 +77,16 @@ module Coffeetags
               :line => line_n
           }
 
-          o[:kind] =  line =~ /[:=]{1}.*-\>/ ? 'f' : 'o'
-          o[:parent] =  scope_path o
-          o[:parent] = @fake_parent if o[:parent].empty?
+          is_in_string = line =~ /.*['"].*#{token[1]}.*=.*["'].*/
           # remove edge cases for now
-          unless line =~ /::|==/  or o[:parent] =~ /\.$/
+          # - scope access and comparison in if x == 'lol'
+          # - objects with blank parent (parser bug?)
+          # - if a line containes a line like:  element.getElement('type=[checkbox]').lol()
+          unless line =~ /::|==/  or o[:parent] =~ /\.$/ or not is_in_string.nil?
+            o[:kind] =  line =~ /[:=]{1}.*-\>/ ? 'f' : 'o'
+            o[:parent] =  scope_path o
+            o[:parent] = @fake_parent if o[:parent].empty?
+
             @tree << o if o[:kind] == 'f'
             @tree << o if o[:kind] == 'o' and @include_vars
           end

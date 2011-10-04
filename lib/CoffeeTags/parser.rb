@@ -77,12 +77,20 @@ module Coffeetags
               :line => line_n
           }
 
-          is_in_string = line =~ /.*['"].*#{token[1]}.*=.*["'].*/
           # remove edge cases for now
-          # - scope access and comparison in if x == 'lol'
-          # - objects with blank parent (parser bug?)
           # - if a line containes a line like:  element.getElement('type=[checkbox]').lol()
-          unless line =~ /::|==/  or o[:parent] =~ /\.$/ or not is_in_string.nil?
+          is_in_string = line =~ /.*['"].*#{token[1]}.*=.*["'].*/
+
+          # - scope access and comparison in if x == 'lol'
+          is_in_comparison = line =~ /::|==/
+
+          # - objects with blank parent (parser bug?)
+          has_blank_parent = o[:parent] =~ /\.$/
+
+          # - multiple consecutive assignments
+          is_previous_not_the_same = !(@tree.last and @tree.last[:name] == o[:name] and  @tree.last[:level] == o[:level])
+
+          if is_in_string.nil? and is_in_comparison.nil? and has_blank_parent.nil? and is_previous_not_the_same
             o[:kind] =  line =~ /[:=]{1}.*-\>/ ? 'f' : 'o'
             o[:parent] =  scope_path o
             o[:parent] = @fake_parent if o[:parent].empty?

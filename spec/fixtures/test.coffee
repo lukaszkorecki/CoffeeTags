@@ -4,6 +4,7 @@ bump = (wat) ->
 Wat =
   ho : (x) ->
     x = 'o'
+    x = 'z' if bamp
     console.log 'ahhhh'
     @lolWat =
       bump : ->

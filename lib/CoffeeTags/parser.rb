@@ -12,7 +12,7 @@ module Coffeetags
       @tree = []
 
       # regexes
-      @block = /^[ \t]*(if|unless)/
+      @block = /^[ \t]*(if|unless|switch)/
       @class_regex = /^[ \t]*class\s*(\w*)/
       @proto_meths = /^[ \t]*([A-Za-z]*)::([@a-zA-Z0-9_]*)/
       @var_regex = /([@a-zA-Z0-9_]*)[ \t]*[=:]{1}[ \t]*$/

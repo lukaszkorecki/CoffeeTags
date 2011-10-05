@@ -12,11 +12,12 @@ module Coffeetags
       @tree = []
 
       # regexes
-      @block = /^[ \t]*(if|unless|switch)/
+      @block = /^[ \t]*(if|unless|switch|loop)/
       @class_regex = /^[ \t]*class\s*(\w*)/
       @proto_meths = /^[ \t]*([A-Za-z]*)::([@a-zA-Z0-9_]*)/
       @var_regex = /([@a-zA-Z0-9_]*)[ \t]*[=:]{1}[ \t]*$/
       @token_regex = /([@a-zA-Z0-9_]*)[ \t]*[:=]{1}/
+      @iterator_regex = /^[ \t]*for[ \t]*([a-zA-Z0-9_]*)[ \t]*/
     end
 
     def line_level line
@@ -30,12 +31,11 @@ module Coffeetags
       idx = tree.index(element) || -1
 
       current_level = element[:level]
-      tree[0..idx].reverse.each do |_el|
+      tree[0..idx].reverse.each_with_index do |item, index|
         # uhmmmmmm
-        if _el[:level] != current_level and _el[:level] < current_level and _el[:line] !~  @block
-          bf << _el[:name] unless _el[:kind] == 'b'
-          # bf << _el[:name] if _el[:kind] == 'o' and @include_vars
-          current_level = _el[:level]
+        if item[:level] != current_level and item[:level] < current_level and item[:line] !~  @block
+          bf << item[:name] unless item[:kind] == 'b'
+          current_level = item[:level]
         end
       end
       bf.uniq.reverse.join('.')
@@ -67,7 +67,9 @@ module Coffeetags
           @tree << { :name => _block[1], :level => level , :kind => 'b'}
         end
 
-        token = line.match @token_regex
+        token = line.match(@token_regex )
+        token ||=  line.match(@iterator_regex)
+
         if not token.nil?
           o = {
               :name => token[1],

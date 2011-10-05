@@ -16,7 +16,7 @@ Wat =
         Wat.trackEvent('Track', "Filter::#{e.target.name}",  e.target.value)
       )
 
-loop = (x) ->
+_loop = (x) ->
   woop = 1
   if z.isSomethingRidic
     fu = 1
@@ -25,6 +25,6 @@ loop = (x) ->
       nice = 'ok'
 
 
-  for z in lol
-    ugh = 2 * z
+  for element in lol
+    ugh = 2 * element
 

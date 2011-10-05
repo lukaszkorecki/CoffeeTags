@@ -37,7 +37,7 @@ describe 'CoffeeTags::Parser' do
     before(:each) do
       @parser = Coffeetags::Parser.new ''
     end
-    it 'gets the scope path for first function' do
+    it 'gets the scope path for function' do
       @parser.scope_path(@cf_tree[1], @cf_tree[0...1] ).should == 'Campfire'
     end
 
@@ -50,7 +50,6 @@ describe 'CoffeeTags::Parser' do
     end
 
     it "gets the scope of a function which comes after nested function" do
-
       @parser.scope_path(@cf_tree[7], @cf_tree[0..6]).should == 'Campfire'
     end
 
@@ -68,33 +67,33 @@ describe 'CoffeeTags::Parser' do
       end
 
       it "parses the class" do
-        c =@coffee_parser.tree.select { |i| i[:name] == 'Campfire'}.first
-        c.should == @cf_tree.select {|i| i[:name] == 'Campfire'}.first
+        c =@coffee_parser.tree.find { |i| i[:name] == 'Campfire'}
+        c.should == @cf_tree.find {|i| i[:name] == 'Campfire'}
       end
 
       it "parses the 2nd class" do
-        c =@coffee_parser.tree.select { |i| i[:name] == 'Test'}.first
-        c.should == @cf_tree.select {|i| i[:name] == 'Test'}.first
+        c =@coffee_parser.tree.find { |i| i[:name] == 'Test'}
+        c.should == @cf_tree.find {|i| i[:name] == 'Test'}
       end
 
       it "parses the instance variable" do
-        c =@coffee_parser.tree.select { |i| i[:name] == '@url'}.first
-        c.should == @cf_tree.select {|i| i[:name] == '@url'}.first
+        c =@coffee_parser.tree.find { |i| i[:name] == '@url'}
+        c.should == @cf_tree.find {|i| i[:name] == '@url'}
       end
 
       it "parses the object literal with functions" do
-        c =@coffee_parser.tree.select { |i| i[:name] == 'resp'}.first
-        c.should == @cf_tree.select {|i| i[:name] == 'resp'}.first
+        c =@coffee_parser.tree.find { |i| i[:name] == 'resp'}
+        c.should == @cf_tree.find {|i| i[:name] == 'resp'}
       end
 
       it "parses a nested function" do
-        c =@coffee_parser.tree.select { |i| i[:name] == 'onSuccess'}.first
-        c.should == @cf_tree.select {|i| i[:name] == 'onSuccess'}.first
+        c =@coffee_parser.tree.find { |i| i[:name] == 'onSuccess'}
+        c.should == @cf_tree.find {|i| i[:name] == 'onSuccess'}
       end
 
       it "parses a method var" do
-        c =@coffee_parser.tree.select { |i| i[:name] == 'url'}.first
-        c.should == @cf_tree.select {|i| i[:name] == 'url'}.first
+        c =@coffee_parser.tree.find { |i| i[:name] == 'url'}
+        c.should == @cf_tree.find {|i| i[:name] == 'url'}
       end
     end
   end
@@ -106,29 +105,41 @@ describe 'CoffeeTags::Parser' do
     end
 
     it "doesnt extract a variable from a tricky line" do
-      @parser_test.tree.select { |i| i[:name] == 'Filter'}.first.should == nil
+      @parser_test.tree.find { |i| i[:name] == 'Filter'}.should == nil
     end
 
     it 'correctly recognizes an object in if block' do
-      pro = @parser_test.tree.select { |i| i[:name] == 'fu'}.first
-      pro[:parent].should == 'loop'
+      pro = @parser_test.tree.find { |i| i[:name] == 'fu'}
+      pro[:parent].should == '_loop'
 
-      pro = @parser_test.tree.select { |i| i[:name] == 'nice'}.first
-      pro[:parent].should == 'loop'
+      pro = @parser_test.tree.find { |i| i[:name] == 'nice'}
+      pro[:parent].should == '_loop'
     end
 
     it 'correctly recognizes an object in for block' do
-      pro = @parser_test.tree.select { |i| i[:name] == 'ugh'}.first
-      pro[:parent].should == 'loop'
+      pro = @parser_test.tree.find { |i| i[:name] == 'ugh'}
+      pro[:parent].should == '_loop.element'
 
     end
 
     it "extracts a method defined in a prototype" do
       pending 'methods defined on prototype needs implementing'
-      pro = @parser_test.tree.select { |i| i[:name] == 'loop'}.first
-      exp = @test_tree.select { |i| i[:name] == 'loop'}.first
+      pro = @parser_test.tree.find { |i| i[:name] == '_loop'}
+      exp = @test_tree.find { |i| i[:name] == '_loop'}
       pro.should_not be nil
       pro.should == exp
+    end
+
+    context 'for loop' do
+      before {
+        @parser_test = Coffeetags::Parser.new @test_file, true
+        @parser_test.execute!
+      }
+      it "finds variables defined in for loop" do
+        el = @parser_test.tree.find { |i| i[:name] == 'element'}
+        y el
+
+      end
     end
   end
 end

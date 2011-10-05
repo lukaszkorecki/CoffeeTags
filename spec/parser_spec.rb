@@ -131,14 +131,22 @@ describe 'CoffeeTags::Parser' do
     end
 
     context 'for loop' do
-      before {
+      subject {
         @parser_test = Coffeetags::Parser.new @test_file, true
         @parser_test.execute!
+        @parser_test.tree.find { |i| i[:name] == 'element'}
       }
       it "finds variables defined in for loop" do
-        el = @parser_test.tree.find { |i| i[:name] == 'element'}
-        y el
+        subject[:line].should == 28
+      end
 
+      it "extracts the name" do
+        subject[:name].should == 'element'
+      end
+
+      it "detects the scope" do
+
+        subject[:parent].should == '_loop'
       end
     end
   end

@@ -18,13 +18,6 @@ describe Utils do
       Utils.option_parser( [ '-f','tags' ,'lol.coffee']).should == [ 'tags', false,  ['lol.coffee']]
     end
 
-    it "parses --vim-conf option" do
-      pending 'learn how to catch STDOUT in specs :-)'
-      Utils.option_parser( [ '--vim-conf','lol.coffee']).should match /g:tagbar_type_coffee /
-
-    end
-
-
   end
 
   context 'Parser runner' do

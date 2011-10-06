@@ -35,3 +35,5 @@ x = dir + '/foo'
 for f in dir
   do (f) ->
     console.log f
+
+    zorb = get['x=\\/f'].getLast('/woot$')

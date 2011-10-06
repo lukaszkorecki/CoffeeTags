@@ -30,20 +30,52 @@ HELP
   class Utils
 
     def self.option_parser args
-      @@include_vars = ! args.delete('--include-vars').nil?
+      include_vars = ! args.delete('--include-vars').nil?
+
+      output = nil
+
+      unless args.index( '-f').nil?
+        output = args[ args.index('-f') + 1]
+        args.delete '-f'
+        args.delete output
+      end
 
       to_print = [].tap do |_to_print|
         _to_print << args.delete( '--help')
         _to_print << args.delete( '--version')
       end.reject { |i| i.nil? }.map { |i| i.sub '--', ''}.map { |s| STRINGS[s] }
-      ( to_print << tagbar_conf ) unless  args.delete('--vim-conf').nil?
+      ( to_print << tagbar_conf(include_vars) ) unless  args.delete('--vim-conf').nil?
 
       to_print.each {  |str| puts str  }
 
-      self.run args unless args.empty?
+      [output, include_vars, args] unless args.empty?
     end
 
-    def self.tagbar_conf
+
+    def self.run output, include_vars,  files
+      __out = if output.nil?
+                STDOUT
+              else
+                File.open output, 'w'
+              end
+
+      __out  << Coffeetags::Formatter.header
+
+      files.reject { |f| f =~ /^--/}.each do |file|
+        sc = File.read file
+        parser = Coffeetags::Parser.new sc, include_vars
+        parser.execute!
+
+        formatter = Coffeetags::Formatter.new file, parser.tree
+
+        formatter.parse_tree
+
+        __out << formatter.tags
+      end
+      __out.close if __out.respond_to? :close
+    end
+
+    def self.tagbar_conf include_vars
       <<-CONF
 " Add this type definition to your vimrc
 " or do
@@ -61,24 +93,9 @@ HELP
   \\},
   \\ 'sro' : ".",
   \\ 'ctagsbin' : 'coffeetags',
-  \\ 'ctagsargs' : '#{@@include_vars ?   "--include-vars" : "" } ',
+  \\ 'ctagsargs' : '#{include_vars ?   "--include-vars" : "" } ',
   \\}
   CONF
-    end
-
-    def self.run files
-      STDOUT << Coffeetags::Formatter.header
-      files.reject { |f| f =~ /^--/}.each do |file|
-        sc = File.read file
-        parser = Coffeetags::Parser.new sc, @@include_vars
-        parser.execute!
-
-        formatter = Coffeetags::Formatter.new file, parser.tree
-
-        formatter.parse_tree
-
-        STDOUT << formatter.tags
-      end
     end
   end
 end

@@ -53,13 +53,13 @@ module Coffeetags
     def self.header
 
       header = [
-      "!_TAG_FILE_FORMAT	2	/extended format/",
-      "!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/",
-      "!_TAG_PROGRAM_AUTHOR	#{Coffeetags::AUTHOR}",
-      "!_TAG_PROGRAM_NAME	#{Coffeetags::NAME}	//",
-      "!_TAG_PROGRAM_URL	#{Coffeetags::URL}	/GitHub repository/",
-      "!_TAG_PROGRAM_VERSION	#{Coffeetags::VERSION}	//"
-    ].map { |h| "#{h}\n"}
+        "!_TAG_FILE_FORMAT	2	/extended format/",
+        "!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/",
+        "!_TAG_PROGRAM_AUTHOR	#{Coffeetags::AUTHOR}",
+        "!_TAG_PROGRAM_NAME	#{Coffeetags::NAME}	//",
+        "!_TAG_PROGRAM_URL	#{Coffeetags::URL}	/GitHub repository/",
+        "!_TAG_PROGRAM_VERSION	#{Coffeetags::VERSION}	//"
+      ].map { |h| "#{h}\n"}
     end
   end
 end

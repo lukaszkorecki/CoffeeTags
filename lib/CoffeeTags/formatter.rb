@@ -16,7 +16,8 @@ module Coffeetags
     end
 
     def regex_line line
-      "/^#{line}$/;\""
+      "/^#{line.gsub('/', '\/')}$/;\""
+      "/^#{Regexp.escape line}$/;\""
     end
 
     def line_to_string entry

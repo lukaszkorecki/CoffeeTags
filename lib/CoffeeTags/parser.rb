@@ -12,12 +12,12 @@ module Coffeetags
       @tree = []
 
       # regexes
-      @block = /^[ \t]*(if|unless|switch|loop)/
-      @class_regex = /^[ \t]*class\s*(\w*)/
-      @proto_meths = /^[ \t]*([A-Za-z]*)::([@a-zA-Z0-9_]*)/
-      @var_regex = /([@a-zA-Z0-9_]*)[ \t]*[=:]{1}[ \t]*$/
-      @token_regex = /([@a-zA-Z0-9_]*)[ \t]*[:=]{1}/
-      @iterator_regex = /^[ \t]*for[ \t]*([a-zA-Z0-9_]*)[ \t]*/
+      @block = /^\s*(if|unless|switch|loop|do)/
+      @class_regex = /^\s*class\s*(\w*)/
+      @proto_meths = /^\s*([A-Za-z]*)::([@a-zA-Z0-9_]*)/
+      @var_regex = /([@a-zA-Z0-9_]*)\s*[=:]{1}\s*$/
+      @token_regex = /([@a-zA-Z0-9_]*)\s*[:=]{1}/
+      @iterator_regex = /^\s*for\s*([a-zA-Z0-9_]*)\s*/
     end
 
     def line_level line
@@ -43,7 +43,6 @@ module Coffeetags
     end
 
     def execute!
-      @source.map { |line| line.gsub('[', '\[').gsub(']', '\]') }
       line_n = 0
       level = 0
       # indentify scopes

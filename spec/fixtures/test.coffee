@@ -26,5 +26,12 @@ _loop = (x) ->
 
 
   for element in lol
-    ugh = 2 * element
+    do (element)
+      ugh = 2 * element
+# for testing with issue #1 examples
+dir = fs.readdirSync __dirname
+x = dir + '/foo'
 
+for f in dir
+  do (f) ->
+    console.log f

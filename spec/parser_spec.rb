@@ -121,6 +121,11 @@ describe 'CoffeeTags::Parser' do
       pro[:parent].should == '_loop.element'
 
     end
+      it "detects a fat arrow function" do
+        c =@parser_test.tree.find { |i| i[:name] == 'bound_func'}
+        c.should == @test_tree.find {|i| i[:name] == 'bound_func'}
+
+      end
 
     it "extracts a method defined in a prototype" do
       pending 'methods defined on prototype needs implementing'

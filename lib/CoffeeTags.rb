@@ -54,7 +54,7 @@ HELP
 
       to_print.each {  |str| puts str  }
 
-      args << Dir['./**/*.coffee', './**/Cakefile'] if recursive
+      args += Dir['./**/*.coffee', './**/Cakefile'] if recursive
       [output, include_vars, args] unless args.empty?
     end
 

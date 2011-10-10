@@ -37,3 +37,5 @@ for f in dir
     console.log f
 
     zorb = get['x=\\/f'].getLast('/woot$')
+
+bound_func = (ok) => wat(ok)

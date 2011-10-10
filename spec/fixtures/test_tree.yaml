@@ -56,3 +56,9 @@
   :kind: f
   :parent: Array
   :level: 0
+- :source: 'bound_func = (ok) => wat(ok)'
+  :line: 41
+  :level: 0
+  :kind: f
+  :name: 'bound_func'
+  :parent: window

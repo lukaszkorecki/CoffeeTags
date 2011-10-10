@@ -21,6 +21,7 @@ module Coffeetags
   STRINGS = {
     'version' => "#{NAME} #{Coffeetags::VERSION} by #{AUTHOR} ( #{URL} )",
     'help' => <<-HELP
+--f  <file> - save tags to <file>, if <file> == '-' tags get print out to STDOUT (jscatgs style)
 --version - coffeetags version
 --vim-conf - print out tagbar config for vim
 --include-vars - include objects/variables in generated tags
@@ -30,6 +31,8 @@ HELP
   class Utils
 
     def self.option_parser args
+      args = ['--version', '--help'] if args.empty?
+
       include_vars = ! args.delete('--include-vars').nil?
 
       output = nil
@@ -38,11 +41,12 @@ HELP
         output = args[ args.index('-f') + 1]
         args.delete '-f'
         args.delete output
+        output = nil if output == '-'
       end
 
       to_print = [].tap do |_to_print|
-        _to_print << args.delete( '--help')
         _to_print << args.delete( '--version')
+        _to_print << args.delete( '--help')
       end.reject { |i| i.nil? }.map { |i| i.sub '--', ''}.map { |s| STRINGS[s] }
       ( to_print << tagbar_conf(include_vars) ) unless  args.delete('--vim-conf').nil?
 
@@ -61,7 +65,7 @@ HELP
 
       __out  << Coffeetags::Formatter.header
 
-      files.reject { |f| f =~ /^--/}.each do |file|
+      files.reject { |f| f =~ /^-/}.each do |file|
         sc = File.read file
         parser = Coffeetags::Parser.new sc, include_vars
         parser.execute!

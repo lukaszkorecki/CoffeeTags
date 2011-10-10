@@ -17,6 +17,13 @@ TagList for Vim).
 
 `coffeetags --help`
 
+    -R - process current directory recursively and look for all *.coffee files
+    --f  <file> - save tags to <file>, if <file> == '-' tags get print out to STDOUT (jscatgs style)
+    --version - coffeetags version
+    --vim-conf - print out tagbar config for vim
+    --include-vars - include objects/variables in generated tags
+    combine --vim-conf and --include-vars to create a config which adds '--include-vars' option
+
 # Installation
 
 * get the `coffeetags` tool

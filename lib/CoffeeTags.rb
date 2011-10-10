@@ -34,6 +34,7 @@ HELP
       args = ['--version', '--help'] if args.empty?
 
       include_vars = ! args.delete('--include-vars').nil?
+      recursive = ! args.delete('-R').nil?
 
       output = nil
 
@@ -52,6 +53,7 @@ HELP
 
       to_print.each {  |str| puts str  }
 
+      args = Dir['./**/*.coffee', './**/Cakefile'] if recursive
       [output, include_vars, args] unless args.empty?
     end
 

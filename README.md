@@ -13,6 +13,9 @@ TagList for Vim).
 * Vim
 * [TagBar plugin](https://github.com/majutsushi/tagbar)
 
+# Halp!
+
+`coffeetags --help`
 
 # Installation
 

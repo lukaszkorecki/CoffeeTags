@@ -21,6 +21,7 @@ module Coffeetags
   STRINGS = {
     'version' => "#{NAME} #{Coffeetags::VERSION} by #{AUTHOR} ( #{URL} )",
     'help' => <<-HELP
+-R - process current directory recursively and look for all *.coffee files
 --f  <file> - save tags to <file>, if <file> == '-' tags get print out to STDOUT (jscatgs style)
 --version - coffeetags version
 --vim-conf - print out tagbar config for vim
@@ -53,7 +54,7 @@ HELP
 
       to_print.each {  |str| puts str  }
 
-      args = Dir['./**/*.coffee', './**/Cakefile'] if recursive
+      args << Dir['./**/*.coffee', './**/Cakefile'] if recursive
       [output, include_vars, args] unless args.empty?
     end
 

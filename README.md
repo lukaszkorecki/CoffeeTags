@@ -1,16 +1,27 @@
 # CoffeeTags
 
-A  simple tool for generating tags (Ctags compatible ) for use with Vim + [TagBar plugin](https://github.com/majutsushi/tagbar)
+A  simple tool for generating CoffeeScript tags (Ctags compatible ).
 
-![screenshot!](https://img.skitch.com/20110922-bf1dipa6kgdu2i18yr1xh8nwa3.png)
+Showing only functions (right) or with variables included (left)
 
-It might work with other plugins/editors which can use Ctags (such as Emacs or
-TagList for Vim).
+
+<div class="thumbnail">
+
+<a href="http://skitch.com/plugawy/gyfnb/1-coffeetags-1-vim-unicorn.local-tmux"><img src="http://img.skitch.com/20111012-8cjesum8ru8usqusra4yppj5cc.preview.png" alt="1. CoffeeTags:1:vim - "unicorn.local" (tmux)" /></a><br /><span>Uploaded with <a href="http://skitch.com">Skitch</a>!</span>
+
+</div>
+
+Designed for use with Vim + [TagBar plugin](https://github.com/majutsushi/tagbar) but also works without it. Simply configure your Vim for use with a regular tags file and generate them with the following command:
+
+`coffeetags -R -f TAGS`
 
 # Requirements
 
 * ruby (either 1.8.7 or 1.9.2)
 * Vim
+
+### optional
+
 * [TagBar plugin](https://github.com/majutsushi/tagbar)
 
 # Halp!
@@ -33,7 +44,7 @@ TagList for Vim).
 
 * add TagBar config to your .vimrc
 
-    `coffeetags vim_config >> ~/.vimrc`
+    `coffeetags --vim-conf >> ~/.vimrc` (or `coffeetags --vim-conf --include-vars >> ~/.vimrc`)
 
 * open your coffeescript file and open TagBar.
 

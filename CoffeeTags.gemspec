@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Łukasz Korecki"]
   s.email       = ["lukasz@coffeesounds.com"]
   s.homepage    = "http://github.com/lukaszkorecki/CoffeeTags"
-  s.summary     = %q{Simple tags generator for CoffeeScript}
-  s.description = %q{CoffeeTags generates tag file for use with TagBar.vim}
+  s.summary     = %q{tags generator for CoffeeScript}
+  s.description = %q{CoffeeTags generates ctags compatibile tags for CoffeeScript.}
 
   s.rubyforge_project = "CoffeeTags"
 

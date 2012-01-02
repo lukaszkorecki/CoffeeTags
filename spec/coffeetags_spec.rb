@@ -1,4 +1,4 @@
-require 'lib/CoffeeTags'
+require  File.expand_path('lib/CoffeeTags')
 include Coffeetags
 describe Utils do
   context 'Argument parsing' do
@@ -57,6 +57,37 @@ FF
       `rm test.tags`
     end
 
+  end
+
+  context "Complete output" do
+    it "genrates tags for given file" do
+
+      files = "spec/fixtures/test.coffee"
+
+      output = "test.out"
+
+      Coffeetags::Utils.run output, nil, files
+
+      File.read("test.out").should == File.read("./spec/fixtures/out.test.ctags")
+
+    end
+
+
+    it "genrates tags for given files" do
+
+      files = [ "spec/fixtures/test.coffee", 'spec/fixtures/campfire.coffee']
+
+      output = "test.out"
+
+      Coffeetags::Utils.run output, nil, files
+
+      File.read("test.out").should == File.read("./spec/fixtures/out.test-two.ctags")
+
+    end
+    after :each do
+      STDERR << "DELETING!"
+      `rm test.out`
+    end
   end
 
 end

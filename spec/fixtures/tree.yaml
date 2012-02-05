@@ -58,6 +58,15 @@
   :line: 41
   :level: 4
 
+- :name: App.Campfire
+  :level: 0
+- :source: "  constructor: ->"
+  :parent: App.Campfire
+  :kind: f
+  :name: constructor
+  :line: 8
+  :level: 2
+
 
 - :name: Test
   :level: 0

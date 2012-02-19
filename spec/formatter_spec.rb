@@ -1,5 +1,4 @@
-require './lib/CoffeeTags'
-
+require 'spec_helper'
 describe 'CoffeeTags::Formatter' do
   before :each do
     @tree = YAML::load_file './spec/fixtures/tree.yaml'

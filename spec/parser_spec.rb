@@ -1,4 +1,4 @@
-require './lib/CoffeeTags'
+require 'spec_helper'
 describe 'CoffeeTags::Parser' do
   before :all do
     @campfire_class = File.read File.expand_path('./spec/fixtures/campfire.coffee')

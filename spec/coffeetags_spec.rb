@@ -1,4 +1,4 @@
-require  File.expand_path('lib/CoffeeTags')
+require 'spec_helper'
 include Coffeetags
 describe Utils do
   context 'Argument parsing' do

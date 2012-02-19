@@ -3,11 +3,14 @@ include Coffeetags
 describe Utils do
   context 'Argument parsing' do
     it "returns nil when nothing is passed" do
-      Utils.option_parser( []).should == nil
+      expect {
+      Utils.option_parser( [])
+      }.to raise_error SystemExit
+
     end
 
     it "returns files list" do
-      Utils.option_parser( [ 'lol.coffee']).should == [ nil, false,  ['lol.coffee']]
+      Utils.option_parser([  'lol.coffee']).should == [ nil, nil,  ['lol.coffee']]
     end
 
     it "parses --include-vars option" do
@@ -15,7 +18,7 @@ describe Utils do
     end
 
     it "parses -f <file> option" do
-      Utils.option_parser( [ '-f','tags' ,'lol.coffee']).should == [ 'tags', false,  ['lol.coffee']]
+      Utils.option_parser( [ '-f','tags' ,'lol.coffee']).should == [ 'tags', nil,  ['lol.coffee']]
     end
 
   end

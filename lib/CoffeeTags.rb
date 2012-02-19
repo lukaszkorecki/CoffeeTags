@@ -2,6 +2,7 @@
 require "CoffeeTags/version"
 require "CoffeeTags/parser"
 require "CoffeeTags/formatter"
+require 'optparse'
 
 class Object
   def blank?
@@ -18,22 +19,10 @@ module Coffeetags
   NAME = "CoffeeTags"
   URL = "https://github.com/lukaszkorecki/CoffeeTags"
 
-  STRINGS = {
-    'version' => "#{NAME} #{Coffeetags::VERSION} by #{AUTHOR} ( #{URL} )",
-    'help' => <<-HELP
--R - process current directory recursively and look for all *.coffee files
---f  <file> - save tags to <file>, if <file> == '-' tags get print out to STDOUT (jscatgs style)
---version - coffeetags version
---vim-conf - print out tagbar config for vim
---include-vars - include objects/variables in generated tags
-combine --vim-conf and --include-vars to create a config which adds '--include-vars' option
-HELP
-  }
   class Utils
     def self.tagbar_conf include_vars
       <<-CONF
 " Add this type definition to your vimrc
-" or do
 " coffeetags --vim-conf >> <PATH TO YOUR VIMRC>
 " if you want your tags to include vars/objects do:
 " coffeetags --vim-conf --include-vars
@@ -54,36 +43,59 @@ HELP
     end
 
     def self.option_parser args
-      args = ['--version', '--help'] if args.empty?
+      args << '-h' if args.empty?
+      options = {}
+      optparse = OptionParser.new do |opts|
 
-      include_vars = ! args.delete('--include-vars').nil?
-      recursive = ! args.delete('-R').nil?
+        opts.banner  = (<<-BAN
+          #{NAME} #{Coffeetags::VERSION}
+          by #{AUTHOR} ( #{URL} )
+          Usage:
+          coffeetags [OPTIONS] <list of files>
+          BAN
+                       ).gsub(/^\s*/,'')
 
-      output = nil
+        opts.on('-i', '--include-vars', "Include variables in generated tags") do |o|
+          options[:include_vars] = true
+        end
 
-      unless args.index( '-f').nil?
-        output = args[ args.index('-f') + 1]
-        args.delete '-f'
-        args.delete output
-        output = nil if output == '-'
+        opts.on('-f', '--file FILE', 'Write tags to FILE (use - for std out)') do |o|
+          options[:output] = o unless o == '-'
+
+        end
+
+        opts.on('-R', '--recursive', 'Process current directory recursively') do |o|
+          options[:recur] = true
+        end
+
+        opts.on('-v', '--version', 'Current version') do
+          puts Coffeetags::VERSION
+          exit
+
+        end
+
+        opts.on('-h','--help','HALP') do
+          puts opts
+          exit
+        end
+
       end
 
-      to_print = [].tap do |_to_print|
-        _to_print << args.delete( '--version')
-        _to_print << args.delete( '--help')
-      end.reject { |i| i.nil? }.map { |i| i.sub '--', ''}.map { |s| STRINGS[s] }
-      ( to_print << tagbar_conf(include_vars) ) unless  args.delete('--vim-conf').nil?
+      optparse.parse! args
 
-      to_print.each {  |str| puts str  }
+      options[:files]  = args.to_a
+      options[:files] += Dir['./**/*.coffee', './**/Cakefile'] if options[:recur]
 
-      args += Dir['./**/*.coffee', './**/Cakefile'] if recursive
-      [output, include_vars, args] unless args.empty?
+      [
+        options[:output],
+        options[:include_vars],
+        options[:files]
+      ]
+
     end
 
 
     def self.run output, include_vars,  files
-
-      files = [files] if files.is_a? String
       __out = if output.nil?
                 STDOUT
               else
@@ -91,6 +103,8 @@ HELP
               end
 
       __out  << Coffeetags::Formatter.header
+
+      files = [ files] if files.is_a? String
 
       files.reject { |f| f =~ /^-/}.each do |file|
         sc = File.read file

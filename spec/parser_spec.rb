@@ -131,17 +131,21 @@ describe 'CoffeeTags::Parser' do
 
     end
       it "detects a fat arrow function" do
-        c =@parser_test.tree.find { |i| i[:name] == 'bound_func'}
+        c = @parser_test.tree.find { |i| i[:name] == 'bound_func'}
         c.should == @test_tree.find {|i| i[:name] == 'bound_func'}
 
       end
-
     it "extracts a method defined in a prototype" do
       pending 'methods defined on prototype needs implementing'
       pro = @parser_test.tree.find { |i| i[:name] == '_loop'}
       exp = @test_tree.find { |i| i[:name] == '_loop'}
       pro.should_not be nil
       pro.should == exp
+    end
+
+    it 'Ignores #TODO: -> (and any other comment line)' do
+      @parser_test.tree.find { |i| i[:name] == 'TODO' }.should be_nil
+
     end
 
     context 'for loop' do

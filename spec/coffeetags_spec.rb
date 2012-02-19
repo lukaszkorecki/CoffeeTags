@@ -85,7 +85,6 @@ FF
 
     end
     after :each do
-      STDERR << "DELETING!"
       `rm test.out`
     end
   end

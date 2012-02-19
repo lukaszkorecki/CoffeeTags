@@ -49,8 +49,12 @@ module Coffeetags
         line_n += 1
         level = line_level line
 
-        if (_class = line.match @class_regex)
-          @tree << { :name => _class[1], :level => level }
+        # ignore comments!
+        next if  line =~ /^\s*#/
+
+          # FIXME this could be DRYied
+          if (_class = line.match @class_regex)
+            @tree << { :name => _class[1], :level => level }
         end
 
         if(_proto  = line.match @proto_meths)
@@ -70,19 +74,19 @@ module Coffeetags
 
         if not token.nil?
           o = {
-              :name => token[1],
-              :level => level,
-              :parent => '',
-              :source => line.chomp,
-              :line => line_n
+            :name => token[1],
+            :level => level,
+            :parent => '',
+            :source => line.chomp,
+            :line => line_n
           }
 
           # remove edge cases for now
           # - if a line containes a line like:  element.getElement('type=[checkbox]').lol()
           is_in_string = line =~ /.*['"].*#{token[1]}.*=.*["'].*/
 
-          # - scope access and comparison in if x == 'lol'
-          is_in_comparison = line =~ /::|==/
+            # - scope access and comparison in if x == 'lol'
+            is_in_comparison = line =~ /::|==/
 
           # - objects with blank parent (parser bug?)
           has_blank_parent = o[:parent] =~ /\.$/

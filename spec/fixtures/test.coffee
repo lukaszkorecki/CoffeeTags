@@ -39,3 +39,6 @@ for f in dir
     zorb = get['x=\\/f'].getLast('/woot$')
 
 bound_func = (ok) => wat(ok)
+
+# TODO: beam_shield -> deployed(true)
+beam_magnum : -> deployed(true)

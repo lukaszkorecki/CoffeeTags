@@ -62,3 +62,10 @@
   :kind: f
   :name: 'bound_func'
   :parent: window
+- :source: 'beam_magnum : -> deployed(true)'
+  :line: 44
+  :level: 0
+  :kind: f
+  :name: 'beam_magnum'
+  :parent: window
+

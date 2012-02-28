@@ -3,7 +3,7 @@
 !_TAG_PROGRAM_AUTHOR	Łukasz Korecki /lukasz@coffeesounds.com/
 !_TAG_PROGRAM_NAME	CoffeeTags	//
 !_TAG_PROGRAM_URL	https://github.com/lukaszkorecki/CoffeeTags	/GitHub repository/
-!_TAG_PROGRAM_VERSION	0.0.1.8	//
+!_TAG_PROGRAM_VERSION	0.0.2.0	//
 bump	spec/fixtures/test.coffee	/bump/;"	f	lineno:1	object:window	type:function
 ho	spec/fixtures/test.coffee	/ho/;"	f	lineno:5	object:Wat	type:function
 bump	spec/fixtures/test.coffee	/bump/;"	f	lineno:10	object:Wat.ho.@lolWat	type:function

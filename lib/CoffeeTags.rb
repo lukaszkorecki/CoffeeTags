@@ -35,12 +35,15 @@ module Coffeetags
       options = {}
       optparse = OptionParser.new do |opts|
         opts.banner  = (<<-BAN
+          ---------------------------------------------------------------------
           #{NAME} #{Coffeetags::VERSION}
+          ---------------------------------------------------------------------
           by #{AUTHOR} ( #{URL} )
           Usage:
           coffeetags [OPTIONS] <list of files>
 
           CoffeeTags + TagBar + Vim ---> https://gist.github.com/1935512
+          ---------------------------------------------------------------------
           BAN
                        ).gsub(/^\s*/,'')
 

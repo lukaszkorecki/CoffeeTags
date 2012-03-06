@@ -91,6 +91,6 @@ Done!
 - squash all bugs
 
 
-# Licence
+# License
 
 MIT

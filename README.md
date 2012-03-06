@@ -59,11 +59,11 @@ Second mode is activated by adding `--include-vars` to command line arguments
 You can add the config to your .vimrc (making sure that the old one is removed)
 by:
 
-  coffeetags --vim-conf >> ~/.vimrc
+    coffeetags --vim-conf >> ~/.vimrc
 
 or (for 2nd mode)
 
-  coffeetags --include-vars --vim-conf >> ~/.vimrc
+    coffeetags --include-vars --vim-conf >> ~/.vimrc
 
 
 ## Config as a filetype plugin
@@ -73,13 +73,13 @@ automatically.
 
 This option is preferable if you want to keep your vimrc short.
 
-  coffeetags --vim-conf > ~/vim/ftplugin/coffee/tagbar-coffee.vim
-  coffeetags [--include-vars] --vim-conf > ~/vim/ftplugin/coffee/tagbar-coffee.vim
+    coffeetags --vim-conf > ~/vim/ftplugin/coffee/tagbar-coffee.vim
+    coffeetags [--include-vars] --vim-conf > ~/vim/ftplugin/coffee/tagbar-coffee.vim
 
 or if you're using pathogen
 
-  coffeetags [--include-vars] --vim-conf > ~/vim/bundle/coffeetags/ftplugin/coffee/tagbar-coffee.vim
-  coffeetags --vim-conf > ~/vim/bundle/coffeetags/ftplugin/coffee/tagbar-coffee.vim
+    coffeetags [--include-vars] --vim-conf > ~/vim/bundle/coffeetags/ftplugin/coffee/tagbar-coffee.vim
+    coffeetags --vim-conf > ~/vim/bundle/coffeetags/ftplugin/coffee/tagbar-coffee.vim
 
 
 * open your coffeescript file and open TagBar.

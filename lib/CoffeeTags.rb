@@ -3,6 +3,7 @@ require "CoffeeTags/version"
 require "CoffeeTags/parser"
 require "CoffeeTags/formatter"
 require 'optparse'
+require 'erb'
 
 class Object
   def blank?
@@ -21,41 +22,30 @@ module Coffeetags
 
   class Utils
     def self.tagbar_conf include_vars
-      <<-CONF
-" Add this type definition to your vimrc
-" coffeetags --vim-conf >> <PATH TO YOUR VIMRC>
-" if you want your tags to include vars/objects do:
-" coffeetags --vim-conf --include-vars
- let g:tagbar_type_coffee = {
-  \\ 'kinds' : [
-  \\   'f:functions',
-  \\   'o:object'
-  \\ ],
-  \\ 'kind2scope' : {
-  \\  'f' : 'object',
-  \\   'o' : 'object'
-  \\},
-  \\ 'sro' : ".",
-  \\ 'ctagsbin' : 'coffeetags',
-  \\ 'ctagsargs' : '#{include_vars ?   "--include-vars" : "" } ',
-  \\}
-  CONF
+      include_vars_opt = include_vars ? "--include-vars" : ''
+
+      tmpl_file = File.read(File.expand_path("../../vim/tagbar-coffee.vim.erb", __FILE__))
+      tmpl = ERB.new(tmpl_file)
+
+      tmpl.result(binding)
     end
 
     def self.option_parser args
       args << '-h' if args.empty?
       options = {}
       optparse = OptionParser.new do |opts|
-
         opts.banner  = (<<-BAN
           #{NAME} #{Coffeetags::VERSION}
           by #{AUTHOR} ( #{URL} )
           Usage:
           coffeetags [OPTIONS] <list of files>
+
+          CoffeeTags + TagBar + Vim ---> https://gist.github.com/1935512
           BAN
                        ).gsub(/^\s*/,'')
 
-        opts.on('-i', '--include-vars', "Include variables in generated tags") do |o|
+
+        opts.on('--include-vars', "Include variables in generated tags") do |o|
           options[:include_vars] = true
         end
 
@@ -68,10 +58,14 @@ module Coffeetags
           options[:recur] = true
         end
 
+        opts.on('--vim-conf', 'Generate TagBar config (more info https://gist.github.com/1935512 )') do
+          puts tagbar_conf options[:include_vars]
+          exit
+        end
+
         opts.on('-v', '--version', 'Current version') do
           puts Coffeetags::VERSION
           exit
-
         end
 
         opts.on('-h','--help','HALP') do

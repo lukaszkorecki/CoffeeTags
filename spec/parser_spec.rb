@@ -167,5 +167,43 @@ describe 'CoffeeTags::Parser' do
         subject[:parent].should == '_loop'
       end
     end
+    context 'Block comments' do
+      let(:bc_file) { 'spec/fixtures/blockcomment.coffee'}
+      let(:bc_ctags_file) { 'spec/fixtures/blockcomment.ctags'}
+      let(:blockcomment_file) { File.read(bc_file)}
+      let(:blockcomment_tree) {
+        [{:level=>0,
+          :parent=>"window",
+          :source=>"echo2 :-> console.log 'echo'",
+          :kind=>"f",
+          :line=>7,
+          :name=>"echo2"}]
+      }
+
+      subject {
+        parser = Coffeetags::Parser.new(blockcomment_file, true)
+        parser.execute!
+        parser
+      }
+
+      it 'ignores block comments when parsing the contents' do
+        subject.tree.should == blockcomment_tree
+      end
+
+
+      context 'top-down test' do
+        let(:blockcomment_ctags){ File.read(bc_ctags_file) }
+        subject {
+          Coffeetags::Utils.run 'test_bc.out', nil, bc_file
+          File.read 'test_bc.out'
+        }
+
+        after(:all) { `rm test_bc.out` }
+
+        it 'ignores block comments in output' do
+          subject.should == blockcomment_ctags
+        end
+      end
+    end
   end
 end

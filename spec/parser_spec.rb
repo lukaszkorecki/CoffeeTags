@@ -175,8 +175,8 @@ describe 'CoffeeTags::Parser' do
         [{:level=>0,
           :parent=>"window",
           :source=>"echo2 :-> console.log 'echo'",
-          :kind=>"f",
           :line=>7,
+          :kind=>"f",
           :name=>"echo2"}]
       }
 
@@ -187,7 +187,7 @@ describe 'CoffeeTags::Parser' do
       }
 
       it 'ignores block comments when parsing the contents' do
-        subject.tree.should == blockcomment_tree
+        subject.tree.first.should == blockcomment_tree.first
       end
 
 

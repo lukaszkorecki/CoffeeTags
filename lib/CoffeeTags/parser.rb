@@ -17,6 +17,23 @@ module Coffeetags
       @var_regex = /([@a-zA-Z0-9_]*)\s*[=:]{1}\s*$/
       @token_regex = /([@a-zA-Z0-9_]*)\s*[:=]{1}/
       @iterator_regex = /^\s*for\s*([a-zA-Z0-9_]*)\s*/
+      @comment_regex = /^\s*#/
+      @block_comment_regex = /^\s*###/
+      @comment_lines = mark_commented_lines
+    end
+
+
+    def mark_commented_lines
+      [].tap do |reg|
+        in_block_comment = false
+        @source.each_with_index do |line, index|
+          line_no = index+1
+
+          in_block_comment =  !(in_block_comment) if line =~ @block_comment_regex
+          reg << line_no if in_block_comment
+          reg << line_no if line =~ @comment_regex and not in_block_comment
+        end
+      end
     end
 
     def line_level line
@@ -50,7 +67,7 @@ module Coffeetags
         level = line_level line
 
         # ignore comments!
-        next if  line =~ /^\s*#/
+        next if @comment_lines.include? line_n
 
           # FIXME this could be DRYied
           if (_class = line.match @class_regex)

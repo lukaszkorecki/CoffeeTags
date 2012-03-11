@@ -58,6 +58,16 @@ module Coffeetags
 
     end
 
+    def item_for_regex line,  regex, level, additional_fields={}
+      if item = line.match(regex)
+        entry_for_item = {
+          :name => item[1],
+          :level => level
+        }
+        entry_for_item.merge(additional_fields)
+      end
+    end
+
     def execute!
       line_n = 0
       level = 0
@@ -69,22 +79,19 @@ module Coffeetags
         # ignore comments!
         next if @comment_lines.include? line_n
 
-          # FIXME this could be DRYied
-          if (_class = line.match @class_regex)
-            @tree << { :name => _class[1], :level => level }
+        [
+          @class_regex,
+          @proto_meths,
+          @var_regex
+        ].each do |regex|
+          mt = item_for_regex line, regex, level
+          @tree << mt unless mt.nil?
         end
 
-        if(_proto  = line.match @proto_meths)
-          @tree << { :name => _proto[1], :level => level }
-        end
 
-        if(var = line.match @var_regex)
-          @tree << { :name => var[1], :level => level }
-        end
+        mt = item_for_regex line, @block, level, :kind => 'b'
+        @tree << mt unless mt.nil?
 
-        if(_block = line.match @block)
-          @tree << { :name => _block[1], :level => level , :kind => 'b'}
-        end
 
         token = line.match(@token_regex )
         token ||=  line.match(@iterator_regex)
@@ -112,7 +119,7 @@ module Coffeetags
           is_previous_not_the_same = !(@tree.last and @tree.last[:name] == o[:name] and  @tree.last[:level] == o[:level])
 
           if is_in_string.nil? and is_in_comparison.nil? and has_blank_parent.nil? and is_previous_not_the_same
-            o[:kind] =  line =~ /[:=]{1}.*[-=]\>/ ? 'f' : 'o'
+            o[:kind]   =  line =~ /[:=]{1}.*[-=]\>/ ? 'f' : 'o'
             o[:parent] =  scope_path o
             o[:parent] = @fake_parent if o[:parent].empty?
 

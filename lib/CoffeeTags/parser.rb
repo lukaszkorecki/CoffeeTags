@@ -1,6 +1,11 @@
 module Coffeetags
   class Parser
     attr_reader :tree
+    # Creates a new parser
+    #
+    # @param [String] source of the CoffeeScript file
+    # @param [Bool] include objects in generated tree (default false)
+    # @return [Coffeetags::Parser]
     def initialize source, include_vars = false
       @include_vars = include_vars
       @source = source
@@ -23,6 +28,9 @@ module Coffeetags
     end
 
 
+    # Mark line numbers as commented out
+    # either by single line comment (#)
+    # or block comments (###~###)
     def mark_commented_lines
       [].tap do |reg|
         in_block_comment = false
@@ -36,10 +44,24 @@ module Coffeetags
       end
     end
 
+    # Detect current line level based on indentation
+    # very useful in parsing, since CoffeeScript's syntax
+    # depends on whitespace
+    # @param [String] currently parsed line
+    # @return  [Integer]
     def line_level line
       line.match(/^[ \t]*/)[0].gsub("\t", " ").split('').length
     end
 
+    # Generate current scope path, for example:
+    # e  ->
+    #   f ->
+    #     z ->
+    # Scope path for function z would be:
+    # window.e.f
+    # @param [Hash] element of a prase tree (last one for given tree is used by default)
+    # @param [Array] parse tree (or currently built)
+    # @returns [String] string representation of scope for given element
     def scope_path _el = nil, _tree = nil
       bf = []
       tree = (_tree || @tree)
@@ -55,9 +77,18 @@ module Coffeetags
         end
       end
       bf.uniq.reverse.join('.')
-
     end
 
+    # Helper function for generating parse tree elements for given
+    # line and regular expression
+    #
+    # @param [String] source line currently being parsed
+    # @param [RegExp] regular expression for matching a syntax element
+    # @param [Integer] current indentation/line level
+    # @param [Hash] additional fields which need to be added to generated element
+    # @returns [Hash,nil] returns a parse tree element consiting of:
+    #   :name of the element
+    #   indentation :level of the element
     def item_for_regex line,  regex, level, additional_fields={}
       if item = line.match(regex)
         entry_for_item = {
@@ -68,17 +99,22 @@ module Coffeetags
       end
     end
 
+    # Parse the @source and create a tags tree
+    # @note this method mutates @tree instance variable of
+    # Coffeetags::Parser instance
+    # returns self, so it can be chained
     def execute!
       line_n = 0
       level = 0
-      # indentify scopes
       @source.each_line do |line|
         line_n += 1
+        # indentify scopes
         level = line_level line
 
         # ignore comments!
         next if @comment_lines.include? line_n
 
+        # extract elements for given line
         [
           @class_regex,
           @proto_meths,
@@ -89,13 +125,16 @@ module Coffeetags
         end
 
 
+        # does this line contain a block?
         mt = item_for_regex line, @block, level, :kind => 'b'
         @tree << mt unless mt.nil?
 
 
+        # instance variable or iterator (for/in)?
         token = line.match(@token_regex )
         token ||=  line.match(@iterator_regex)
 
+        # we have found something!
         if not token.nil?
           o = {
             :name => token[1],
@@ -109,8 +148,8 @@ module Coffeetags
           # - if a line containes a line like:  element.getElement('type=[checkbox]').lol()
           is_in_string = line =~ /.*['"].*#{token[1]}.*=.*["'].*/
 
-            # - scope access and comparison in if x == 'lol'
-            is_in_comparison = line =~ /::|==/
+          # - scope access and comparison in if x == 'lol'
+          is_in_comparison = line =~ /::|==/
 
           # - objects with blank parent (parser bug?)
           has_blank_parent = o[:parent] =~ /\.$/
@@ -127,7 +166,9 @@ module Coffeetags
             @tree << o if o[:kind] == 'o' and @include_vars
           end
         end
+        # get rid of duplicate entries
         @tree.uniq!
+        self # chain!
       end
     end
   end

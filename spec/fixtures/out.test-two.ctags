@@ -3,20 +3,29 @@
 !_TAG_PROGRAM_AUTHOR	Łukasz Korecki /lukasz@coffeesounds.com/
 !_TAG_PROGRAM_NAME	CoffeeTags	//
 !_TAG_PROGRAM_URL	https://github.com/lukaszkorecki/CoffeeTags	/GitHub repository/
-!_TAG_PROGRAM_VERSION	0.0.2.2	//
+!_TAG_PROGRAM_VERSION	0.0.2.4	//
 bump	spec/fixtures/test.coffee	/bump/;"	f	lineno:1	object:window	type:function
+
 ho	spec/fixtures/test.coffee	/ho/;"	f	lineno:5	object:Wat	type:function
+
 bump	spec/fixtures/test.coffee	/bump/;"	f	lineno:10	object:Wat.ho.@lolWat	type:function
 bump_up	spec/fixtures/test.coffee	/bump_up/;"	f	lineno:12	object:Wat.ho.@lolWat	type:function
 @filter	spec/fixtures/test.coffee	/@filter/;"	f	lineno:14	object:Wat.ho	type:function
 _loop	spec/fixtures/test.coffee	/_loop/;"	f	lineno:19	object:window	type:function
+
+
+
+
 bound_func	spec/fixtures/test.coffee	/bound_func/;"	f	lineno:41	object:window	type:function
 beam_magnum	spec/fixtures/test.coffee	/beam_magnum/;"	f	lineno:44	object:window	type:function
+
 constructor	spec/fixtures/campfire.coffee	/constructor/;"	f	lineno:8	object:Campfire	type:function
 handlers	spec/fixtures/campfire.coffee	/handlers/;"	f	lineno:14	object:Campfire	type:function
+
 onSuccess	spec/fixtures/campfire.coffee	/onSuccess/;"	f	lineno:16	object:Campfire.handlers.resp	type:function
 onFailure	spec/fixtures/campfire.coffee	/onFailure/;"	f	lineno:24	object:Campfire.handlers.resp	type:function
 rooms	spec/fixtures/campfire.coffee	/rooms/;"	f	lineno:29	object:Campfire	type:function
 roomInfo	spec/fixtures/campfire.coffee	/roomInfo/;"	f	lineno:34	object:Campfire	type:function
 recent	spec/fixtures/campfire.coffee	/recent/;"	f	lineno:40	object:Campfire	type:function
+
 bump	spec/fixtures/campfire.coffee	/bump/;"	f	lineno:46	object:Test	type:function

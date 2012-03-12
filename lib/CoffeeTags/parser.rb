@@ -3,8 +3,8 @@ module Coffeetags
     attr_reader :tree
     # Creates a new parser
     #
-    # @param [String] source of the CoffeeScript file
-    # @param [Bool] include objects in generated tree (default false)
+    # @param [String] source source of the CoffeeScript file
+    # @param [Bool] include_vars include objects in generated tree (default false)
     # @return [Coffeetags::Parser]
     def initialize source, include_vars = false
       @include_vars = include_vars
@@ -47,20 +47,20 @@ module Coffeetags
     # Detect current line level based on indentation
     # very useful in parsing, since CoffeeScript's syntax
     # depends on whitespace
-    # @param [String] currently parsed line
+    # @param [String] line currently parsed line
     # @return  [Integer]
     def line_level line
       line.match(/^[ \t]*/)[0].gsub("\t", " ").split('').length
     end
 
     # Generate current scope path, for example:
-    # e  ->
-    #   f ->
-    #     z ->
+    #   e  ->
+    #     f ->
+    #       z ->
     # Scope path for function z would be:
     # window.e.f
-    # @param [Hash] element of a prase tree (last one for given tree is used by default)
-    # @param [Array] parse tree (or currently built)
+    # @param [Hash, nil] _el element of a prase tree (last one for given tree is used by default)
+    # @param [Array, nil] _tree parse tree (or currently built)
     # @returns [String] string representation of scope for given element
     def scope_path _el = nil, _tree = nil
       bf = []
@@ -82,10 +82,10 @@ module Coffeetags
     # Helper function for generating parse tree elements for given
     # line and regular expression
     #
-    # @param [String] source line currently being parsed
-    # @param [RegExp] regular expression for matching a syntax element
-    # @param [Integer] current indentation/line level
-    # @param [Hash] additional fields which need to be added to generated element
+    # @param [String] line source line currently being parsed
+    # @param [RegExp] regex regular expression for matching a syntax element
+    # @param [Integer] level current indentation/line level
+    # @param [Hash, {}] additional_fields additional fields which need to be added to generated element
     # @returns [Hash,nil] returns a parse tree element consiting of:
     #   :name of the element
     #   indentation :level of the element
@@ -99,10 +99,9 @@ module Coffeetags
       end
     end
 
-    # Parse the @source and create a tags tree
-    # @note this method mutates @tree instance variable of
-    # Coffeetags::Parser instance
-    # returns self, so it can be chained
+    # Parse the source and create a tags tree
+    # @note this method mutates @tree instance variable of Coffeetags::Parser instance
+    # @returns self it can be chained
     def execute!
       line_n = 0
       level = 0

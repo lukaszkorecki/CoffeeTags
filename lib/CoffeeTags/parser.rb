@@ -34,8 +34,9 @@ module Coffeetags
     def mark_commented_lines
       [].tap do |reg|
         in_block_comment = false
-        @source.each_with_index do |line, index|
-          line_no = index+1
+        line_no = 0
+        @source.each_line do |line|
+          line_no = line_no+1
 
           in_block_comment =  !(in_block_comment) if line =~ @block_comment_regex
           reg << line_no if in_block_comment

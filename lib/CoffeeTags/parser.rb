@@ -17,7 +17,7 @@ module Coffeetags
 
       # regexes
       @block = /^\s*(if|unless|switch|loop|do)/
-      @class_regex = /^\s*class\s*([\w\.]*)/
+      @class_regex = /\s*class\s*([\w\.]*)/
       @proto_meths = /^\s*([A-Za-z]*)::([@a-zA-Z0-9_]*)/
       @var_regex = /([@a-zA-Z0-9_]*)\s*[=:]{1}\s*$/
       @token_regex = /([@a-zA-Z0-9_]*)\s*[:=]{1}/
@@ -26,7 +26,6 @@ module Coffeetags
       @block_comment_regex = /^\s*###/
       @comment_lines = mark_commented_lines
     end
-
 
     # Mark line numbers as commented out
     # either by single line comment (#)
@@ -168,8 +167,8 @@ module Coffeetags
         end
         # get rid of duplicate entries
         @tree.uniq!
-        self # chain!
       end
+      self # chain!
     end
   end
 end

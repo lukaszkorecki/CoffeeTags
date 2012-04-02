@@ -9,6 +9,7 @@ group :development do
   gem 'growl'
   gem 'guard-rspec'
 
+  gem 'pry'
   # osx
   gem 'rb-fsevent'
 end

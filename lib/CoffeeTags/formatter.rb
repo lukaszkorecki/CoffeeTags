@@ -56,7 +56,7 @@ module Coffeetags
       @lines = @tree.map do | content|
         line_to_string content  unless content[:line].nil? or content[:name].blank?
       end
-      @lines.reject{|l| l.nil? }
+      @lines.reject!{|l| l.nil? }
     end
 
 

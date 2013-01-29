@@ -34,7 +34,7 @@ module Coffeetags
 
     # Helper function for formatting a source line into regex
     def regex_line line
-      "/#{line}/;\""
+      "/^#{line.gsub(/([\\^$])/, '\\\\\1')}$/;\""
     end
 
     def line_to_string entry
@@ -44,7 +44,7 @@ module Coffeetags
       [
         entry[:name],
         @file,
-        regex_line(entry[:name]),
+        regex_line(entry[:source]),
         entry[:kind],
         "lineno:#{entry[:line]}",
         namespace,
@@ -62,6 +62,10 @@ module Coffeetags
 
     def tags
       @lines.map { |l| "#{l}\n"}.join ''
+    end
+
+    def lines
+      @lines
     end
 
   end

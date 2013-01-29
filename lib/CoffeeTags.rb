@@ -103,6 +103,8 @@ module Coffeetags
 
       files = [ files] if files.is_a? String
 
+      lines = []
+
       files.reject { |f| f =~ /^-/}.each do |file|
         sc = File.read file
         parser = Coffeetags::Parser.new sc, include_vars
@@ -112,8 +114,12 @@ module Coffeetags
 
         formatter.parse_tree
 
-        __out << formatter.tags
+        lines.concat(formatter.lines)
       end
+
+      lines.sort!
+      __out << lines.map { |l| "#{l}\n"}.join('')
+
       __out.close if __out.respond_to? :close
 
       __out.join("\n") if __out.is_a? Array

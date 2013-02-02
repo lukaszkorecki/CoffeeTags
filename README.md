@@ -1,5 +1,7 @@
 # CoffeeTags
 
+### Latest version: `0.0.3`
+
 A  simple tool for generating CoffeeScript tags (Ctags compatible).
 
 [![Build Status](https://secure.travis-ci.org/lukaszkorecki/CoffeeTags.png?branch=master)](http://travis-ci.org/lukaszkorecki/CoffeeTags)
@@ -25,11 +27,12 @@ will generate standard TAGS file which later can be used with Vim (standard `:ta
 # Requirements
 
 * ruby (either 1.8.7 or 1.9.2)
-* Vim
+* Vim or [Sublime Text](http://www.sublimetext.com/) and [CTags plugin](https://github.com/SublimeText/CTags)
 
 ### optional
 
-* [TagBar](https://github.com/majutsushi/tagbar)
+* Vim
+  * [TagBar](https://github.com/majutsushi/tagbar)
 
 # Halp!
 
@@ -42,9 +45,14 @@ Just use `coffeetags --help`
     `gem install CoffeeTags`
 
 
+## Vim installation
 * add TagBar config to your .vimrc
 
 `coffeetags --vim-conf >> ~/.vimrc`
+
+## Sublime Text
+
+*TODO* - I don't use ST myself, but PRs with HOWTO are welcome
 
 
 ## Config types

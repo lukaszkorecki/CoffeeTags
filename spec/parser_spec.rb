@@ -3,6 +3,7 @@ describe 'CoffeeTags::Parser' do
   before :all do
     @campfire_class = File.read File.expand_path('./spec/fixtures/campfire.coffee')
     @class_with_dot = File.read File.expand_path('./spec/fixtures/class_with_dot.coffee')
+    @class_with_at = File.read File.expand_path('./spec/fixtures/class_with_at.coffee')
     @test_file = File.read File.expand_path('./spec/fixtures/test.coffee')
 
     @cf_tree = YAML::load_file File.expand_path('./spec/fixtures/tree.yaml')
@@ -83,6 +84,14 @@ describe 'CoffeeTags::Parser' do
 
         c = @coffee_parser.tree.find { |i| i[:name] == 'App.Campfire'}
         c.should == @cf_tree.find {|i| i[:name] == 'App.Campfire'}
+      end
+
+      it "parses the class with @ in name" do
+        @coffee_parser = Coffeetags::Parser.new @class_with_at, true
+        @coffee_parser.execute!
+
+        c = @coffee_parser.tree.find { |i| i[:name] == 'Campfire'}
+        c.should == @cf_tree.find {|i| i[:name] == 'Campfire'}
       end
 
       it "parses the instance variable" do

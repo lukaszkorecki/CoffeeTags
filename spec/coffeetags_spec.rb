@@ -33,6 +33,7 @@ describe Utils do
 
       @fake_formatter = mock 'Formatter'
       @fake_formatter.stub! :parse_tree
+      @fake_formatter.stub!(:lines).and_return %w{ tag tag2 tag3 }
       @fake_formatter.stub!(:tags).and_return <<-TAG
 tag
 tag2

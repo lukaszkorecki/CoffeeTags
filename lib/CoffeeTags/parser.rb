@@ -23,7 +23,9 @@ module Coffeetags
       @token_regex = /([@a-zA-Z0-9_]*)\s*[:=]{1}/
       @iterator_regex = /^\s*for\s*([a-zA-Z0-9_]*)\s*/
       @comment_regex = /^\s*#/
-      @block_comment_regex = /^\s*###/
+      @start_block_comment_regex = /^\s*###/
+      @end_block_comment_regex = /^.*###/
+      @oneline_block_comment_regex = /^\s*###.*###/
       @comment_lines = mark_commented_lines
     end
 
@@ -34,12 +36,18 @@ module Coffeetags
       [].tap do |reg|
         in_block_comment = false
         line_no = 0
+        start_block = 0
+        end_block = 0
         @source.each_line do |line|
           line_no = line_no+1
 
-          in_block_comment =  !(in_block_comment) if line =~ @block_comment_regex
-          reg << line_no if in_block_comment
-          reg << line_no if line =~ @comment_regex and not in_block_comment
+          start_block = line_no if !in_block_comment and line =~ @start_block_comment_regex
+          end_block = line_no if start_block < line_no and line =~ @end_block_comment_regex
+          end_block = line_no if line =~ @oneline_block_comment_regex
+
+          in_block_comment = end_block < start_block
+
+          reg << line_no if in_block_comment or end_block == line_no or line =~ @comment_regex
         end
       end
     end

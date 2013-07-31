@@ -186,7 +186,37 @@ describe 'CoffeeTags::Parser' do
           :source=>"echo2 :-> console.log 'echo'",
           :line=>7,
           :kind=>"f",
-          :name=>"echo2"}]
+          :name=>"echo2"},
+          {:level=>0,
+          :parent=>"window",
+          :source=>"foo2 : (x) -> console.log 'bar \#{x}'",
+          :line=>10,
+          :kind=>"f",
+          :name=>"foo2"},
+          {:level=>0,
+          :parent=>"window",
+          :source=>"baz : (x, y) ->",
+          :line=>15,
+          :kind=>"f",
+          :name=>"baz"},
+          {:level=>2,
+           :parent=>"baz",
+           :source=>"  console.log 'baz \#{x} : \#{y}'",
+           :line=>16,
+           :kind=>"o",
+           :name=>""},
+          {:level=>0,
+          :parent=>"window",
+          :source=>"echo3 :-> console.log 'echo'",
+          :line=>23,
+          :kind=>"f",
+          :name=>"echo3"},
+          {:level=>0,
+          :parent=>"window",
+          :source=>"foo : (x) -> console.log 'bar \#{x}'",
+          :line=>26,
+          :kind=>"f",
+          :name=>"foo"}]
       }
 
       subject {
@@ -196,7 +226,9 @@ describe 'CoffeeTags::Parser' do
       }
 
       it 'ignores block comments when parsing the contents' do
-        subject.tree.first.should == blockcomment_tree.first
+        subject.tree.zip(blockcomment_tree).each do |subject_node, blockcomment_node|
+          subject_node.should == blockcomment_node
+        end
       end
 
 

@@ -85,13 +85,13 @@ automatically.
 
 This option is preferable if you want to keep your vimrc short.
 
-    coffeetags --vim-conf > ~/vim/ftplugin/coffee/tagbar-coffee.vim
-    coffeetags [--include-vars] --vim-conf > ~/vim/ftplugin/coffee/tagbar-coffee.vim
+    coffeetags --vim-conf > ~/.vim/ftplugin/coffee/tagbar-coffee.vim
+    coffeetags [--include-vars] --vim-conf > ~/.vim/ftplugin/coffee/tagbar-coffee.vim
 
 or if you're using pathogen
 
-    coffeetags [--include-vars] --vim-conf > ~/vim/bundle/coffeetags/ftplugin/coffee/tagbar-coffee.vim
-    coffeetags --vim-conf > ~/vim/bundle/coffeetags/ftplugin/coffee/tagbar-coffee.vim
+    coffeetags [--include-vars] --vim-conf > ~/.vim/bundle/coffeetags/ftplugin/coffee/tagbar-coffee.vim
+    coffeetags --vim-conf > ~/.vim/bundle/coffeetags/ftplugin/coffee/tagbar-coffee.vim
 
 
 * open your coffeescript file and open TagBar.

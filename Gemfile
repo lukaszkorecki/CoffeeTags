@@ -5,6 +5,7 @@ gem 'rake'
 gemspec
 
 group :development do
+  gem 'listen', '1.3.1'
   gem 'guard'
   gem 'growl'
   gem 'guard-rspec'

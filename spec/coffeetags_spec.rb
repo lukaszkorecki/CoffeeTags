@@ -21,13 +21,35 @@ describe Utils do
       Utils.option_parser( ['--append',  'lol.coffee']).should == { :append => true, :files => ["lol.coffee"]}
     end
 
+    it "parses --tag-relative option" do
+      Utils.option_parser( [ '--tag-relative', 'lol.coffee']).should == { :tag_relative => true, :files => ['lol.coffee'] }
+    end
+
     it "parses -f <file> option" do
       Utils.option_parser( [ '-f','tags' ,'lol.coffee']).should == { :output => 'tags', :files => ['lol.coffee'] }
     end
+  end
 
+  context 'Relative file path' do
+    it "returns file with nil output" do
+      Utils.file_path("some/file", nil, nil).should == "some/file"
+    end
+
+    it "returns file with non relative path" do
+      Utils.file_path("some/file", "some/output", nil).should == "some/file"
+    end
+
+    it "returns relative path to file from output" do
+      Utils.file_path("/some/path/to/file", "/some/path/for/output", true).should == "../to/file"
+    end
+
+    it "returns relative path from cwd" do
+      Utils.file_path("some/path/to/file", ".git/tags", true).should == "../some/path/to/file"
+    end
   end
 
   context 'Parser runner' do
+
     before do
       @fake_parser = mock('Parser')
       @fake_parser.stub! :"execute!"
@@ -45,9 +67,7 @@ tag3
       TAG
       Coffeetags::Formatter.stub!(:new).and_return @fake_formatter
       Coffeetags::Formatter.stub!(:header).and_return "header\n"
-
       File.stub!(:read).and_return 'woot@'
-
     end
 
 
@@ -62,6 +82,7 @@ tag3
 FF
 
     end
+
     after :each do
       `rm test.tags`
     end
@@ -78,7 +99,20 @@ FF
     it "generates tags for given files" do
       Coffeetags::Utils.run({ :output => 'test.out', :files => ['spec/fixtures/test.coffee', 'spec/fixtures/campfire.coffee'] })
 
+
       File.read("test.out").should == File.read("./spec/fixtures/out.test-two.ctags")
+
+    end
+
+    it "generates tags with relative path from tags file" do
+      files = [ "spec/fixtures/test.coffee", 'spec/fixtures/campfire.coffee']
+
+      FileUtils.mkdir "testout" unless File.directory? "testout"
+      output = "testout/test.out"
+
+      Coffeetags::Utils.run({ :output => output, :files => files, :tag_relative => true })
+
+      File.read(output).should == File.read("./spec/fixtures/out.test-relative.ctags")
     end
 
     it "appends tags for given file" do

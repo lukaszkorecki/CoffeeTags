@@ -14,7 +14,11 @@ describe Utils do
     end
 
     it "parses --include-vars option" do
-      Utils.option_parser( [ '--include-vars',  'lol.coffee']).should == {:include_vars => true, :files => ["lol.coffee"]}
+      Utils.option_parser( [ '--include-vars',  'lol.coffee']).should == { :include_vars => true, :files => ["lol.coffee"]}
+    end
+
+    it "parses --append option" do
+      Utils.option_parser( ['--append',  'lol.coffee']).should == { :append => true, :files => ["lol.coffee"]}
     end
 
     it "parses -f <file> option" do
@@ -65,21 +69,52 @@ FF
   end
 
   context "Complete output" do
-    it "genrates tags for given file" do
+    it "generates tags for given file" do
       Coffeetags::Utils.run({ :output => 'test.out', :files => 'spec/fixtures/test.coffee' })
 
       File.read("test.out").should == File.read("./spec/fixtures/out.test.ctags")
     end
 
-
-    it "genrates tags for given files" do
+    it "generates tags for given files" do
       Coffeetags::Utils.run({ :output => 'test.out', :files => ['spec/fixtures/test.coffee', 'spec/fixtures/campfire.coffee'] })
 
       File.read("test.out").should == File.read("./spec/fixtures/out.test-two.ctags")
     end
 
+    it "appends tags for given file" do
+      FileUtils.cp 'spec/fixtures/append.ctags', 'test.out'
+
+      Coffeetags::Utils.run({ :output => 'test.out', :files => ['spec/fixtures/campfire.coffee'], :append => true })
+
+      File.read("test.out").should == File.read("./spec/fixtures/append-expected.ctags")
+    end
+
     after :each do
-      `rm test.out`
+      `rm test.out` if File.exists? 'test.out'
+    end
+  end
+
+  context "setup tag lines" do
+    it "returns empty array when append flag is false" do
+      Coffeetags::Utils.setup_tag_lines("spec/fixtures/out.test-two.ctags", ["spec/fixtures/test.coffee"], false).should == []
+    end
+
+    it "returns empty array for nil output" do
+      Coffeetags::Utils.setup_tag_lines(nil, nil, true).should == []
+    end
+
+    it "returns empty array for nil output" do
+      Coffeetags::Utils.setup_tag_lines("file/does/not/exist", nil, true).should == []
+    end
+
+    it "returns contents of output file without header" do
+      lines = Coffeetags::Utils.setup_tag_lines("spec/fixtures/blockcomment.ctags", nil, true).map {|l| l.split("\t")[0]}
+      lines.should == %w{baz echo2 echo3 foo foo2}
+    end
+
+    it "returns contents of output file without header and without tags for files that will be indexed" do
+      lines = Coffeetags::Utils.setup_tag_lines("spec/fixtures/out.test-two.ctags", ["spec/fixtures/test.coffee"], true).map {|l| l.split("\t")[0]}
+      lines.should == %w{bump constructor handlers onFailure onSuccess recent roomInfo rooms}
     end
   end
 

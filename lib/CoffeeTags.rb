@@ -54,7 +54,10 @@ module Coffeetags
 
         opts.on('-f', '--file FILE', 'Write tags to FILE (use - for std out)') do |o|
           options[:output] = o unless o == '-'
+        end
 
+        opts.on('-a', '--append', 'Append tags to existing tags file') do |o|
+          options[:append] = true
         end
 
         opts.on('-R', '--recursive', 'Process current directory recursively') do |o|
@@ -92,6 +95,11 @@ module Coffeetags
       include_vars = options[:include_vars]
       files = options[:files]
 
+      files = [files] if files.is_a? String
+      files = files.reject { |f| f =~ /^-/}
+
+      lines = setup_tag_lines output, files, options[:append]
+
       __out = if output.nil?
                 STDOUT
               else
@@ -100,11 +108,7 @@ module Coffeetags
 
       __out  << Coffeetags::Formatter.header
 
-      files = [ files] if files.is_a? String
-
-      lines = []
-
-      files.reject { |f| f =~ /^-/}.each do |file|
+      files.each do |file|
         sc = File.read file
         parser = Coffeetags::Parser.new sc, include_vars
         parser.execute!
@@ -122,6 +126,23 @@ module Coffeetags
       __out.close if __out.respond_to? :close
 
       __out.join("\n") if __out.is_a? Array
+    end
+
+    def self.setup_tag_lines output, files, append
+      return [] unless append
+      return [] if output.nil?
+      return [] unless File.exists? output
+
+      files = [] if files.nil?
+      absolute_files = files.map {|f| Pathname.new(f)}
+
+      File.readlines(output).
+        map {|l| l.strip}.
+        reject {|l| l =~ /^!_/ }.
+        reject {|l|
+          tag_file = Pathname.new l.split("\t")[1]
+          absolute_files.include? tag_file
+        }
     end
 
   end

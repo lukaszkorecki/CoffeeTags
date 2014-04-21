@@ -10,15 +10,15 @@ describe Utils do
     end
 
     it "returns files list" do
-      Utils.option_parser([  'lol.coffee']).should == [ nil, nil,  ['lol.coffee']]
+      Utils.option_parser(['lol.coffee']).should == {:files => ['lol.coffee']}
     end
 
     it "parses --include-vars option" do
-      Utils.option_parser( [ '--include-vars',  'lol.coffee']).should == [ nil, true,  ['lol.coffee']]
+      Utils.option_parser( [ '--include-vars',  'lol.coffee']).should == {:include_vars => true, :files => ["lol.coffee"]}
     end
 
     it "parses -f <file> option" do
-      Utils.option_parser( [ '-f','tags' ,'lol.coffee']).should == [ 'tags', nil,  ['lol.coffee']]
+      Utils.option_parser( [ '-f','tags' ,'lol.coffee']).should == { :output => 'tags', :files => ['lol.coffee'] }
     end
 
   end
@@ -48,7 +48,8 @@ tag3
 
 
     it "opens the file and writes tags to it" do
-      Utils.run 'test.tags', false, ['woot']
+      Utils.run({ :output => 'test.tags', :files => ['woot'] })
+
       `cat test.tags`.should== <<-FF
 header
 tag
@@ -65,29 +66,18 @@ FF
 
   context "Complete output" do
     it "genrates tags for given file" do
-
-      files = "spec/fixtures/test.coffee"
-
-      output = "test.out"
-
-      Coffeetags::Utils.run output, nil, files
+      Coffeetags::Utils.run({ :output => 'test.out', :files => 'spec/fixtures/test.coffee' })
 
       File.read("test.out").should == File.read("./spec/fixtures/out.test.ctags")
-
     end
 
 
     it "genrates tags for given files" do
-
-      files = [ "spec/fixtures/test.coffee", 'spec/fixtures/campfire.coffee']
-
-      output = "test.out"
-
-      Coffeetags::Utils.run output, nil, files
+      Coffeetags::Utils.run({ :output => 'test.out', :files => ['spec/fixtures/test.coffee', 'spec/fixtures/campfire.coffee'] })
 
       File.read("test.out").should == File.read("./spec/fixtures/out.test-two.ctags")
-
     end
+
     after :each do
       `rm test.out`
     end

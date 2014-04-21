@@ -83,16 +83,15 @@ module Coffeetags
       options[:files]  = args.to_a
       options[:files] += Dir['./**/*.coffee', './**/Cakefile'] if options[:recur]
 
-      [
-        options[:output],
-        options[:include_vars],
-        options[:files]
-      ]
-
+      options
     end
 
 
-    def self.run output, include_vars,  files
+    def self.run options
+      output = options[:output]
+      include_vars = options[:include_vars]
+      files = options[:files]
+
       __out = if output.nil?
                 STDOUT
               else

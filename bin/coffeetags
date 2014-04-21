@@ -1,8 +1,7 @@
 #!/usr/bin/env ruby
 require 'CoffeeTags'
 
-out = Coffeetags::Utils.option_parser ARGV
-if out
-  output, include_vars, files  = out
-  Coffeetags::Utils.run output, include_vars, files
+options = Coffeetags::Utils.option_parser ARGV
+if options
+  Coffeetags::Utils.run options
 end

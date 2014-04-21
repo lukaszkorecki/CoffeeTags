@@ -235,7 +235,7 @@ describe 'CoffeeTags::Parser' do
       context 'top-down test' do
         let(:blockcomment_ctags){ File.read(bc_ctags_file) }
         subject {
-          Coffeetags::Utils.run 'test_bc.out', nil, bc_file
+          Coffeetags::Utils.run({ :output => 'test_bc.out', :files => bc_file})
           File.read 'test_bc.out'
         }
 

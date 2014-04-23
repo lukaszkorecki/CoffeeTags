@@ -64,6 +64,10 @@ module Coffeetags
           options[:recur] = true
         end
 
+        opts.on('--tag-relative', 'Should paths be relative to location of tag file?') do |o|
+          options[:tag_relative] = true
+        end
+
         opts.on('--vim-conf', 'Generate TagBar config (more info https://gist.github.com/1935512 )') do
           puts tagbar_conf options[:include_vars]
           exit
@@ -113,7 +117,8 @@ module Coffeetags
         parser = Coffeetags::Parser.new sc, include_vars
         parser.execute!
 
-        formatter = Coffeetags::Formatter.new file, parser.tree
+        tag_file_path = file_path file, output, options[:tag_relative]
+        formatter = Coffeetags::Formatter.new tag_file_path, parser.tree
 
         formatter.parse_tree
 
@@ -143,6 +148,16 @@ module Coffeetags
           tag_file = Pathname.new l.split("\t")[1]
           absolute_files.include? tag_file
         }
+    end
+
+    def self.file_path file, output, tag_relative
+      return file if output.nil?
+      return file unless tag_relative
+
+      output_path = Pathname.new(output).expand_path
+      file_path = Pathname.new(file).expand_path
+
+      file_path.relative_path_from(output_path.dirname).to_s
     end
 
   end

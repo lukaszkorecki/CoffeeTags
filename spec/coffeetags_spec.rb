@@ -123,8 +123,19 @@ FF
       File.read("test.out").should == File.read("./spec/fixtures/append-expected.ctags")
     end
 
+    it "appends tags with tag relative for given file" do
+      FileUtils.mkdir "testout" unless File.directory? "testout"
+      output = "testout/test.out"
+
+      FileUtils.cp "spec/fixtures/out.test-relative-append.ctags", output
+
+      lines = Coffeetags::Utils.run({ :output => output, :files => ["spec/fixtures/campfire.coffee"], :append => true, :tag_relative => true })
+      File.read(output).should == File.read("./spec/fixtures/out.test-relative.ctags")
+    end
+
     after :each do
       `rm test.out` if File.exists? 'test.out'
+      `rm -rf testout` if File.directory? 'testout'
     end
   end
 
@@ -158,6 +169,28 @@ FF
       FileUtils.cp "spec/fixtures/out.test-relative.ctags", output
 
       lines = Coffeetags::Utils.setup_tag_lines(output, ["spec/fixtures/test.coffee"], true).map {|l| l.split("\t")[0]}
+      lines.should == %w{bump constructor handlers onFailure onSuccess recent roomInfo rooms}
+    end
+
+    it "returns contents of output file with relative file paths from absolute file path" do
+      FileUtils.mkdir "testout" unless File.directory? "testout"
+      output = "testout/test.out"
+
+      FileUtils.cp "spec/fixtures/out.test-relative.ctags", output
+
+      expanded_path = Pathname.new("spec/fixtures/test.coffee").expand_path.to_s
+
+      lines = Coffeetags::Utils.setup_tag_lines(output, [expanded_path], true).map {|l| l.split("\t")[0]}
+      lines.should == %w{bump constructor handlers onFailure onSuccess recent roomInfo rooms}
+    end
+
+    it "returns contents of output file with relative file paths from absolution output path" do
+      FileUtils.mkdir "testout" unless File.directory? "testout"
+      output = "testout/test.out"
+
+      FileUtils.cp "spec/fixtures/out.test-relative.ctags", output
+
+      lines = Coffeetags::Utils.setup_tag_lines(Pathname.new(output).expand_path.to_s, ["spec/fixtures/test.coffee"], true).map {|l| l.split("\t")[0]}
       lines.should == %w{bump constructor handlers onFailure onSuccess recent roomInfo rooms}
     end
   end

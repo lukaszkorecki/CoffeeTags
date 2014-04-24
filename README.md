@@ -64,9 +64,35 @@ CoffeeTags can work in 2 modes:
 
 Second mode is activated by adding `--include-vars` to command line arguments
 
-#   CoffeeTags + TagBar + Vim
+# Vim
 
-## Config in  vimrc
+This can also be used as a vim plugin that will update tag files on save, and support visualization with [TagBar](https://github.com/majutsushi/tagbar). You will still need to install the gem as described above as well as install the plugin to vim. You can install it via:
+
+## Install
+
+*  [Pathogen](https://github.com/tpope/vim-pathogen)
+  *  `git clone https://github.com/lukaszkorecki/CoffeeTags ~/.vim/bundle/CoffeeTags`
+*  [NeoBundle](https://github.com/Shougo/neobundle.vim)
+  *  `NeoBundle 'lukaszkorecki/CoffeeTags'`
+*  [Vundle](https://github.com/gmarik/vundle)
+  *  `Bundle 'lukaszkorecki/CoffeeTags'`
+*  manual
+  *  copy all of the files into your `~/.vim` directory
+
+## Configuration
+
+In you `~/.vimrc` you can configure the plugin with:
+
+```
+let g:CoffeeAutoDisabled=<0 or 1>        " Disables autotaging on save (Default: 0 [false])
+let g:CoffeeAutoTagFile=<filename>       " Name of the generated tag file (Default: ./tags)
+let g:CoffeeAutoTagIncludeVars=<0 or 1>  " Includes variables (Default: 0 [false])
+let g:CoffeeAutoTagTagRelative=<0 or 1>  " Sets file names to the relative path from the tag file location to the tag file location (Default: 1 [true])
+```
+
+# Legacy Vim
+
+## Config in vimrc
 
 You can add the config to your .vimrc (making sure that the old one is removed)
 by:

@@ -13,7 +13,11 @@ endif
 
 let s:CoffeeAutoTagFile="./tags"
 let s:CoffeeAutoTagIncludeVars=0
-let s:CoffeeAutoTagTagRelative=0
+let s:CoffeeAutoTagTagRelative=1
+
+if !exists("g:CoffeeAutoTagDisabled")
+  let g:CoffeeAutoTagDisabled = 0
+endif
 
 if exists("g:CoffeeAutoTagFile")
   let s:CoffeeAutoTagFile = g:CoffeeAutoTagFile
@@ -47,7 +51,12 @@ let g:tagbar_type_coffee = {
       \   }
       \ }
 
+
 function! CoffeeAutoTag()
+  if g:CoffeeAutoTagDisabled
+    finish
+  endif
+
   let cmd = 'coffeetags --append -f ' . s:CoffeeAutoTagFile . ' '
 
   if s:CoffeeAutoTagIncludeVars

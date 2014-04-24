@@ -142,11 +142,18 @@ module Coffeetags
       files = [] if files.nil?
       absolute_files = files.map {|f| Pathname.new(f)}
 
+      output_dir = Pathname.new(output).dirname
+
       File.readlines(output).
         map {|l| l.strip}.
         reject {|l| l =~ /^!_/ }.
         reject {|l|
-          tag_file = Pathname.new l.split("\t")[1]
+          raw_file_path = l.split("\t")[1]
+          tag_file = if raw_file_path =~ /^\./
+                       output_dir + Pathname.new(l.split("\t")[1])
+                     else
+                       Pathname.new(raw_file_path)
+                     end
           absolute_files.include? tag_file
         }
     end

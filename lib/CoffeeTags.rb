@@ -2,6 +2,7 @@
 require "CoffeeTags/version"
 require "CoffeeTags/parser"
 require "CoffeeTags/formatter"
+require "pathname"
 require 'optparse'
 require 'erb'
 

@@ -1,6 +1,6 @@
 # CoffeeTags
 
-### Latest version: `0.2.0`
+### Latest version: `0.2.1`
 
 A  simple tool for generating CoffeeScript tags (Ctags compatible).
 

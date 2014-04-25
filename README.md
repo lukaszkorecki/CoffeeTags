@@ -73,18 +73,21 @@ let g:CoffeeAutoTagIncludeVars=<0 or 1>  " Includes variables (Default: 0 [false
 let g:CoffeeAutoTagTagRelative=<0 or 1>  " Sets file names to the relative path from the tag file location to the tag file location (Default: 1 [true])
 ```
 
-## Sublime Text
+# Sublime Text
 
 *TODO* - I don't use ST myself, but PRs with HOWTO are welcomed
 
-## Config types
+# Config types
 
 CoffeeTags can work in 2 modes:
 
 - tags only for functions (default)
 - tags for functions and objects containing them
 
-Second mode is activated by adding `--include-vars` to command line arguments
+Second mode is activated by:
+
+- Adding `--include-vars` to command line arguments
+- Setting `let g:CoffeeAutoTagIncludeVars=1` in your `~/.vimrc` for vim
 
 # TODO
 

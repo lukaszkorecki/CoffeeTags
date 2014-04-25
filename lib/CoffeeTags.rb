@@ -22,14 +22,6 @@ module Coffeetags
   URL = "https://github.com/lukaszkorecki/CoffeeTags"
 
   class Utils
-    def self.tagbar_conf include_vars
-      include_vars_opt = include_vars ? "--include-vars" : ''
-
-      tmpl_file = File.read(File.expand_path("../../vim/tagbar-coffee.vim.erb", __FILE__))
-      tmpl = ERB.new(tmpl_file)
-
-      tmpl.result(binding)
-    end
 
     def self.option_parser args
       args << '-h' if args.empty?
@@ -67,11 +59,6 @@ module Coffeetags
 
         opts.on('--tag-relative', 'Should paths be relative to location of tag file?') do |o|
           options[:tag_relative] = true
-        end
-
-        opts.on('--vim-conf', 'Generate TagBar config (more info https://gist.github.com/1935512 )') do
-          puts tagbar_conf options[:include_vars]
-          exit
         end
 
         opts.on('-v', '--version', 'Current version') do

@@ -6,7 +6,6 @@ A  simple tool for generating CoffeeScript tags (Ctags compatible).
 
 [![Build Status](https://secure.travis-ci.org/lukaszkorecki/CoffeeTags.png?branch=master)](http://travis-ci.org/lukaszkorecki/CoffeeTags)
 
-
 ### [Watch a quick demo](http://ascii.io/a/26)
 
 ### Example + Screenshot
@@ -38,22 +37,45 @@ will generate standard TAGS file which later can be used with Vim (standard `:ta
 
 Just use `coffeetags --help`
 
-# Installation
+# Ruby Gem
 
-* get `coffeetags`
+## Installation
 
-    `gem install CoffeeTags`
+`gem install CoffeeTags`
 
+## Usage
 
-## Vim installation
-* add TagBar config to your .vimrc
+`$ coffeetags --help`
 
-`coffeetags --vim-conf >> ~/.vimrc`
+# Vim
+
+This can also be used as a vim plugin that will update tag files on save, and support visualization with [TagBar](https://github.com/majutsushi/tagbar). You will still need to install the gem as described above as well as install the plugin to vim. You can install it via:
+
+## Install
+
+*  [Pathogen](https://github.com/tpope/vim-pathogen)
+  *  `git clone https://github.com/lukaszkorecki/CoffeeTags ~/.vim/bundle/CoffeeTags`
+*  [NeoBundle](https://github.com/Shougo/neobundle.vim)
+  *  `NeoBundle 'lukaszkorecki/CoffeeTags'`
+*  [Vundle](https://github.com/gmarik/vundle)
+  *  `Bundle 'lukaszkorecki/CoffeeTags'`
+*  manual
+  *  copy all of the files into your `~/.vim` directory
+
+## Configuration
+
+In you `~/.vimrc` you can configure the plugin with:
+
+```
+let g:CoffeeAutoDisabled=<0 or 1>        " Disables autotaging on save (Default: 0 [false])
+let g:CoffeeAutoTagFile=<filename>       " Name of the generated tag file (Default: ./tags)
+let g:CoffeeAutoTagIncludeVars=<0 or 1>  " Includes variables (Default: 0 [false])
+let g:CoffeeAutoTagTagRelative=<0 or 1>  " Sets file names to the relative path from the tag file location to the tag file location (Default: 1 [true])
+```
 
 ## Sublime Text
 
 *TODO* - I don't use ST myself, but PRs with HOWTO are welcomed
-
 
 ## Config types
 
@@ -64,49 +86,13 @@ CoffeeTags can work in 2 modes:
 
 Second mode is activated by adding `--include-vars` to command line arguments
 
-#   CoffeeTags + TagBar + Vim
-
-## Config in  vimrc
-
-You can add the config to your .vimrc (making sure that the old one is removed)
-by:
-
-    coffeetags --vim-conf >> ~/.vimrc
-
-or (for 2nd mode)
-
-    coffeetags --include-vars --vim-conf >> ~/.vimrc
-
-
-## Config as a filetype plugin
-
-You can generate a special filetype plugin and tagbar will use that
-automatically.
-
-This option is preferable if you want to keep your vimrc short.
-
-    coffeetags --vim-conf > ~/.vim/ftplugin/coffee/tagbar-coffee.vim
-    coffeetags [--include-vars] --vim-conf > ~/.vim/ftplugin/coffee/tagbar-coffee.vim
-
-or if you're using pathogen
-
-    coffeetags [--include-vars] --vim-conf > ~/.vim/bundle/coffeetags/ftplugin/coffee/tagbar-coffee.vim
-    coffeetags --vim-conf > ~/.vim/bundle/coffeetags/ftplugin/coffee/tagbar-coffee.vim
-
-
-* open your coffeescript file and open TagBar.
-
-Done!
-
 # TODO
 
 - squash all bugs
 
-
 # License
 
 MIT
-
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/lukaszkorecki/coffeetags/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 

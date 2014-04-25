@@ -5,3 +5,4 @@ pkg/*
 vendor
 testout/
 test.out
+tags

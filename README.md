@@ -25,7 +25,11 @@ will generate standard TAGS file which later can be used with Vim (standard `:ta
 
 # Requirements
 
-* ruby (1.8.7, 1.9.2 or 1.9.3)
+* ruby 1.8.7 and up
+
+### Windows support
+
+[Yup, we got it!](https://github.com/lukaszkorecki/CoffeeTags/issues/28#issuecomment-44046429)
 
 ### Editors supported
 

@@ -1,10 +1,10 @@
 # CoffeeTags
 
-### Latest version: `0.2.1`
+### Latest version: [![Gem version][ruby-gems-image]][ruby-gems-url]
 
 A  simple tool for generating CoffeeScript tags (Ctags compatible).
 
-[![Build Status](https://secure.travis-ci.org/lukaszkorecki/CoffeeTags.png?branch=master)](http://travis-ci.org/lukaszkorecki/CoffeeTags)
+[![Build Status][travis-image]][travis-url]
 
 ### [Watch a quick demo](http://ascii.io/a/26)
 
@@ -103,3 +103,8 @@ MIT
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/lukaszkorecki/coffeetags/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
+[travis-url]: https://travis-ci.org/lukaszkorecki/CoffeeTags
+[travis-image]: https://travis-ci.org/lukaszkorecki/CoffeeTags.svg?branch=master
+
+[ruby-gems-url]: http://rubygems.org/gems/CoffeeTags
+[ruby-gems-image]: https://badge.fury.io/rb/CoffeeTags.svg

@@ -54,7 +54,7 @@ let g:tagbar_type_coffee = {
 
 function! CoffeeAutoTag()
   if g:CoffeeAutoTagDisabled
-    finish
+    return
   endif
 
   let cmd = 'coffeetags --append -f ' . s:CoffeeAutoTagFile . ' '

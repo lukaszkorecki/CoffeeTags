@@ -41,15 +41,16 @@ module Coffeetags
       namespace = (entry[:parent].blank?) ? entry[:name]: entry[:parent]
       namespace =  namespace == entry[:name] ? '' : "object:#{namespace}"
 
-      [
+      output = [
         entry[:name],
         @file,
         regex_line(entry[:source]),
         entry[:kind],
         "lineno:#{entry[:line]}",
-        namespace,
         @types[entry[:kind]]
       ].join("\t")
+      unless namespace.empty? then output << "\t#{namespace}" end
+      output
     end
 
     def parse_tree

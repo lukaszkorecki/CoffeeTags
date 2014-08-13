@@ -121,13 +121,12 @@ module Coffeetags
         # ignore comments!
         next if @comment_lines.include? line_n
 
-        # extract elements for given line
         [
-          @class_regex,
-          @proto_meths,
-          @var_regex
-        ].each do |regex|
-          mt = item_for_regex line, regex, level
+          [@class_regex, 'c'],
+          [@proto_meths, 'p'],
+          [@var_regex, 'v']
+        ].each do |regex, kind|
+          mt = item_for_regex line, regex, level, :source => line.chomp, :line => line_n, :kind => kind
           @tree << mt unless mt.nil?
         end
 

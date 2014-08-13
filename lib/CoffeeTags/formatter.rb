@@ -26,7 +26,8 @@ module Coffeetags
         'f' => 'type:function',
         'c' => 'type:class',
         'o' => 'type:object',
-        'v' => 'type:var'
+        'v' => 'type:var',
+        'p' => 'type:proto'
       }
       @header = Formatter.header
     end

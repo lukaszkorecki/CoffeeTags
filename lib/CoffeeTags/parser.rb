@@ -120,6 +120,7 @@ module Coffeetags
       level = 0
       @source.each_line do |line|
         line_n += 1
+        line.chomp!
         # indentify scopes
         level = line_level line
 
@@ -132,7 +133,7 @@ module Coffeetags
           [@var_regex, 'v'],
           [@block, 'b']
         ].each do |regex, kind|
-          mt = item_for_regex line, regex, level, :source => line.chomp, :line => line_n, :kind => kind
+          mt = item_for_regex line, regex, level, :source => line, :line => line_n, :kind => kind
           @tree << mt unless mt.nil?
         end
 
@@ -147,7 +148,7 @@ module Coffeetags
             :name => token[1],
             :level => level,
             :parent => '',
-            :source => line.chomp,
+            :source => line,
             :line => line_n
           }
 

@@ -4,11 +4,18 @@
 !_TAG_PROGRAM_NAME	CoffeeTags	//
 !_TAG_PROGRAM_URL	https://github.com/lukaszkorecki/CoffeeTags	/GitHub repository/
 !_TAG_PROGRAM_VERSION	0.2.1	//
-@filter	spec/fixtures/test.coffee	/^    @filter = ->$/;"	f	lineno:14	object:Wat.ho	type:function
-_loop	spec/fixtures/test.coffee	/^_loop = (x) ->$/;"	f	lineno:19	object:window	type:function
-beam_magnum	spec/fixtures/test.coffee	/^beam_magnum : -> deployed(true)$/;"	f	lineno:44	object:window	type:function
-bound_func	spec/fixtures/test.coffee	/^bound_func = (ok) => wat(ok)$/;"	f	lineno:41	object:window	type:function
-bump	spec/fixtures/test.coffee	/^      bump : ->$/;"	f	lineno:10	object:Wat.ho.@lolWat	type:function
-bump	spec/fixtures/test.coffee	/^bump = (wat) ->$/;"	f	lineno:1	object:window	type:function
-bump_up	spec/fixtures/test.coffee	/^      bump_up : ->$/;"	f	lineno:12	object:Wat.ho.@lolWat	type:function
-ho	spec/fixtures/test.coffee	/^  ho : (x) ->$/;"	f	lineno:5	object:Wat	type:function
+@filter	spec/fixtures/test.coffee	/^    @filter = ->$/;"	f	lineno:14	type:function	object:Wat.ho
+@lolWat	spec/fixtures/test.coffee	/^    @lolWat =$/;"	v	lineno:9	type:var
+Wat	spec/fixtures/test.coffee	/^Wat =$/;"	v	lineno:4	type:var
+_loop	spec/fixtures/test.coffee	/^_loop = (x) ->$/;"	f	lineno:19	type:function	object:window
+beam_magnum	spec/fixtures/test.coffee	/^beam_magnum : -> deployed(true)$/;"	f	lineno:44	type:function	object:window
+bound_func	spec/fixtures/test.coffee	/^bound_func = (ok) => wat(ok)$/;"	f	lineno:41	type:function	object:window
+bump	spec/fixtures/test.coffee	/^      bump : ->$/;"	f	lineno:10	type:function	object:Wat.ho.@lolWat
+bump	spec/fixtures/test.coffee	/^bump = (wat) ->$/;"	f	lineno:1	type:function	object:window
+bump_up	spec/fixtures/test.coffee	/^      bump_up : ->$/;"	f	lineno:12	type:function	object:Wat.ho.@lolWat
+do	spec/fixtures/test.coffee	/^    do (element)$/;"	b	lineno:29	type:block
+do	spec/fixtures/test.coffee	/^  do (f) ->$/;"	b	lineno:36	type:block
+ho	spec/fixtures/test.coffee	/^  ho : (x) ->$/;"	f	lineno:5	type:function	object:Wat
+if	spec/fixtures/test.coffee	/^    if wat$/;"	b	lineno:24	type:block
+if	spec/fixtures/test.coffee	/^  if z.isSomethingRidic$/;"	b	lineno:21	type:block
+loop	spec/fixtures/test.coffee	/^Array::loop = (x) ->$/;"	p	lineno:46	type:proto	object:Array

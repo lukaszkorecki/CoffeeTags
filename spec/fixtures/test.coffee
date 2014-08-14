@@ -42,3 +42,6 @@ bound_func = (ok) => wat(ok)
 
 # TODO: beam_shield -> deployed(true)
 beam_magnum : -> deployed(true)
+
+Array::loop = (x) ->
+  x

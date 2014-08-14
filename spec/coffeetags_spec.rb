@@ -159,7 +159,7 @@ FF
 
     it "returns contents of output file without header and without tags for files that will be indexed" do
       lines = Coffeetags::Utils.setup_tag_lines("spec/fixtures/out.test-two.ctags", ["spec/fixtures/test.coffee"], true).map {|l| l.split("\t")[0]}
-      lines.should == %w{bump constructor handlers onFailure onSuccess recent roomInfo rooms}
+      lines.should == %w{Campfire Test bump constructor handlers onFailure onSuccess recent resp roomInfo rooms}
     end
 
     it "returns contents of output file with relative file paths without header and without tags for files that will be indexed" do
@@ -169,7 +169,7 @@ FF
       FileUtils.cp "spec/fixtures/out.test-relative.ctags", output
 
       lines = Coffeetags::Utils.setup_tag_lines(output, ["spec/fixtures/test.coffee"], true).map {|l| l.split("\t")[0]}
-      lines.should == %w{bump constructor handlers onFailure onSuccess recent roomInfo rooms}
+      lines.should == %w{Campfire Test bump constructor handlers onFailure onSuccess recent resp roomInfo rooms}
     end
 
     it "returns contents of output file with relative file paths from absolute file path" do
@@ -181,7 +181,7 @@ FF
       expanded_path = Pathname.new("spec/fixtures/test.coffee").expand_path.to_s
 
       lines = Coffeetags::Utils.setup_tag_lines(output, [expanded_path], true).map {|l| l.split("\t")[0]}
-      lines.should == %w{bump constructor handlers onFailure onSuccess recent roomInfo rooms}
+      lines.should == %w{Campfire Test bump constructor handlers onFailure onSuccess recent resp roomInfo rooms}
     end
 
     it "returns contents of output file with relative file paths from absolution output path" do
@@ -191,7 +191,7 @@ FF
       FileUtils.cp "spec/fixtures/out.test-relative.ctags", output
 
       lines = Coffeetags::Utils.setup_tag_lines(Pathname.new(output).expand_path.to_s, ["spec/fixtures/test.coffee"], true).map {|l| l.split("\t")[0]}
-      lines.should == %w{bump constructor handlers onFailure onSuccess recent roomInfo rooms}
+      lines.should == %w{Campfire Test bump constructor handlers onFailure onSuccess recent resp roomInfo rooms}
     end
   end
 

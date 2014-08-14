@@ -100,9 +100,14 @@ module Coffeetags
     def item_for_regex line,  regex, level, additional_fields={}
       if item = line.match(regex)
         entry_for_item = {
-          :name => item[1],
           :level => level
         }
+        if item.length > 2 # proto method
+          entry_for_item[:parent] = item[1]
+          entry_for_item[:name] = item[2]
+        else
+          entry_for_item[:name] = item[1]
+        end
         entry_for_item.merge(additional_fields)
       end
     end
@@ -124,16 +129,12 @@ module Coffeetags
         [
           [@class_regex, 'c'],
           [@proto_meths, 'p'],
-          [@var_regex, 'v']
+          [@var_regex, 'v'],
+          [@block, 'b']
         ].each do |regex, kind|
           mt = item_for_regex line, regex, level, :source => line.chomp, :line => line_n, :kind => kind
           @tree << mt unless mt.nil?
         end
-
-
-        # does this line contain a block?
-        mt = item_for_regex line, @block, level, :kind => 'b'
-        @tree << mt unless mt.nil?
 
 
         # instance variable or iterator (for/in)?

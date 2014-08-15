@@ -7,20 +7,19 @@ describe Utils do
     end
 
     it "returns default file list" do
-      Utils.option_parser(['-R']).should == {
-        :recur => true,
-        :files => [
-          "./spec/fixtures/blockcomment.coffee",
-          "./spec/fixtures/campfire.coffee",
-          "./spec/fixtures/class_with_at.coffee",
-          "./spec/fixtures/class_with_dot.coffee",
-          "./spec/fixtures/coffee-react.coffee",
-          "./spec/fixtures/exported_class.coffee",
-          "./spec/fixtures/test.coffee",
-          "./spec/fixtures/Cakefile",
-          "./spec/fixtures/coffee-react.cjsx"
-        ]
-      }
+      files = Utils.option_parser(['-R'])[:files]
+
+      files.sort.should == [
+        "./spec/fixtures/Cakefile",
+        "./spec/fixtures/blockcomment.coffee",
+        "./spec/fixtures/campfire.coffee",
+        "./spec/fixtures/class_with_at.coffee",
+        "./spec/fixtures/class_with_dot.coffee",
+        "./spec/fixtures/coffee-react.cjsx",
+        "./spec/fixtures/coffee-react.coffee",
+        "./spec/fixtures/exported_class.coffee",
+        "./spec/fixtures/test.coffee"
+      ].sort
     end
 
     it "returns files list" do

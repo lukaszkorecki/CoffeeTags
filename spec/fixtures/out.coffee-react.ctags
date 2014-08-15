@@ -1,0 +1,12 @@
+!_TAG_FILE_FORMAT	2	/extended format/
+!_TAG_FILE_SORTED	0	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Łukasz Korecki /lukasz@coffeesounds.com/
+!_TAG_PROGRAM_NAME	CoffeeTags	//
+!_TAG_PROGRAM_URL	https://github.com/lukaszkorecki/CoffeeTags	/GitHub repository/
+!_TAG_PROGRAM_VERSION	0.2.1	//
+React	spec/fixtures/coffee-react.cjsx	/^React = require 'react'$/;"	o	lineno:1	object:window	type:object
+ReactComponent	spec/fixtures/coffee-react.cjsx	/^ReactComponent = React.createClass$/;"	o	lineno:3	object:window	type:object
+className	spec/fixtures/coffee-react.cjsx	/^    <div className='css-class-name' prop1={1 + 2} flag>$/;"	o	lineno:6	object:ReactComponent.render	type:object
+displayName	spec/fixtures/coffee-react.cjsx	/^  displayName: 'ReactComponent'$/;"	o	lineno:4	object:ReactComponent	type:object
+exports	spec/fixtures/coffee-react.cjsx	/^module.exports = ReactComponent$/;"	o	lineno:10	object:window	type:object
+render	spec/fixtures/coffee-react.cjsx	/^  render: ->$/;"	f	lineno:5	object:ReactComponent	type:function

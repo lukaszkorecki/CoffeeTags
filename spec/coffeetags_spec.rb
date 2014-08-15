@@ -14,6 +14,7 @@ describe Utils do
           "./spec/fixtures/campfire.coffee",
           "./spec/fixtures/class_with_at.coffee",
           "./spec/fixtures/class_with_dot.coffee",
+          "./spec/fixtures/coffee-react.coffee",
           "./spec/fixtures/exported_class.coffee",
           "./spec/fixtures/test.coffee",
           "./spec/fixtures/Cakefile",
@@ -170,6 +171,12 @@ FF
     end
 
     it "generates tags for cjsx (coffee-react) files" do
+      Coffeetags::Utils.run({ :output => 'test.out', :files => 'spec/fixtures/coffee-react.cjsx', :include_vars => true })
+
+      File.read("test.out").should == File.read("./spec/fixtures/out.coffee-react.ctags")
+    end
+
+    it "generates tags for alternative coffee-react files" do
       Coffeetags::Utils.run({ :output => 'test.out', :files => 'spec/fixtures/coffee-react.cjsx', :include_vars => true })
 
       File.read("test.out").should == File.read("./spec/fixtures/out.coffee-react.ctags")

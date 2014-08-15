@@ -10,6 +10,7 @@ group :development do
   gem 'growl'
   gem 'guard-rspec'
   gem 'coveralls', require: false
+  gem 'simplecov', require: false
 
   gem 'pry'
   # osx

@@ -182,7 +182,7 @@ FF
     end
 
     after :each do
-      #`rm test.out` if File.exists? 'test.out'
+      `rm test.out` if File.exists? 'test.out'
       `rm -rf testout` if File.directory? 'testout'
     end
   end

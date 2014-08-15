@@ -79,4 +79,5 @@ endfunction
 augroup CoffeeAutoTag
   au!
   autocmd BufWritePost,FileWritePost *.coffee call CoffeeAutoTag()
+  autocmd BufWritePost,FileWritePost *.cjsx call CoffeeAutoTag()
 augroup END

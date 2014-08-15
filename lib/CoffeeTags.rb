@@ -81,7 +81,11 @@ module Coffeetags
       optparse.parse! args
 
       options[:files]  = args.to_a
-      options[:files] += Dir['./**/*.coffee', './**/Cakefile'] if options[:recur]
+      options[:files] += Dir[
+        './**/*.coffee',
+        './**/Cakefile',
+        './**/*.cjsx'     # Parse ReactJs files. See coffee-react https://github.com/jsdf/coffee-react
+      ] if options[:recur]
 
       options
     end

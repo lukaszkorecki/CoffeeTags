@@ -6,6 +6,22 @@ describe Utils do
       Utils.option_parser([]).should == { :exit => true, :files => [] }
     end
 
+    it "returns default file list" do
+      Utils.option_parser(['-R']).should == {
+        :recur => true,
+        :files => [
+          "./spec/fixtures/blockcomment.coffee",
+          "./spec/fixtures/campfire.coffee",
+          "./spec/fixtures/class_with_at.coffee",
+          "./spec/fixtures/class_with_dot.coffee",
+          "./spec/fixtures/exported_class.coffee",
+          "./spec/fixtures/test.coffee",
+          "./spec/fixtures/Cakefile",
+          "./spec/fixtures/coffee-react.cjsx"
+        ]
+      }
+    end
+
     it "returns files list" do
       Utils.option_parser(['lol.coffee']).should == {:files => ['lol.coffee']}
     end
@@ -153,8 +169,14 @@ FF
       File.read(output).should == File.read("./spec/fixtures/out.test-relative.ctags")
     end
 
+    it "generates tags for cjsx (coffee-react) files" do
+      Coffeetags::Utils.run({ :output => 'test.out', :files => 'spec/fixtures/coffee-react.cjsx' })
+
+      File.read("test.out").should == File.read("./spec/fixtures/out.test.ctags")
+    end
+
     after :each do
-      `rm test.out` if File.exists? 'test.out'
+      #`rm test.out` if File.exists? 'test.out'
       `rm -rf testout` if File.directory? 'testout'
     end
   end

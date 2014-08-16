@@ -9,6 +9,8 @@ group :development do
   gem 'guard'
   gem 'growl'
   gem 'guard-rspec'
+  gem 'coveralls', :require => false
+  gem 'simplecov', :require => false
 
   gem 'pry'
   # osx

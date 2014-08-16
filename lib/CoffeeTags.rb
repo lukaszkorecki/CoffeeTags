@@ -66,7 +66,7 @@ module Coffeetags
           exit
         end
 
-        opts.on('-h','--help','HALP') do
+        opts.on('-h','--help','HELP') do
           puts opts
           exit
         end

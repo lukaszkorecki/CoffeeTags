@@ -66,6 +66,11 @@ module Coffeetags
           exit
         end
 
+        opts.on('--list-kinds', 'Lists the tag kinds') do
+          Coffeetags::Formatter.kinds().map { |k, v| puts "#{k}  #{v}" }
+          exit
+        end
+
         opts.on('-h','--help','HELP') do
           puts opts
           exit

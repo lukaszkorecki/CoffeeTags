@@ -14,14 +14,14 @@ describe 'CoffeeTags::Formatter' do
 
   it "generates a line for method definition" do
     exp = [ 'constructor', 'test.coffee', "/^  constructor: (api_key, host) ->$/;\"",
-            'f', 'lineno:8', 'object:Campfire', 'type:function'
+            'f', 'line:8', 'object:Campfire', 'kind:function', 'language:coffee',
           ].join("\t")
     @instance.parse_tree.first.should == exp
   end
 
   it "generates line for second class" do
     exp = [ 'bump', 'test.coffee', "/^  bump : ->$/;\"",
-            'f', 'lineno:46', 'object:Test', 'type:function'
+            'f', 'line:46', 'object:Test', 'kind:function', 'language:coffee',
           ].join "\t"
     @instance.parse_tree.last.should == exp
   end

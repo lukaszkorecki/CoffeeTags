@@ -6,24 +6,24 @@
 !_TAG_PROGRAM_VERSION	0.3.0	//
 !_TAG_PROGRAM_VERSION	0.3.0	//
 !_THIS_LINE_SHOULD_GET_REMOVED	Nothing to see here	//
-@filter	spec/fixtures/test.coffee	/^    @filter = ->$/;"	f	line:14	object:Wat.ho	kind:function	language:coffee
-_loop	spec/fixtures/test.coffee	/^_loop = (x) ->$/;"	f	line:19	object:window	kind:function	language:coffee
-baz	spec/fixtures/blockcomment.coffee	/^baz : (x, y) ->$/;"	f	line:15	object:window	kind:function	language:coffee
-beam_magnum	spec/fixtures/test.coffee	/^beam_magnum : -> deployed(true)$/;"	f	line:44	object:window	kind:function	language:coffee
-bound_func	spec/fixtures/test.coffee	/^bound_func = (ok) => wat(ok)$/;"	f	line:41	object:window	kind:function	language:coffee
-bump	spec/fixtures/test.coffee	/^      bump : ->$/;"	f	line:10	object:Wat.ho.@lolWat	kind:function	language:coffee
-bump	spec/fixtures/test.coffee	/^bump = (wat) ->$/;"	f	line:1	object:window	kind:function	language:coffee
-bump_up	spec/fixtures/test.coffee	/^      bump_up : ->$/;"	f	line:12	object:Wat.ho.@lolWat	kind:function	language:coffee
-constructor	spec/fixtures/campfire.coffee	/^  constructor: (api_key, host) ->$/;"	f	line:8	object:Campfire	kind:function	language:coffee
-constructor2	spec/fixtures/campfire.coffee	/^  constructor: (api_key, host) ->$/;"	f	line:8	object:Campfire	kind:function	language:coffee
-echo2	spec/fixtures/blockcomment.coffee	/^echo2 :-> console.log 'echo'$/;"	f	line:7	object:window	kind:function	language:coffee
-echo3	spec/fixtures/blockcomment.coffee	/^echo3 :-> console.log 'echo'$/;"	f	line:23	object:window	kind:function	language:coffee
-foo	spec/fixtures/blockcomment.coffee	/^foo : (x) -> console.log 'bar #{x}'$/;"	f	line:26	object:window	kind:function	language:coffee
-foo2	spec/fixtures/blockcomment.coffee	/^foo2 : (x) -> console.log 'bar #{x}'$/;"	f	line:10	object:window	kind:function	language:coffee
-handlers	spec/fixtures/campfire.coffee	/^  handlers: (callbacks) ->$/;"	f	line:14	object:Campfire	kind:function	language:coffee
-ho	spec/fixtures/test.coffee	/^  ho : (x) ->$/;"	f	line:5	object:Wat	kind:function	language:coffee
-onFailure	spec/fixtures/campfire.coffee	/^      onFailure: (response) ->$/;"	f	line:24	object:Campfire.handlers.resp	kind:function	language:coffee
-onSuccess	spec/fixtures/campfire.coffee	/^      onSuccess : (response) ->$/;"	f	line:16	object:Campfire.handlers.resp	kind:function	language:coffee
-recent	spec/fixtures/campfire.coffee	/^  recent: (id, since, callbacks) ->$/;"	f	line:40	object:Campfire	kind:function	language:coffee
-roomInfo	spec/fixtures/campfire.coffee	/^  roomInfo: (id, callbacks) ->$/;"	f	line:34	object:Campfire	kind:function	language:coffee
-rooms	spec/fixtures/campfire.coffee	/^  rooms: (callbacks) ->$/;"	f	line:29	object:Campfire	kind:function	language:coffee
+@filter	spec/fixtures/test.coffee	/^    @filter = ->$/;"	f	line:14	object:Wat.ho	type:function	language:coffee
+_loop	spec/fixtures/test.coffee	/^_loop = (x) ->$/;"	f	line:19	object:window	type:function	language:coffee
+baz	spec/fixtures/blockcomment.coffee	/^baz : (x, y) ->$/;"	f	line:15	object:window	type:function	language:coffee
+beam_magnum	spec/fixtures/test.coffee	/^beam_magnum : -> deployed(true)$/;"	f	line:44	object:window	type:function	language:coffee
+bound_func	spec/fixtures/test.coffee	/^bound_func = (ok) => wat(ok)$/;"	f	line:41	object:window	type:function	language:coffee
+bump	spec/fixtures/test.coffee	/^      bump : ->$/;"	f	line:10	object:Wat.ho.@lolWat	type:function	language:coffee
+bump	spec/fixtures/test.coffee	/^bump = (wat) ->$/;"	f	line:1	object:window	type:function	language:coffee
+bump_up	spec/fixtures/test.coffee	/^      bump_up : ->$/;"	f	line:12	object:Wat.ho.@lolWat	type:function	language:coffee
+constructor	spec/fixtures/campfire.coffee	/^  constructor: (api_key, host) ->$/;"	f	line:8	object:Campfire	type:function	language:coffee
+constructor2	spec/fixtures/campfire.coffee	/^  constructor: (api_key, host) ->$/;"	f	line:8	object:Campfire	type:function	language:coffee
+echo2	spec/fixtures/blockcomment.coffee	/^echo2 :-> console.log 'echo'$/;"	f	line:7	object:window	type:function	language:coffee
+echo3	spec/fixtures/blockcomment.coffee	/^echo3 :-> console.log 'echo'$/;"	f	line:23	object:window	type:function	language:coffee
+foo	spec/fixtures/blockcomment.coffee	/^foo : (x) -> console.log 'bar #{x}'$/;"	f	line:26	object:window	type:function	language:coffee
+foo2	spec/fixtures/blockcomment.coffee	/^foo2 : (x) -> console.log 'bar #{x}'$/;"	f	line:10	object:window	type:function	language:coffee
+handlers	spec/fixtures/campfire.coffee	/^  handlers: (callbacks) ->$/;"	f	line:14	object:Campfire	type:function	language:coffee
+ho	spec/fixtures/test.coffee	/^  ho : (x) ->$/;"	f	line:5	object:Wat	type:function	language:coffee
+onFailure	spec/fixtures/campfire.coffee	/^      onFailure: (response) ->$/;"	f	line:24	object:Campfire.handlers.resp	type:function	language:coffee
+onSuccess	spec/fixtures/campfire.coffee	/^      onSuccess : (response) ->$/;"	f	line:16	object:Campfire.handlers.resp	type:function	language:coffee
+recent	spec/fixtures/campfire.coffee	/^  recent: (id, since, callbacks) ->$/;"	f	line:40	object:Campfire	type:function	language:coffee
+roomInfo	spec/fixtures/campfire.coffee	/^  roomInfo: (id, callbacks) ->$/;"	f	line:34	object:Campfire	type:function	language:coffee
+rooms	spec/fixtures/campfire.coffee	/^  rooms: (callbacks) ->$/;"	f	line:29	object:Campfire	type:function	language:coffee

@@ -50,7 +50,7 @@ module Coffeetags
         entry[:kind],
         "line:#{entry[:line]}",
         namespace,
-        "kind:"+Formatter::kinds()[entry[:kind]],
+        "type:"+Formatter::kinds()[entry[:kind]],
         "language:coffee"
       ].join("\t")
     end

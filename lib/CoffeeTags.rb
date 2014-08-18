@@ -68,12 +68,12 @@ module Coffeetags
 
         opts.on('--list-kinds', 'Lists the tag kinds') do
           Coffeetags::Formatter.kinds().map { |k, v| puts "#{k}  #{v}" }
-          exit
+          options[:exit] = true
         end
 
         opts.on('-h','--help','HELP') do
           puts opts
-          exit
+          options[:exit] = true
         end
 
       end
@@ -88,6 +88,8 @@ module Coffeetags
 
 
     def self.run options
+      exit if options[:exit]
+
       output = options[:output]
       include_vars = options[:include_vars]
       files = options[:files]

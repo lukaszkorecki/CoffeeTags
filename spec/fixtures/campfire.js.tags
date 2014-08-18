@@ -3,7 +3,7 @@
 !_TAG_PROGRAM_AUTHOR	Łukasz Korecki /lukasz@coffeesounds.com/
 !_TAG_PROGRAM_NAME	CoffeeTags	//
 !_TAG_PROGRAM_URL	https://github.com/lukaszkorecki/CoffeeTags	/GitHub repository/
-!_TAG_PROGRAM_VERSION	0.3.0	//
+!_TAG_PROGRAM_VERSION	0.3.1	//
 bump	spec/fixtures/campfire.coffee	/^  bump : ->$/;"	f	lineno:46	object:Test	type:function
 constructor	spec/fixtures/campfire.coffee	/^  constructor: (api_key, host) ->$/;"	f	lineno:8	object:Campfire	type:function
 handlers	spec/fixtures/campfire.coffee	/^  handlers: (callbacks) ->$/;"	f	lineno:14	object:Campfire	type:function

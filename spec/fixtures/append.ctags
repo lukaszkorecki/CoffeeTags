@@ -3,8 +3,8 @@
 !_TAG_PROGRAM_AUTHOR	Łukasz Korecki /lukasz@coffeesounds.com/
 !_TAG_PROGRAM_NAME	CoffeeTags	//
 !_TAG_PROGRAM_URL	https://github.com/lukaszkorecki/CoffeeTags	/GitHub repository/
-!_TAG_PROGRAM_VERSION	0.3.0	//
-!_TAG_PROGRAM_VERSION	0.3.0	//
+!_TAG_PROGRAM_VERSION	0.3.1	//
+!_TAG_PROGRAM_VERSION	0.3.1	//
 !_THIS_LINE_SHOULD_GET_REMOVED	Nothing to see here	//
 @filter	spec/fixtures/test.coffee	/^    @filter = ->$/;"	f	line:14	object:Wat.ho	type:function	language:coffee
 _loop	spec/fixtures/test.coffee	/^_loop = (x) ->$/;"	f	line:19	object:window	type:function	language:coffee

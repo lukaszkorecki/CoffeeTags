@@ -3,7 +3,7 @@
 !_TAG_PROGRAM_AUTHOR	Łukasz Korecki /lukasz@coffeesounds.com/
 !_TAG_PROGRAM_NAME	CoffeeTags	//
 !_TAG_PROGRAM_URL	https://github.com/lukaszkorecki/CoffeeTags	/GitHub repository/
-!_TAG_PROGRAM_VERSION	0.3.0	//
+!_TAG_PROGRAM_VERSION	0.3.1	//
 baz	spec/fixtures/blockcomment.coffee	/^baz : (x, y) ->$/;"	f	line:15	object:window	type:function	language:coffee
 echo2	spec/fixtures/blockcomment.coffee	/^echo2 :-> console.log 'echo'$/;"	f	line:7	object:window	type:function	language:coffee
 echo3	spec/fixtures/blockcomment.coffee	/^echo3 :-> console.log 'echo'$/;"	f	line:23	object:window	type:function	language:coffee

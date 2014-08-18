@@ -13,6 +13,15 @@ module Coffeetags
       ].map { |h| "#{h}\n"}.join ''
     end
 
+    def self.kinds
+      return {
+        'f' => 'function',
+        'c' => 'class',
+        'o' => 'object',
+        'v' => 'var'
+      }
+    end
+
     # New Formatter class
     #
     # @param [String] file file name
@@ -21,13 +30,6 @@ module Coffeetags
       @file = file
       @tree = tree
 
-
-      @types = {
-        'f' => 'type:function',
-        'c' => 'type:class',
-        'o' => 'type:object',
-        'v' => 'type:var'
-      }
       @header = Formatter.header
     end
 
@@ -46,9 +48,10 @@ module Coffeetags
         @file,
         regex_line(entry[:source]),
         entry[:kind],
-        "lineno:#{entry[:line]}",
+        "line:#{entry[:line]}",
         namespace,
-        @types[entry[:kind]]
+        "kind:"+Formatter::kinds()[entry[:kind]],
+        "language:coffee"
       ].join("\t")
     end
 

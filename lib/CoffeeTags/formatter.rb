@@ -13,6 +13,17 @@ module Coffeetags
       ].map { |h| "#{h}\n"}.join ''
     end
 
+    def self.kinds
+      return {
+        'f' => 'function',
+        'c' => 'class',
+        'o' => 'object',
+        'v' => 'var',
+        'p' => 'proto',
+        'b' => 'block'
+      }
+    end
+
     # New Formatter class
     #
     # @param [String] file file name
@@ -21,15 +32,6 @@ module Coffeetags
       @file = file
       @tree = tree
 
-
-      @types = {
-        'f' => 'type:function',
-        'c' => 'type:class',
-        'o' => 'type:object',
-        'v' => 'type:var',
-        'p' => 'type:proto',
-        'b' => 'type:block'
-      }
       @header = Formatter.header
     end
 
@@ -48,8 +50,9 @@ module Coffeetags
         @file,
         regex_line(entry[:source]),
         entry[:kind],
-        "lineno:#{entry[:line]}",
-        @types[entry[:kind]]
+        "line:#{entry[:line]}",
+        "type:"+Formatter::kinds()[entry[:kind]],
+        "language:coffee"
       ].join("\t")
       unless namespace.empty? then output << "\t#{namespace}" end
       output

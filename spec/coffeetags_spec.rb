@@ -3,10 +3,7 @@ include Coffeetags
 describe Utils do
   context 'Argument parsing' do
     it "returns nil when nothing is passed" do
-      expect {
-      Utils.option_parser( [])
-      }.to raise_error SystemExit
-
+      Utils.option_parser([]).should == { :exit => true, :files => [] }
     end
 
     it "returns files list" do
@@ -27,6 +24,21 @@ describe Utils do
 
     it "parses -f <file> option" do
       Utils.option_parser( [ '-f','tags' ,'lol.coffee']).should == { :output => 'tags', :files => ['lol.coffee'] }
+    end
+
+    it "outputs list-kinds to console" do
+      options = nil
+      output = capture_stdout {
+        options = Utils.option_parser( ['--list-kinds'])
+      }
+      output.should == <<-TAG
+f  function
+c  class
+o  object
+v  var
+      TAG
+
+      options[:exit].should == true
     end
   end
 
@@ -87,6 +99,14 @@ FF
       `rm test.tags`
     end
 
+  end
+
+  context 'Runner exit' do
+    it 'exits when the exit flag is present' do
+      expect {
+        Coffeetags::Utils.run({ :exit => true })
+      }.to raise_error SystemExit
+    end
   end
 
   context "Complete output" do

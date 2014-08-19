@@ -4,7 +4,7 @@
 
 A  simple tool for generating CoffeeScript tags (Ctags compatible).
 
-[![Build Status][travis-image]][travis-url]
+[![Build Status][travis-image]][travis-url] [![Coverage Status][coveralls-image]][coveralls-url]
 
 ### [Watch a quick demo](http://ascii.io/a/26)
 
@@ -108,3 +108,6 @@ MIT
 
 [ruby-gems-url]: http://rubygems.org/gems/CoffeeTags
 [ruby-gems-image]: https://badge.fury.io/rb/CoffeeTags.svg
+
+[coveralls-url]: https://coveralls.io/r/lukaszkorecki/CoffeeTags?branch=master
+[coveralls-image]: https://img.shields.io/coveralls/lukaszkorecki/CoffeeTags.svg

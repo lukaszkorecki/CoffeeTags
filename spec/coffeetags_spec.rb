@@ -36,6 +36,8 @@ f  function
 c  class
 o  object
 v  var
+p  proto
+b  block
       TAG
 
       options[:exit].should == true
@@ -118,7 +120,6 @@ FF
 
     it "generates tags for given files" do
       Coffeetags::Utils.run({ :output => 'test.out', :files => ['spec/fixtures/test.coffee', 'spec/fixtures/campfire.coffee'] })
-
 
       File.read("test.out").should == File.read("./spec/fixtures/out.test-two.ctags")
 

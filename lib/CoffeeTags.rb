@@ -17,7 +17,7 @@ class Object
 end
 
 module Coffeetags
-  AUTHOR = "Łukasz Korecki /lukasz@coffeesounds.com/"
+  AUTHOR = "Łukasz Korecki	/lukasz@coffeesounds.com/"
   NAME = "CoffeeTags"
   URL = "https://github.com/lukaszkorecki/CoffeeTags"
 

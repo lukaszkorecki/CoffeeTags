@@ -51,7 +51,6 @@ module Coffeetags
         regex_line(entry[:source]),
         entry[:kind],
         "line:#{entry[:line]}",
-        "type:"+Formatter::kinds()[entry[:kind]],
         "language:coffee"
       ].join("\t")
       unless namespace.empty? then output << "\t#{namespace}" end

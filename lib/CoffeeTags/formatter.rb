@@ -18,7 +18,9 @@ module Coffeetags
         'f' => 'function',
         'c' => 'class',
         'o' => 'object',
-        'v' => 'var'
+        'v' => 'var',
+        'p' => 'proto',
+        'b' => 'block'
       }
     end
 
@@ -43,16 +45,17 @@ module Coffeetags
       namespace = (entry[:parent].blank?) ? entry[:name]: entry[:parent]
       namespace =  namespace == entry[:name] ? '' : "object:#{namespace}"
 
-      [
+      output = [
         entry[:name],
         @file,
         regex_line(entry[:source]),
         entry[:kind],
         "line:#{entry[:line]}",
-        namespace,
         "type:"+Formatter::kinds()[entry[:kind]],
         "language:coffee"
       ].join("\t")
+      unless namespace.empty? then output << "\t#{namespace}" end
+      output
     end
 
     def parse_tree

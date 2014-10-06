@@ -18,6 +18,8 @@ module Coffeetags
       # regexes
       @block = /^\s*(if|unless|switch|loop|do)/
       @class_regex = /\s*class\s*(?:@)?([\w\.]*)/
+      @backbone_regex = /\s*(?:@)?([\w\.]*)\s*=\s*Backbone\.[\w]*\.extend\s*/
+      @react_regex = /\s*(?:@)?([\w\.]*)\s*=\s*React\.createClass\s*/
       @proto_meths = /^\s*([A-Za-z]*)::([@a-zA-Z0-9_]*)/
       @var_regex = /([@a-zA-Z0-9_]*)\s*[:=]\s*$/
       @token_regex = /([@a-zA-Z0-9_]*)\s*[:=]/
@@ -129,6 +131,8 @@ module Coffeetags
 
         [
           [@class_regex, 'c'],
+          [@backbone_regex, 'c'],
+          [@react_regex, 'c'],
           [@proto_meths, 'p'],
           [@var_regex, 'v'],
           [@block, 'b']

@@ -21,8 +21,8 @@ module Coffeetags
       @backbone_regex = /\s*(?:@)?([\w\.]*)\s*=\s*Backbone\.[\w]*\.extend\s*/
       @react_regex = /\s*(?:@)?([\w\.]*)\s*=\s*React\.createClass\s*/
       @proto_meths = /^\s*([A-Za-z]*)::([@a-zA-Z0-9_]*)/
-      @var_regex = /([@a-zA-Z0-9_]*)\s*[=:]{1}\s*$/
-      @token_regex = /([@a-zA-Z0-9_]*)\s*[:=]{1}/
+      @var_regex = /([@a-zA-Z0-9_]*)\s*[:=]\s*$/
+      @token_regex = /([@a-zA-Z0-9_]*)\s*[:=]/
       @iterator_regex = /^\s*for\s*([a-zA-Z0-9_]*)\s*/
       @comment_regex = /^\s*#/
       @start_block_comment_regex = /^\s*###/
@@ -102,9 +102,14 @@ module Coffeetags
     def item_for_regex line,  regex, level, additional_fields={}
       if item = line.match(regex)
         entry_for_item = {
-          :name => item[1],
           :level => level
         }
+        if item.length > 2 # proto method
+          entry_for_item[:parent] = item[1]
+          entry_for_item[:name] = item[2]
+        else
+          entry_for_item[:name] = item[1]
+        end
         entry_for_item.merge(additional_fields)
       end
     end
@@ -117,28 +122,24 @@ module Coffeetags
       level = 0
       @source.each_line do |line|
         line_n += 1
+        line.chomp!
         # indentify scopes
         level = line_level line
 
         # ignore comments!
         next if @comment_lines.include? line_n
 
-        # extract elements for given line
         [
-          @class_regex,
-          @backbone_regex,
-          @react_regex,
-          @proto_meths,
-          @var_regex
-        ].each do |regex|
-          mt = item_for_regex line, regex, level
+          [@class_regex, 'c'],
+          [@backbone_regex, 'c'],
+          [@react_regex, 'c'],
+          [@proto_meths, 'p'],
+          [@var_regex, 'v'],
+          [@block, 'b']
+        ].each do |regex, kind|
+          mt = item_for_regex line, regex, level, :source => line, :line => line_n, :kind => kind
           @tree << mt unless mt.nil?
         end
-
-
-        # does this line contain a block?
-        mt = item_for_regex line, @block, level, :kind => 'b'
-        @tree << mt unless mt.nil?
 
 
         # instance variable or iterator (for/in)?
@@ -151,7 +152,7 @@ module Coffeetags
             :name => token[1],
             :level => level,
             :parent => '',
-            :source => line.chomp,
+            :source => line,
             :line => line_n
           }
 

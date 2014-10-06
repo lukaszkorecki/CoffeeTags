@@ -52,9 +52,10 @@
   :line: 13
   :level: 4
 - :source: 'Array::loop = (x) ->'
-  :line: 18
-  :kind: f
+  :line: 46
+  :kind: p
   :parent: Array
+  :name: loop
   :level: 0
 - :source: 'bound_func = (ok) => wat(ok)'
   :line: 41

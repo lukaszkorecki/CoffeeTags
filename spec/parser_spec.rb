@@ -68,13 +68,20 @@ describe 'CoffeeTags::Parser' do
         @coffee_parser.execute!
       end
 
+      def cf_defined_values_should_equal(cf, c)
+        cf.each do |k, v|
+          c[k].should == v
+        end
+      end
+
       it "parses the class" do
-        c =@coffee_parser.tree.find { |i| i[:name] == 'Campfire'}
-        c.should == @cf_tree.find {|i| i[:name] == 'Campfire'}
+        c = @coffee_parser.tree.find { |i| i[:name] == 'Campfire'}
+        cf = @cf_tree.find {|i| i[:name] == 'Campfire'}
+        cf_defined_values_should_equal cf, c
       end
 
       it "parses the 2nd class" do
-        c =@coffee_parser.tree.find { |i| i[:name] == 'Test'}
+        c = @coffee_parser.tree.find { |i| i[:name] == 'Test'}
         c.should == @cf_tree.find {|i| i[:name] == 'Test'}
       end
 
@@ -91,26 +98,27 @@ describe 'CoffeeTags::Parser' do
         @coffee_parser.execute!
 
         c = @coffee_parser.tree.find { |i| i[:name] == 'Campfire'}
-        c.should == @cf_tree.find {|i| i[:name] == 'Campfire'}
+        cf = @cf_tree.find {|i| i[:name] == 'Campfire'}
+        cf_defined_values_should_equal cf, c
       end
 
       it "parses the instance variable" do
-        c =@coffee_parser.tree.find { |i| i[:name] == '@url'}
+        c = @coffee_parser.tree.find { |i| i[:name] == '@url'}
         c.should == @cf_tree.find {|i| i[:name] == '@url'}
       end
 
       it "parses the object literal with functions" do
-        c =@coffee_parser.tree.find { |i| i[:name] == 'resp'}
+        c = @coffee_parser.tree.find { |i| i[:name] == 'resp'}
         c.should == @cf_tree.find {|i| i[:name] == 'resp'}
       end
 
       it "parses a nested function" do
-        c =@coffee_parser.tree.find { |i| i[:name] == 'onSuccess'}
+        c = @coffee_parser.tree.find { |i| i[:name] == 'onSuccess'}
         c.should == @cf_tree.find {|i| i[:name] == 'onSuccess'}
       end
 
       it "parses a method var" do
-        c =@coffee_parser.tree.find { |i| i[:name] == 'url'}
+        c = @coffee_parser.tree.find { |i| i[:name] == 'url'}
         c.should == @cf_tree.find {|i| i[:name] == 'url'}
       end
     end
@@ -145,9 +153,8 @@ describe 'CoffeeTags::Parser' do
 
       end
     it "extracts a method defined in a prototype" do
-      pending 'methods defined on prototype needs implementing'
-      pro = @parser_test.tree.find { |i| i[:name] == '_loop'}
-      exp = @test_tree.find { |i| i[:name] == '_loop'}
+      pro = @parser_test.tree.find { |i| i[:name] == 'loop'}
+      exp = @test_tree.find { |i| i[:name] == 'loop'}
       pro.should_not be nil
       pro.should == exp
     end

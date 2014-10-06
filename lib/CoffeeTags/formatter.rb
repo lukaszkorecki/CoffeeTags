@@ -13,6 +13,17 @@ module Coffeetags
       ].map { |h| "#{h}\n"}.join ''
     end
 
+    def self.kinds
+      return {
+        'f' => 'function',
+        'c' => 'class',
+        'o' => 'object',
+        'v' => 'var',
+        'p' => 'proto',
+        'b' => 'block'
+      }
+    end
+
     # New Formatter class
     #
     # @param [String] file file name
@@ -21,13 +32,6 @@ module Coffeetags
       @file = file
       @tree = tree
 
-
-      @types = {
-        'f' => 'type:function',
-        'c' => 'type:class',
-        'o' => 'type:object',
-        'v' => 'type:var'
-      }
       @header = Formatter.header
     end
 
@@ -41,15 +45,16 @@ module Coffeetags
       namespace = (entry[:parent].blank?) ? entry[:name]: entry[:parent]
       namespace =  namespace == entry[:name] ? '' : "object:#{namespace}"
 
-      [
+      output = [
         entry[:name],
         @file,
         regex_line(entry[:source]),
         entry[:kind],
-        "lineno:#{entry[:line]}",
-        namespace,
-        @types[entry[:kind]]
+        "line:#{entry[:line]}",
+        "language:coffee"
       ].join("\t")
+      unless namespace.empty? then output << "\t#{namespace}" end
+      output
     end
 
     def parse_tree

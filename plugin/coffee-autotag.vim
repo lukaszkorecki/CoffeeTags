@@ -42,7 +42,11 @@ let g:tagbar_type_coffee = {
       \   'ctagsargs' : s:raw_args,
       \   'kinds' : [
       \     'f:functions',
+      \     'c:classes',
       \     'o:object',
+      \     'v:variables',
+      \     'p:prototypes',
+      \     'b:blocks'
       \   ],
       \   'sro' : ".",
       \   'kind2scope' : {
@@ -54,7 +58,7 @@ let g:tagbar_type_coffee = {
 
 function! CoffeeAutoTag()
   if g:CoffeeAutoTagDisabled
-    finish
+    return
   endif
 
   let cmd = 'coffeetags --append -f ' . s:CoffeeAutoTagFile . ' '

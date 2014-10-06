@@ -1,10 +1,10 @@
 # CoffeeTags
 
-### Latest version: `0.2.1`
+### Latest version: [![Gem version][ruby-gems-image]][ruby-gems-url]
 
 A  simple tool for generating CoffeeScript tags (Ctags compatible).
 
-[![Build Status](https://secure.travis-ci.org/lukaszkorecki/CoffeeTags.png?branch=master)](http://travis-ci.org/lukaszkorecki/CoffeeTags)
+[![Build Status][travis-image]][travis-url] [![Coverage Status][coveralls-image]][coveralls-url]
 
 ### [Watch a quick demo](http://ascii.io/a/26)
 
@@ -71,7 +71,7 @@ This can also be used as a vim plugin that will update tag files on save, and su
 In you `~/.vimrc` you can configure the plugin with:
 
 ```
-let g:CoffeeAutoDisabled=<0 or 1>        " Disables autotaging on save (Default: 0 [false])
+let g:CoffeeAutoTagDisabled=<0 or 1>     " Disables autotaging on save (Default: 0 [false])
 let g:CoffeeAutoTagFile=<filename>       " Name of the generated tag file (Default: ./tags)
 let g:CoffeeAutoTagIncludeVars=<0 or 1>  " Includes variables (Default: 0 [false])
 let g:CoffeeAutoTagTagRelative=<0 or 1>  " Sets file names to the relative path from the tag file location to the tag file location (Default: 1 [true])
@@ -103,3 +103,11 @@ MIT
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/lukaszkorecki/coffeetags/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
+[travis-url]: https://travis-ci.org/lukaszkorecki/CoffeeTags
+[travis-image]: https://travis-ci.org/lukaszkorecki/CoffeeTags.svg?branch=master
+
+[ruby-gems-url]: http://rubygems.org/gems/CoffeeTags
+[ruby-gems-image]: https://badge.fury.io/rb/CoffeeTags.svg
+
+[coveralls-url]: https://coveralls.io/r/lukaszkorecki/CoffeeTags?branch=master
+[coveralls-image]: https://img.shields.io/coveralls/lukaszkorecki/CoffeeTags.svg

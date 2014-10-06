@@ -6,3 +6,4 @@ vendor
 testout/
 test.out
 tags
+coverage/

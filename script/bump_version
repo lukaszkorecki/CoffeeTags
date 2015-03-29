@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+readonly oldVersion=$1
+readonly newVersion=$2
+
+if [[ "$oldVersion$newVersion" == '' ]] ; then
+  echo "$(basename $0) <old_version> <new_version>"
+  exit 1
+fi
+
+git grep "$oldVersion" | cut -d: -f1 | xargs sed -i "s/$oldVersion/$newVersion/g"

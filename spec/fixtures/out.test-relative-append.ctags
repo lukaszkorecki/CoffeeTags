@@ -19,13 +19,14 @@ bump	../spec/fixtures/test.coffee	/^bump = (wat) ->$/;"	f	line:1	language:coffee
 bump_up	../spec/fixtures/test.coffee	/^      bump_up : ->$/;"	f	line:12	language:coffee	object:Wat.ho.@lolWat
 constructor	../spec/fixtures/campfire.coffee	/^  constructor: (api_key, host) ->$/;"	f	line:8	language:coffee	object:Campfire
 constructor2	../spec/fixtures/campfire.coffee	/^  constructor: (api_key, host) ->$/;"	f	lineno:8	object:Campfire
-do	../spec/fixtures/test.coffee	/^    do (element)$/;"	b	line:29	language:coffee
+do	../spec/fixtures/test.coffee	/^    do (element) ->$/;"	b	line:29	language:coffee
 do	../spec/fixtures/test.coffee	/^  do (f) ->$/;"	b	line:36	language:coffee
 handlers	../spec/fixtures/campfire.coffee	/^  handlers: (callbacks) ->$/;"	f	line:14	language:coffee	object:Campfire
 ho	../spec/fixtures/test.coffee	/^  ho : (x) ->$/;"	f	line:5	language:coffee	object:Wat
 if	../spec/fixtures/test.coffee	/^    if wat$/;"	b	line:24	language:coffee
 if	../spec/fixtures/test.coffee	/^  if z.isSomethingRidic$/;"	b	line:21	language:coffee
 loop	../spec/fixtures/test.coffee	/^Array::loop = (x) ->$/;"	p	line:46	language:coffee	object:Array
+obj	../spec/fixtures/test.coffee	/^obj =$/;"	v	line:49	language:coffee
 onFailure	../spec/fixtures/campfire.coffee	/^      onFailure: (response) ->$/;"	f	line:24	language:coffee	object:Campfire.handlers.resp
 onSuccess	../spec/fixtures/campfire.coffee	/^      onSuccess : (response) ->$/;"	f	line:16	language:coffee	object:Campfire.handlers.resp
 recent	../spec/fixtures/campfire.coffee	/^  recent: (id, since, callbacks) ->$/;"	f	line:40	language:coffee	object:Campfire

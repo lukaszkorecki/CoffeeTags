@@ -69,4 +69,16 @@
   :kind: f
   :name: 'beam_magnum'
   :parent: window
+- :source: '      forVariable = 2 * element'
+  :parent: '_loop.element'
+  :line: 30
+  :kind: o
+  :name: forVariable
+  :level: 6
+- :source: "  className: 'notAClass'"
+  :parent: obj
+  :kind: o
+  :name: 'className'
+  :line: 50
+  :level: 2
 

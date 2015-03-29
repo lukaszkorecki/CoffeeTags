@@ -13,9 +13,10 @@ bound_func	spec/fixtures/test.coffee	/^bound_func = (ok) => wat(ok)$/;"	f	line:4
 bump	spec/fixtures/test.coffee	/^      bump : ->$/;"	f	line:10	language:coffee	object:Wat.ho.@lolWat
 bump	spec/fixtures/test.coffee	/^bump = (wat) ->$/;"	f	line:1	language:coffee	object:window
 bump_up	spec/fixtures/test.coffee	/^      bump_up : ->$/;"	f	line:12	language:coffee	object:Wat.ho.@lolWat
-do	spec/fixtures/test.coffee	/^    do (element)$/;"	b	line:29	language:coffee
+do	spec/fixtures/test.coffee	/^    do (element) ->$/;"	b	line:29	language:coffee
 do	spec/fixtures/test.coffee	/^  do (f) ->$/;"	b	line:36	language:coffee
 ho	spec/fixtures/test.coffee	/^  ho : (x) ->$/;"	f	line:5	language:coffee	object:Wat
 if	spec/fixtures/test.coffee	/^    if wat$/;"	b	line:24	language:coffee
 if	spec/fixtures/test.coffee	/^  if z.isSomethingRidic$/;"	b	line:21	language:coffee
 loop	spec/fixtures/test.coffee	/^Array::loop = (x) ->$/;"	p	line:46	language:coffee	object:Array
+obj	spec/fixtures/test.coffee	/^obj =$/;"	v	line:49	language:coffee

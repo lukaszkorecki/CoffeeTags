@@ -102,6 +102,12 @@ describe 'CoffeeTags::Parser' do
         cf_defined_values_should_equal cf, c
       end
 
+      it "should distinguish from a variable that contains 'class'" do
+        @test_parser.execute!
+        c = @test_parser.tree.find { |i| i[:name] == 'className'}
+        c.should == @test_tree.find { |i| i[:name] == 'className'}
+      end
+
       it "parses the instance variable" do
         c = @coffee_parser.tree.find { |i| i[:name] == '@url'}
         c.should == @cf_tree.find {|i| i[:name] == '@url'}
@@ -143,7 +149,7 @@ describe 'CoffeeTags::Parser' do
     end
 
     it 'correctly recognizes an object in for block' do
-      pro = @parser_test.tree.find { |i| i[:name] == 'ugh'}
+      pro = @parser_test.tree.find { |i| i[:name] == 'forVariable'}
       pro[:parent].should == '_loop.element'
 
     end
@@ -179,8 +185,13 @@ describe 'CoffeeTags::Parser' do
       end
 
       it "detects the scope" do
-
         subject[:parent].should == '_loop'
+      end
+
+      it "should distinguish from a variable that contains 'for'" do
+        e = @test_tree.find { |i| i[:name] == 'forVariable'}
+        g = @parser_test.tree.find { |i| i[:line] == 30}
+        g.should == e
       end
     end
     context 'Block comments' do

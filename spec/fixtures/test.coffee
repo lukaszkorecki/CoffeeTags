@@ -26,8 +26,8 @@ _loop = (x) ->
 
 
   for element in lol
-    do (element)
-      ugh = 2 * element
+    do (element) ->
+      forVariable = 2 * element
 # for testing with issue #1 examples
 dir = fs.readdirSync __dirname
 x = dir + '/foo'
@@ -45,3 +45,6 @@ beam_magnum : -> deployed(true)
 
 Array::loop = (x) ->
   x
+
+obj =
+  className: 'notAClass'

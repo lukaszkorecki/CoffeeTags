@@ -1,8 +1,9 @@
 source "http://rubygems.org"
 
-gem 'rake'
-# Specify your gem's dependencies in CoffeeTags.gemspec
 gemspec
+gem 'rake'
+
+gem 'CoffeeTags', path: '.'
 
 group :development do
   gem 'listen', '1.3.1'

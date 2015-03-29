@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.name        = "CoffeeTags"
   s.version     = Coffeetags::VERSION
   s.authors     = ["Łukasz Korecki", "Matthew Smith"]
-  s.email       = ["lukasz@coffeesounds.com", "mtscout6@gmail.com"]
+  s.email       = ["lukasz@korecki.me", "mtscout6@gmail.com"]
   s.homepage    = "http://github.com/lukaszkorecki/CoffeeTags"
   s.summary     = %q{tags generator for CoffeeScript}
   s.description = %q{CoffeeTags generates ctags compatibile tags for CoffeeScript.}

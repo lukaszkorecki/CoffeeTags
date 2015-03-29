@@ -79,7 +79,7 @@ let g:CoffeeAutoTagTagRelative=<0 or 1>  " Sets file names to the relative path 
 
 # Sublime Text
 
-*TODO* - I don't use ST myself, but PRs with HOWTO are welcomed
+See [this issue on SublimeText/Ctags](https://github.com/SublimeText/CTags/issues/33)
 
 # Config types
 

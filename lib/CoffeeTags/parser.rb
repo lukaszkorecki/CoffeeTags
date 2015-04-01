@@ -1,3 +1,4 @@
+require 'pry'
 module Coffeetags
   class Parser
     attr_reader :tree
@@ -18,8 +19,9 @@ module Coffeetags
       # regexes
       @block = /^\s*(if\s+|unless\s+|switch\s+|loop\s+|do\s+)/
       @class_regex = /\s*class\s+(?:@)?([\w\.]*)/
+      @func_regex = /^\s*([A-Za-z_]*)\s?[=:]\s?\([@a-zA-Z0-9_]*\)\s?[=-]>/
       @proto_meths = /^\s*([A-Za-z]*)::([@a-zA-Z0-9_]*)/
-      @var_regex = /([@a-zA-Z0-9_]*)\s*[:=]\s*$/
+      @var_regex = /([@a-zA-Z0-9_]*)\s*[:=]\s*[^-=]+$/
       @token_regex = /([@a-zA-Z0-9_]*)\s*[:=]/
       @iterator_regex = /^\s*for\s+([a-zA-Z0-9_]*)\s*/
       @comment_regex = /^\s*#/
@@ -84,6 +86,7 @@ module Coffeetags
           current_level = item[:level]
         end
       end
+      #puts "bf is", bf
       bf.uniq.reverse.join('.')
     end
 
@@ -112,12 +115,23 @@ module Coffeetags
       end
     end
 
+    # get rid of duplicate entries
+    # TODO: how to define a duplicate entry ? group by name first ?
+    def uniq_tree tree
+      len_before_uniq = tree.size
+      tree.uniq!
+      len_after_uniq = tree.size
+      #puts "len_before_uniq: #{len_before_uniq}, after: #{len_after_uniq}"
+      tree
+    end
+
     # Parse the source and create a tags tree
     # @note this method mutates @tree instance variable of Coffeetags::Parser instance
     # @returns self it can be chained
     def execute!
       line_n = 0
       level = 0
+      classes = []
       @source.each_line do |line|
         line_n += 1
         line.chomp!
@@ -130,13 +144,18 @@ module Coffeetags
         [
           [@class_regex, 'c'],
           [@proto_meths, 'p'],
+          [@func_regex, 'f'],
           [@var_regex, 'v'],
-          [@block, 'b']
+          #[@block, 'b']
         ].each do |regex, kind|
           mt = item_for_regex line, regex, level, :source => line, :line => line_n, :kind => kind
-          @tree << mt unless mt.nil?
+          #next if !@include_vars and ['v'].include? kind
+          unless mt.nil?
+            classes.push mt if kind == 'c'
+            next if kind == 'f' # wait for later to determine whether it is a class method
+            @tree << mt
+          end
         end
-
 
         # instance variable or iterator (for/in)?
         token = line.match(@token_regex )
@@ -166,16 +185,25 @@ module Coffeetags
           is_previous_not_the_same = !(@tree.last and @tree.last[:name] == o[:name] and  @tree.last[:level] == o[:level])
 
           if is_in_string.nil? and is_in_comparison.nil? and has_blank_parent.nil? and is_previous_not_the_same
-            o[:kind]   =  line =~ /[:=]{1}.*[-=]\>/ ? 'f' : 'o'
+            o[:kind]   =  line =~ /[:=]{1}.*[-=]\s?\>/ ? 'f' : 'o'
             o[:parent] =  scope_path o
             o[:parent] = @fake_parent if o[:parent].empty?
 
-            @tree << o if o[:kind] == 'f'
-            @tree << o if o[:kind] == 'o' and @include_vars
+            # TODO: process func params
+            # functions that has a class as parent, should be treated as proto methods
+            if o[:kind] == 'f'
+              maybe_parent_class = classes.find {|c| c[:name] == o[:parent] }
+              if maybe_parent_class
+                o[:kind] = 'p'
+              end
+              @tree << o
+            else
+              @tree << o if ['o', 'v'].include?(o[:kind]) and @include_vars
+            end
           end
         end
         # get rid of duplicate entries
-        @tree.uniq!
+        @tree = uniq_tree @tree
       end
       self # chain!
     end

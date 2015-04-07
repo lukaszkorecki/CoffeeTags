@@ -17,13 +17,15 @@ module Coffeetags
       @tree = []
 
       # regexes
-      @block = /^\s*(if\s+|unless\s+|switch\s+|loop\s+|do\s+)/
+      @block = /^\s*(if\s+|unless\s+|switch\s+|loop\s+|do\s+|for\s+)/
       @class_regex = /\s*class\s+(?:@)?([\w\.]*)/
-      @func_regex = /^\s*([A-Za-z_]*)\s?[=:]\s?\([@a-zA-Z0-9_]*\)\s?[=-]>/
-      @proto_meths = /^\s*([A-Za-z]*)::([@a-zA-Z0-9_]*)/
-      @var_regex = /([@a-zA-Z0-9_]*)\s*[:=]\s*[^-=]+$/
-      @token_regex = /([@a-zA-Z0-9_]*)\s*[:=]/
-      @iterator_regex = /^\s*for\s+([a-zA-Z0-9_]*)\s*/
+      #@func_regex = /^\s*([A-Za-z0-9_]*)\s?[=:]\s?\([@a-zA-Z0-9_]*\)\s?[=-]>/
+      @func_regex = /^\s*(?<name>[a-zA-Z0-9_]+)\s?[=:]\s?(?<params>\([@a-zA-Z0-9_]*\))?\s?[=-]>/
+      @proto_meths = /^\s*(?<parent>[A-Za-z]+)::(?<name>[@a-zA-Z0-9_]*)/
+      @var_regex = /([@a-zA-Z0-9_]+)\s*[:=]\s*[^-=]*$/
+      @token_regex = /([@a-zA-Z0-9_]+)\s*[:=]/
+      #@iterator_regex = /^\s*for\s+([a-zA-Z0-9_]*)\s*/ # for in/of
+      @iterator_regex = /^\s*for\s+(?<name>[a-zA-Z0-9_]+)\s+(in|of)(?<parent>.)*/ # use named captures too specify parent variable in iterator
       @comment_regex = /^\s*#/
       @start_block_comment_regex = /^\s*###/
       @end_block_comment_regex = /^.*###/
@@ -81,13 +83,22 @@ module Coffeetags
       current_level = element[:level]
       tree[0..idx].reverse.each_with_index do |item, index|
         # uhmmmmmm
-        if item[:level] != current_level and item[:level] < current_level and item[:line] !~  @block
-          bf << item[:name] unless item[:kind] == 'b'
+        if item[:level] < current_level
+          if item[:kind] == 'b'
+            #puts "block", item
+            true
+          elsif
+            bf << item[:name]
+          end
           current_level = item[:level]
+          #if element[:name] == 'forVariable'
+            #binding.pry
+          #end
         end
       end
-      #puts "bf is", bf
-      bf.uniq.reverse.join('.')
+      sp = bf.uniq.reverse.join('.')
+      #puts "scope_path is #{sp}" if sp
+      sp
     end
 
     # Helper function for generating parse tree elements for given
@@ -100,14 +111,19 @@ module Coffeetags
     # @returns [Hash,nil] returns a parse tree element consiting of:
     #   :name of the element
     #   indentation :level of the element
-    def item_for_regex line,  regex, level, additional_fields={}
+    def item_for_regex line, regex, level, additional_fields={}
       if item = line.match(regex)
         entry_for_item = {
           :level => level
         }
-        if item.length > 2 # proto method
-          entry_for_item[:parent] = item[1]
-          entry_for_item[:name] = item[2]
+        if item.length > 2 # proto method or func
+          if regex == @proto_meths
+            entry_for_item[:parent] = item[1]
+            entry_for_item[:name] = item[2]
+          elsif regex == @func_regex
+            entry_for_item[:name] = item[1]
+            #entry_for_item[:params] = item[2] # TODO: when formatting, show params in name ?
+          end
         else
           entry_for_item[:name] = item[1]
         end
@@ -146,11 +162,12 @@ module Coffeetags
           [@proto_meths, 'p'],
           [@func_regex, 'f'],
           [@var_regex, 'v'],
-          #[@block, 'b']
+          [@block, 'b']
         ].each do |regex, kind|
           mt = item_for_regex line, regex, level, :source => line, :line => line_n, :kind => kind
           #next if !@include_vars and ['v'].include? kind
           unless mt.nil?
+            # TODO: one token should not fit for multiple regex
             classes.push mt if kind == 'c'
             next if kind == 'f' # wait for later to determine whether it is a class method
             @tree << mt
@@ -163,17 +180,26 @@ module Coffeetags
 
         # we have found something!
         if not token.nil?
-          o = {
-            :name => token[1],
-            :level => level,
-            :parent => '',
-            :source => line,
-            :line => line_n
-          }
+          # should find token through the tree first
+          token_name = token[1]
+          existed_token = @tree.find {|o| o[:name] == token_name}
+          if existed_token
+            o = existed_token
+          else
+            o = {
+              :name => token_name,
+              :level => level,
+              :parent => '',
+              :source => line,
+              :line => line_n
+            }
+          end
 
           # remove edge cases for now
           # - if a line containes a line like:  element.getElement('type=[checkbox]').lol()
           is_in_string = line =~ /.*['"].*#{token[1]}.*=.*["'].*/
+          # FIXME: command still treated as var, is_in_string does not work
+          # @resoureTextAgent.trigger('command:align')
 
           # - scope access and comparison in if x == 'lol'
           is_in_comparison = line =~ /::|==/
@@ -182,11 +208,20 @@ module Coffeetags
           has_blank_parent = o[:parent] =~ /\.$/
 
           # - multiple consecutive assignments
-          is_previous_not_the_same = !(@tree.last and @tree.last[:name] == o[:name] and  @tree.last[:level] == o[:level])
+          is_previous_not_the_same = !(@tree.last and @tree.last[:name] == o[:name] and @tree.last[:level] == o[:level])
 
-          if is_in_string.nil? and is_in_comparison.nil? and has_blank_parent.nil? and is_previous_not_the_same
-            o[:kind]   =  line =~ /[:=]{1}.*[-=]\s?\>/ ? 'f' : 'o'
-            o[:parent] =  scope_path o
+          #if token == 'forVariable' or o[:name] == 'forVariable'
+            #binding.pry
+          #end
+          #if token == 'className'
+          #  binding.pry
+          #end
+
+          # TODO: when to use is_previous_not_the_same ?
+          if is_in_string.nil? and is_in_comparison.nil? and (has_blank_parent.nil? or is_previous_not_the_same)
+            #o[:kind]   = line =~ /[:=]{1}.*[-=]\s?\>/ ? 'f' : 'o'
+            o[:kind]   = line =~ /[:=]{1}.*[-=]\s?\>/ ? 'f' : 'v' # TODO: when is it an object
+            o[:parent] = scope_path o
             o[:parent] = @fake_parent if o[:parent].empty?
 
             # TODO: process func params

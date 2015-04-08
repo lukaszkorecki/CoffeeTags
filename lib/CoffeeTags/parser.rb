@@ -143,7 +143,9 @@ module Coffeetags
     # - when not required to include_vars, reject the variables
     def trim_tree tree
       unless @include_vars
-        tree = tree.reject {|c| ['o', 'v'].include? c[:kind] }
+        tree = tree.reject do |c|
+          ['o', 'v'].include? c[:kind]
+        end
       end
       tree
     end
@@ -235,29 +237,31 @@ module Coffeetags
           if !is_in_string and is_in_comparison.nil? and (has_blank_parent.nil? or is_previous_not_the_same)
             unless o[:kind]
               #o[:kind]   = line =~ /[:=]{1}.*[-=]\s?\>/ ? 'f' : 'o'
-              o[:kind]   = line =~ /[:=]{1}.*[-=]\s?\>/ ? 'f' : 'v' # TODO: when is it an object
+              o[:kind]   = line =~ /[:=]{1}.*[-=]\s?\>/ ? 'f' : 'v'
+              # TODO: when is it an object? when it is someone's parent ? but this process should wait for all the tree has been generated
             end
             o[:parent] = scope_path o
             o[:parent] = @fake_parent if o[:parent].empty?
 
-            # TODO: treat variable with a class as parent as property
-            #
-            # TODO: process func params
-            # functions that has a class as parent, should be treated as proto methods
-            if o[:kind] == 'f'
+            # treat variable and function with a class as parent as property
+            if ['f', 'v', 'o'].include? o[:kind]
+              # TODO: process func params
               maybe_parent_class = classes.find {|c| c[:name] == o[:parent] }
               if maybe_parent_class
                 o[:kind] = 'p'
               end
-              @tree << o
-            else
-              @tree << o if @include_vars and ['o', 'v'].include?(o[:kind])
+              @tree << o unless @tree.include? o
             end
+
+            if @include_vars and ['o', 'v'].include?(o[:kind])
+              @tree << o unless @tree.include? o
+            end
+
           end
         end
       end
 
-      trim_tree @tree
+      @tree = trim_tree @tree
 
       # get rid of duplicate entries
       # P.S when found a token, first lookup in the tree, thus the duplicate won't appear

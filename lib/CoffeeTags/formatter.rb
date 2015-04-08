@@ -64,7 +64,6 @@ module Coffeetags
       @lines.reject!{|l| l.nil? }
     end
 
-
     def tags
       @lines.map { |l| "#{l}\n"}.join ''
     end

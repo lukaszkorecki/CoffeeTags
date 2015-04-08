@@ -128,17 +128,16 @@ module Coffeetags
     end
 
     # get rid of duplicate entries
-    def uniq_tree tree
-      # group by name first
-      #groups = tree.group_by {|o| o[:name]}
-      #groups.each do |g|
-      #  if g.size > 2
-      #    binding.pry
-      #  end
-      #end
-      tree.uniq!
-      tree
-    end
+    #def uniq_tree tree
+    #  # group by name first
+    #  groups = tree.group_by {|o| o[:name]}
+    #  groups.each do |g|
+    #    if g.size > 2
+    #      binding.pry
+    #    end
+    #  end
+    #  tree
+    #end
 
     # Parse the source and create a tags tree
     # @note this method mutates @tree instance variable of Coffeetags::Parser instance

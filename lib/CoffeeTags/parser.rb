@@ -19,7 +19,6 @@ module Coffeetags
       # regexes
       @block = /^\s*(if\s+|unless\s+|switch\s+|loop\s+|do\s+|for\s+)/
       @class_regex = /\s*class\s+(?:@)?([\w\.]*)/
-      #@func_regex = /^\s*([A-Za-z0-9_]*)\s?[=:]\s?\([@a-zA-Z0-9_]*\)\s?[=-]>/
       @func_regex = /^\s*(?<name>[a-zA-Z0-9_]+)\s?[=:]\s?(?<params>\([@a-zA-Z0-9_]*\))?\s?[=-]>/
       @proto_meths = /^\s*(?<parent>[A-Za-z]+)::(?<name>[@a-zA-Z0-9_]*)/
       @var_regex = /([@a-zA-Z0-9_]+)\s*[:=]\s*[^-=]*$/
@@ -91,9 +90,6 @@ module Coffeetags
             bf << item[:name]
           end
           current_level = item[:level]
-          #if element[:name] == 'forVariable'
-            #binding.pry
-          #end
         end
       end
       sp = bf.uniq.reverse.join('.')
@@ -197,9 +193,25 @@ module Coffeetags
 
           # remove edge cases for now
           # - if a line containes a line like:  element.getElement('type=[checkbox]').lol()
-          is_in_string = line =~ /.*['"].*#{token[1]}.*=.*["'].*/
-          # FIXME: command still treated as var, is_in_string does not work
-          # @resoureTextAgent.trigger('command:align')
+          is_in_string = false
+          token_match_in_line = line.match token_name
+          unless token_match_in_line.nil?
+            offset = token_match_in_line.offset 0
+            str_before = line.slice 0, offset[0]
+            str_after = line.slice offset[1], line.size
+            for s in [str_before, str_after]
+              # find unmatch quotes
+              for q in ['"', '\'']
+                len = s.scan(q).size
+                is_in_string = true if len % 2 == 1
+              end
+            end
+          end
+
+          if is_in_string
+            @tree = @tree.reject {|c| c[:name] == o[:name]}
+            next
+          end
 
           # - scope access and comparison in if x == 'lol'
           is_in_comparison = line =~ /::|==/
@@ -210,17 +222,11 @@ module Coffeetags
           # - multiple consecutive assignments
           is_previous_not_the_same = !(@tree.last and @tree.last[:name] == o[:name] and @tree.last[:level] == o[:level])
 
-          #if token == 'forVariable' or o[:name] == 'forVariable'
-            #binding.pry
-          #end
-          #if token == 'className'
-          #  binding.pry
-          #end
-
-          # TODO: when to use is_previous_not_the_same ?
-          if is_in_string.nil? and is_in_comparison.nil? and (has_blank_parent.nil? or is_previous_not_the_same)
-            #o[:kind]   = line =~ /[:=]{1}.*[-=]\s?\>/ ? 'f' : 'o'
-            o[:kind]   = line =~ /[:=]{1}.*[-=]\s?\>/ ? 'f' : 'v' # TODO: when is it an object
+          if !is_in_string and is_in_comparison.nil? and (has_blank_parent.nil? or is_previous_not_the_same)
+            unless o[:kind]
+              #o[:kind]   = line =~ /[:=]{1}.*[-=]\s?\>/ ? 'f' : 'o'
+              o[:kind]   = line =~ /[:=]{1}.*[-=]\s?\>/ ? 'f' : 'v' # TODO: when is it an object
+            end
             o[:parent] = scope_path o
             o[:parent] = @fake_parent if o[:parent].empty?
 
@@ -233,7 +239,7 @@ module Coffeetags
               end
               @tree << o
             else
-              @tree << o if ['o', 'v'].include?(o[:kind]) and @include_vars
+              @tree << o if @include_vars and ['o', 'v'].include?(o[:kind])
             end
           end
         end

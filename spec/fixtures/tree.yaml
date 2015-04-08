@@ -23,6 +23,7 @@
 - :name: resp
   :level: 4
   :source: "    resp ="
+  :parent: "Campfire.handlers"
   :line: 15
   :kind: v
 - :source: "      onSuccess : (response) ->"

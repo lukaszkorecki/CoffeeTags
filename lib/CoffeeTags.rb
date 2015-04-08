@@ -112,8 +112,6 @@ module Coffeetags
         parser = Coffeetags::Parser.new sc, include_vars
         parser.execute!
 
-        #binding.pry
-
         tag_file_path = file_path file, output, options[:tag_relative]
         formatter = Coffeetags::Formatter.new tag_file_path, parser.tree
 

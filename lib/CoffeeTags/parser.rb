@@ -128,12 +128,15 @@ module Coffeetags
     end
 
     # get rid of duplicate entries
-    # TODO: how to define a duplicate entry ? group by name first ?
     def uniq_tree tree
-      len_before_uniq = tree.size
+      # group by name first
+      #groups = tree.group_by {|o| o[:name]}
+      #groups.each do |g|
+      #  if g.size > 2
+      #    binding.pry
+      #  end
+      #end
       tree.uniq!
-      len_after_uniq = tree.size
-      #puts "len_before_uniq: #{len_before_uniq}, after: #{len_after_uniq}"
       tree
     end
 
@@ -161,7 +164,6 @@ module Coffeetags
           [@block, 'b']
         ].each do |regex, kind|
           mt = item_for_regex line, regex, level, :source => line, :line => line_n, :kind => kind
-          #next if !@include_vars and ['v'].include? kind
           unless mt.nil?
             # TODO: one token should not fit for multiple regex
             classes.push mt if kind == 'c'
@@ -243,9 +245,11 @@ module Coffeetags
             end
           end
         end
-        # get rid of duplicate entries
-        @tree = uniq_tree @tree
       end
+
+      # get rid of duplicate entries
+      # P.S when found a token, first lookup in the tree, thus the duplicate won't appear
+      #@tree = uniq_tree @tree
       self # chain!
     end
   end

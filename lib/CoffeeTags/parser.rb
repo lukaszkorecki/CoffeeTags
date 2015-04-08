@@ -139,6 +139,15 @@ module Coffeetags
     #  tree
     #end
 
+    # trim the bloated tree
+    # - when not required to include_vars, reject the variables
+    def trim_tree tree
+      unless @include_vars
+        tree = tree.reject {|c| ['o', 'v'].include? c[:kind] }
+      end
+      tree
+    end
+
     # Parse the source and create a tags tree
     # @note this method mutates @tree instance variable of Coffeetags::Parser instance
     # @returns self it can be chained
@@ -231,6 +240,8 @@ module Coffeetags
             o[:parent] = scope_path o
             o[:parent] = @fake_parent if o[:parent].empty?
 
+            # TODO: treat variable with a class as parent as property
+            #
             # TODO: process func params
             # functions that has a class as parent, should be treated as proto methods
             if o[:kind] == 'f'
@@ -245,6 +256,8 @@ module Coffeetags
           end
         end
       end
+
+      trim_tree @tree
 
       # get rid of duplicate entries
       # P.S when found a token, first lookup in the tree, thus the duplicate won't appear

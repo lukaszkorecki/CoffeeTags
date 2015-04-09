@@ -139,12 +139,27 @@ module Coffeetags
     #  tree
     #end
 
+    # Look through the tree to see if it's possible to change an entry's kind
+    # Differ the objects from simple variables
+    # Should execute after the whole tree has been generated
+    def comb_kinds tree
+      entries_with_parent = tree.reject {|c| c[:parent].nil? }
+      tree.each do |c|
+        next c unless c[:kind] == 'v'
+        maybe_child = entries_with_parent.select {|e| e[:parent] == c[:name]}
+        unless maybe_child.empty?
+          c[:kind] = 'o'
+        end
+      end
+      tree
+    end
+
     # trim the bloated tree
     # - when not required to include_vars, reject the variables
     def trim_tree tree
       unless @include_vars
         tree = tree.reject do |c|
-          ['o', 'v'].include? c[:kind]
+          ['v'].include? c[:kind]
         end
       end
       tree
@@ -236,9 +251,7 @@ module Coffeetags
 
           if !is_in_string and is_in_comparison.nil? and (has_blank_parent.nil? or is_previous_not_the_same)
             unless o[:kind]
-              #o[:kind]   = line =~ /[:=]{1}.*[-=]\s?\>/ ? 'f' : 'o'
               o[:kind]   = line =~ /[:=]{1}.*[-=]\s?\>/ ? 'f' : 'v'
-              # TODO: when is it an object? when it is someone's parent ? but this process should wait for all the tree has been generated
             end
             o[:parent] = scope_path o
             o[:parent] = @fake_parent if o[:parent].empty?
@@ -260,6 +273,8 @@ module Coffeetags
           end
         end
       end
+
+      @tree = comb_kinds @tree
 
       @tree = trim_tree @tree
 

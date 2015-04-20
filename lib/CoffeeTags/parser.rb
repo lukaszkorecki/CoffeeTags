@@ -263,13 +263,9 @@ module Coffeetags
               if maybe_parent_class
                 o[:kind] = 'p'
               end
-              @tree << o unless @tree.include? o
             end
 
-            if @include_vars and ['o', 'v'].include?(o[:kind])
-              @tree << o unless @tree.include? o
-            end
-
+            @tree << o unless @tree.include? o
           end
         end
       end

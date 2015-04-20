@@ -1,4 +1,3 @@
-require 'pry'
 module Coffeetags
   class Parser
     attr_reader :tree
@@ -131,11 +130,6 @@ module Coffeetags
     #def uniq_tree tree
     #  # group by name first
     #  groups = tree.group_by {|o| o[:name]}
-    #  groups.each do |g|
-    #    if g.size > 2
-    #      binding.pry
-    #    end
-    #  end
     #  tree
     #end
 
@@ -274,8 +268,8 @@ module Coffeetags
 
       @tree = trim_tree @tree
 
-      # get rid of duplicate entries
       # P.S when found a token, first lookup in the tree, thus the duplicate won't appear
+      # so there is no need of uniq_tree
       #@tree = uniq_tree @tree
       self # chain!
     end

@@ -3,7 +3,7 @@
 !_TAG_PROGRAM_AUTHOR	Łukasz Korecki	/lukasz@korecki.me/
 !_TAG_PROGRAM_NAME	CoffeeTags	//
 !_TAG_PROGRAM_URL	https://github.com/lukaszkorecki/CoffeeTags	/GitHub repository/
-!_TAG_PROGRAM_VERSION	0.5.1	//
+!_TAG_PROGRAM_VERSION	0.6.0	//
 @filter	../spec/fixtures/test.coffee	/^    @filter = ->$/;"	f	line:14	language:coffee	object:Wat.ho
 Campfire	../spec/fixtures/campfire.coffee	/^class Campfire$/;"	c	line:3	language:coffee
 Test	../spec/fixtures/campfire.coffee	/^class Test$/;"	c	line:45	language:coffee

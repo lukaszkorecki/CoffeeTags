@@ -83,7 +83,6 @@ module Coffeetags
         # uhmmmmmm
         if item[:level] < current_level
           if item[:kind] == 'b'
-            #puts "block", item
             true
           elsif
             bf << item[:name]
@@ -92,7 +91,6 @@ module Coffeetags
         end
       end
       sp = bf.uniq.reverse.join('.')
-      #puts "scope_path is #{sp}" if sp
       sp
     end
 
@@ -125,13 +123,6 @@ module Coffeetags
         entry_for_item.merge(additional_fields)
       end
     end
-
-    # get rid of duplicate entries
-    #def uniq_tree tree
-    #  # group by name first
-    #  groups = tree.group_by {|o| o[:name]}
-    #  tree
-    #end
 
     # Look through the tree to see if it's possible to change an entry's kind
     # Differ the objects from simple variables
@@ -199,9 +190,9 @@ module Coffeetags
         if not token.nil?
           # should find token through the tree first
           token_name = token[1]
-          existed_token = @tree.find {|o| o[:name] == token_name}
-          if existed_token
-            o = existed_token
+          existing_token = @tree.find {|o| o[:name] == token_name}
+          if existing_token
+            o = existing_token
           else
             o = {
               :name => token_name,
@@ -212,24 +203,22 @@ module Coffeetags
             }
           end
 
-          # remove edge cases for now
+          # Remove edge cases for now
+
           # - if a line containes a line like:  element.getElement('type=[checkbox]').lol()
-          is_in_string = false
+          token_match_in_line = false
           token_match_in_line = line.match token_name
           unless token_match_in_line.nil?
             offset = token_match_in_line.offset 0
             str_before = line.slice 0, offset[0]
             str_after = line.slice offset[1], line.size
-            for s in [str_before, str_after]
-              # find unmatch quotes
-              for q in ['"', '\'']
-                len = s.scan(q).size
-                is_in_string = true if len % 2 == 1
-              end
+            [str_before, str_after].map do |str|
+              # if there are unmatch quotes, our token is in a string
+              token_match_in_line = ['"', '\''].any? { |q| str.scan(q).size % 2 == 1 }
             end
           end
 
-          if is_in_string
+          if token_match_in_line
             @tree = @tree.reject {|c| c[:name] == o[:name]}
             next
           end
@@ -243,7 +232,7 @@ module Coffeetags
           # - multiple consecutive assignments
           is_previous_not_the_same = !(@tree.last and @tree.last[:name] == o[:name] and @tree.last[:level] == o[:level])
 
-          if !is_in_string and is_in_comparison.nil? and (has_blank_parent.nil? or is_previous_not_the_same)
+          if !token_match_in_line and is_in_comparison.nil? and (has_blank_parent.nil? or is_previous_not_the_same)
             unless o[:kind]
               o[:kind]   = line =~ /[:=]{1}.*[-=]\s?\>/ ? 'f' : 'v'
             end
@@ -270,7 +259,6 @@ module Coffeetags
 
       # P.S when found a token, first lookup in the tree, thus the duplicate won't appear
       # so there is no need of uniq_tree
-      #@tree = uniq_tree @tree
       self # chain!
     end
   end

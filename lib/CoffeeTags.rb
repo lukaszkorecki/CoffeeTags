@@ -143,7 +143,6 @@ module Coffeetags
         reject {|l| l =~ /^!_/ }.
         reject {|l|
           raw_file_path = l.split("\t")[1]
-          #next if raw_file_path.nil?
           tag_file = Pathname.new(raw_file_path)
 
           tag_file = output_dir + tag_file if raw_file_path =~ /^\./

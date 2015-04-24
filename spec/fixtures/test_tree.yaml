@@ -7,14 +7,14 @@
   :level: 0
 - :source: "  v = 'test'"
   :parent: 'bump'
-  :kind: o
+  :kind: v
   :name: v
   :line: 2
   :level: 2
 - :name: Wat
   :source: 'Wat ='
   :parent: window
-  :kind: o
+  :kind: v
   :level: 0
   :line: 4
 - :source: "  ho : (x) ->"
@@ -25,14 +25,14 @@
   :level: 2
 - :source: "    x = 'o'"
   :level: 4
-  :kind: o
+  :kind: v
   :line: 6
   :name: x
 - :name: '@lolWat'
   :level: 4
   :line: 8
   :source: '    @lolWat ='
-  :kind: o
+  :kind: v
 - :source: "      bump : ->"
   :parent: 'Wat.ho.@lolWat'
   :kind: f
@@ -72,12 +72,12 @@
 - :source: '      forVariable = 2 * element'
   :parent: '_loop.element'
   :line: 30
-  :kind: o
+  :kind: v
   :name: forVariable
   :level: 6
 - :source: "  className: 'notAClass'"
   :parent: obj
-  :kind: o
+  :kind: v
   :name: 'className'
   :line: 50
   :level: 2

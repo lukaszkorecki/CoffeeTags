@@ -16,12 +16,14 @@ module Coffeetags
       @tree = []
 
       # regexes
-      @block = /^\s*(if|unless|switch|loop|do)/
+      @block = /^\s*(if\s+|unless\s+|switch\s+|loop\s+|do\s+|for\s+)/
       @class_regex = /\s*class\s+(?:@)?([\w\.]*)/
-      @proto_meths = /^\s*([A-Za-z]*)::([@a-zA-Z0-9_]*)/
-      @var_regex = /([@a-zA-Z0-9_]*)\s*[:=]\s*$/
-      @token_regex = /([@a-zA-Z0-9_]*)\s*[:=]/
-      @iterator_regex = /^\s*for\s+([a-zA-Z0-9_]*)\s*/
+      @func_regex = /^\s*(?<name>[a-zA-Z0-9_]+)\s?[=:]\s?(?<params>\([@a-zA-Z0-9_]*\))?\s?[=-]>/
+      @proto_meths = /^\s*(?<parent>[A-Za-z]+)::(?<name>[@a-zA-Z0-9_]*)/
+      @var_regex = /([@a-zA-Z0-9_]+)\s*[:=]\s*[^-=]*$/
+      @token_regex = /([@a-zA-Z0-9_]+)\s*[:=]/
+      #@iterator_regex = /^\s*for\s+([a-zA-Z0-9_]*)\s*/ # for in/of
+      @iterator_regex = /^\s*for\s+(?<name>[a-zA-Z0-9_]+)\s+(in|of)(?<parent>.)*/ # use named captures too specify parent variable in iterator
       @comment_regex = /^\s*#/
       @start_block_comment_regex = /^\s*###/
       @end_block_comment_regex = /^.*###/
@@ -79,12 +81,17 @@ module Coffeetags
       current_level = element[:level]
       tree[0..idx].reverse.each_with_index do |item, index|
         # uhmmmmmm
-        if item[:level] != current_level and item[:level] < current_level and item[:line] !~  @block
-          bf << item[:name] unless item[:kind] == 'b'
+        if item[:level] < current_level
+          if item[:kind] == 'b'
+            true
+          elsif
+            bf << item[:name]
+          end
           current_level = item[:level]
         end
       end
-      bf.uniq.reverse.join('.')
+      sp = bf.uniq.reverse.join('.')
+      sp
     end
 
     # Helper function for generating parse tree elements for given
@@ -97,19 +104,50 @@ module Coffeetags
     # @returns [Hash,nil] returns a parse tree element consiting of:
     #   :name of the element
     #   indentation :level of the element
-    def item_for_regex line,  regex, level, additional_fields={}
+    def item_for_regex line, regex, level, additional_fields={}
       if item = line.match(regex)
         entry_for_item = {
           :level => level
         }
-        if item.length > 2 # proto method
-          entry_for_item[:parent] = item[1]
-          entry_for_item[:name] = item[2]
+        if item.length > 2 # proto method or func
+          if regex == @proto_meths
+            entry_for_item[:parent] = item[1]
+            entry_for_item[:name] = item[2]
+          elsif regex == @func_regex
+            entry_for_item[:name] = item[1]
+            #entry_for_item[:params] = item[2] # TODO: when formatting, show params in name ?
+          end
         else
           entry_for_item[:name] = item[1]
         end
         entry_for_item.merge(additional_fields)
       end
+    end
+
+    # Look through the tree to see if it's possible to change an entry's kind
+    # Differ the objects from simple variables
+    # Should execute after the whole tree has been generated
+    def comb_kinds tree
+      entries_with_parent = tree.reject {|c| c[:parent].nil? }
+      tree.each do |c|
+        next c unless c[:kind] == 'v'
+        maybe_child = entries_with_parent.select {|e| e[:parent] == c[:name]}
+        unless maybe_child.empty?
+          c[:kind] = 'o'
+        end
+      end
+      tree
+    end
+
+    # trim the bloated tree
+    # - when not required to include_vars, reject the variables
+    def trim_tree tree
+      unless @include_vars
+        tree = tree.reject do |c|
+          ['v'].include? c[:kind]
+        end
+      end
+      tree
     end
 
     # Parse the source and create a tags tree
@@ -118,6 +156,7 @@ module Coffeetags
     def execute!
       line_n = 0
       level = 0
+      classes = []
       @source.each_line do |line|
         line_n += 1
         line.chomp!
@@ -130,13 +169,18 @@ module Coffeetags
         [
           [@class_regex, 'c'],
           [@proto_meths, 'p'],
+          [@func_regex, 'f'],
           [@var_regex, 'v'],
           [@block, 'b']
         ].each do |regex, kind|
           mt = item_for_regex line, regex, level, :source => line, :line => line_n, :kind => kind
-          @tree << mt unless mt.nil?
+          unless mt.nil?
+            # TODO: one token should not fit for multiple regex
+            classes.push mt if kind == 'c'
+            next if kind == 'f' # wait for later to determine whether it is a class method
+            @tree << mt
+          end
         end
-
 
         # instance variable or iterator (for/in)?
         token = line.match(@token_regex )
@@ -144,17 +188,40 @@ module Coffeetags
 
         # we have found something!
         if not token.nil?
-          o = {
-            :name => token[1],
-            :level => level,
-            :parent => '',
-            :source => line,
-            :line => line_n
-          }
+          # should find token through the tree first
+          token_name = token[1]
+          existing_token = @tree.find {|o| o[:name] == token_name}
+          if existing_token
+            o = existing_token
+          else
+            o = {
+              :name => token_name,
+              :level => level,
+              :parent => '',
+              :source => line,
+              :line => line_n
+            }
+          end
 
-          # remove edge cases for now
+          # Remove edge cases for now
+
           # - if a line containes a line like:  element.getElement('type=[checkbox]').lol()
-          is_in_string = line =~ /.*['"].*#{token[1]}.*=.*["'].*/
+          token_match_in_line = false
+          token_match_in_line = line.match token_name
+          unless token_match_in_line.nil?
+            offset = token_match_in_line.offset 0
+            str_before = line.slice 0, offset[0]
+            str_after = line.slice offset[1], line.size
+            [str_before, str_after].map do |str|
+              # if there are unmatch quotes, our token is in a string
+              token_match_in_line = ['"', '\''].any? { |q| str.scan(q).size % 2 == 1 }
+            end
+          end
+
+          if token_match_in_line
+            @tree = @tree.reject {|c| c[:name] == o[:name]}
+            next
+          end
 
           # - scope access and comparison in if x == 'lol'
           is_in_comparison = line =~ /::|==/
@@ -163,20 +230,35 @@ module Coffeetags
           has_blank_parent = o[:parent] =~ /\.$/
 
           # - multiple consecutive assignments
-          is_previous_not_the_same = !(@tree.last and @tree.last[:name] == o[:name] and  @tree.last[:level] == o[:level])
+          is_previous_not_the_same = !(@tree.last and @tree.last[:name] == o[:name] and @tree.last[:level] == o[:level])
 
-          if is_in_string.nil? and is_in_comparison.nil? and has_blank_parent.nil? and is_previous_not_the_same
-            o[:kind]   =  line =~ /[:=]{1}.*[-=]\>/ ? 'f' : 'o'
-            o[:parent] =  scope_path o
+          if !token_match_in_line and is_in_comparison.nil? and (has_blank_parent.nil? or is_previous_not_the_same)
+            unless o[:kind]
+              o[:kind]   = line =~ /[:=]{1}.*[-=]\s?\>/ ? 'f' : 'v'
+            end
+            o[:parent] = scope_path o
             o[:parent] = @fake_parent if o[:parent].empty?
 
-            @tree << o if o[:kind] == 'f'
-            @tree << o if o[:kind] == 'o' and @include_vars
+            # treat variable and function with a class as parent as property
+            if ['f', 'v', 'o'].include? o[:kind]
+              # TODO: process func params
+              maybe_parent_class = classes.find {|c| c[:name] == o[:parent] }
+              if maybe_parent_class
+                o[:kind] = 'p'
+              end
+            end
+
+            @tree << o unless @tree.include? o
           end
         end
-        # get rid of duplicate entries
-        @tree.uniq!
       end
+
+      @tree = comb_kinds @tree
+
+      @tree = trim_tree @tree
+
+      # P.S when found a token, first lookup in the tree, thus the duplicate won't appear
+      # so there is no need of uniq_tree
       self # chain!
     end
   end

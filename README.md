@@ -6,12 +6,7 @@ A  simple tool for generating CoffeeScript tags (Ctags compatible).
 
 [![Build Status][travis-image]][travis-url] [![Coverage Status][coveralls-image]][coveralls-url]
 
-### [Watch a quick demo](http://ascii.io/a/26)
-
-### Example + Screenshot
-Showing only functions (right) or with variables included (left)
-
-<a href="http://skitch.com/plugawy/gyfnb/1-coffeetags-1-vim-unicorn.local-tmux"><img src="http://img.skitch.com/20111012-8cjesum8ru8usqusra4yppj5cc.preview.png" alt="1. CoffeeTags:1:vim - "unicorn.local" (tmux)" /></a><br /><span>Uploaded with <a href="http://skitch.com">Skitch</a>!</span>
+### [Watch a quick demo](https://asciinema.org/a/26)
 
 ## Huh?
 
@@ -45,7 +40,7 @@ Just use `coffeetags --help`
 
 ## Installation
 
-`gem install CoffeeTags`
+`gem install CoffeeTags` (or `sudo gem install CoffeeTags`)
 
 ## Usage
 

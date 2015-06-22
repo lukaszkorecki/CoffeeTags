@@ -4,7 +4,7 @@ endif
 
 let g:loaded_coffee_autotag=1
 
-if !has("ruby")
+if !has("nvim") && !has("ruby")
   echohl WarningMsg
   echo "Coffee auto tag requires Vim to be compiled with Ruby support"
   echohl none

@@ -14,6 +14,7 @@ endif
 let s:CoffeeAutoTagFile="./tags"
 let s:CoffeeAutoTagIncludeVars=0
 let s:CoffeeAutoTagTagRelative=1
+let s:CoffeeAutoTagUseDispatch=0
 
 if !exists("g:CoffeeAutoTagDisabled")
   let g:CoffeeAutoTagDisabled = 0
@@ -29,6 +30,10 @@ endif
 
 if exists("g:CoffeeAutoTagTagRelative")
   let s:CoffeeAutoTagTagRelative = g:CoffeeAutoTagTagRelative
+endif
+
+if exists("g:CoffeeAutoTagUseDispatch")
+  let s:CoffeeAutoTagUseDispatch = g:CoffeeAutoTagUseDispatch
 endif
 
 if s:CoffeeAutoTagIncludeVars
@@ -73,7 +78,12 @@ function! CoffeeAutoTag()
 
   let cmd .= expand("%:p")
 
-  let output = system(cmd)
+  if s:CoffeeAutoTagUseDispatch
+    let cmd = '-dir=' . getcwd() . ' ' . cmd
+    silent exe 'Start! ' . cmd
+  else
+    let output = system(cmd)
+  endif
 
   if exists(":TlistUpdate")
     TlistUpdate

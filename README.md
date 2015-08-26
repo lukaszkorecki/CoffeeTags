@@ -70,7 +70,21 @@ let g:CoffeeAutoTagDisabled=<0 or 1>     " Disables autotaging on save (Default:
 let g:CoffeeAutoTagFile=<filename>       " Name of the generated tag file (Default: ./tags)
 let g:CoffeeAutoTagIncludeVars=<0 or 1>  " Includes variables (Default: 0 [false])
 let g:CoffeeAutoTagTagRelative=<0 or 1>  " Sets file names to the relative path from the tag file location to the tag file location (Default: 1 [true])
+let g:CoffeAutoTagUseDispatch=<0 or 1>   " Uses vim-dispatch to execute coffeetags creation (default: 0 [false])
 ```
+
+# Using dispatch
+
+Using tmux or some other terminal multiplexer that supports async actions? Awesome. This is for you then.  
+CoffeeTags allows you to use [vim-dispatch](https://github.com/tpope/vim-dispatch) to invoke tag creation in background, effectively bypassing vims single-threaded nature.
+
+When dealing with non-trivial applications then tag generating can take a few seconds. That's a few seconds where you can't use your editor. However all is not lost. We can use the power of terminal multiplexers to invoke the CoffeeTags generating. 
+
+Geez, that sounds fun. How could I use this?  
+
+  1. use tmux or some other multiplexed
+  2. Install [vim-dispatch](https://github.com/tpope/vim-dispatch)
+  3. Setting `let g:CoffeeAutoTagUseDispatch=1` in your `~/.vimrc` 
 
 # Sublime Text
 

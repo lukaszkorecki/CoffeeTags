@@ -26,8 +26,10 @@ will generate standard TAGS file which later can be used with Vim (standard `:ta
 
 [Yup, we got it!](https://github.com/lukaszkorecki/CoffeeTags/issues/28#issuecomment-44046429)
 
+
 ### Editors supported
 
+* [NeoVim](https://neovim.io) with [TagBar](https://github.com/majutsushi/tagbar)
 * Vim with [TagBar](https://github.com/majutsushi/tagbar)
 * [Sublime Text](http://www.sublimetext.com/) and [CTags plugin](https://github.com/SublimeText/CTags)
 
